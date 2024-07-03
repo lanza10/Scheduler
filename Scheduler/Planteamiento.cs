@@ -33,7 +33,8 @@
               para cada modelo. Planteo crear un modelo compuesto de los tres modelos Input, Configuration y Limits denominado SchedulerInput 
               a partir del cual mediante su capa servicio calcule el output. La idea de este planteamiento es pensar en una futura expansion de las diferentes 
               secciones y así poder crear un código más mantenible evitando clases enormes.
-
+              
+              Actualmente me planteo el uso de Interfaces a modo de poder ofrecer mayor flexibilidad a la hora poder introduccir nuevas secciones o cambios.
             
                     
          */
