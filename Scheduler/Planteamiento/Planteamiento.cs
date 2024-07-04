@@ -1,4 +1,4 @@
-﻿namespace Scheduler
+﻿namespace Scheduler.Planteamiento
 {
     public class Planteamiento
     {
@@ -39,7 +39,8 @@
               enums que he decidido definir a otra carpeta denominada Enums y definir cada uno en un archivo lo que será más mantenible a largo plazo y más fácil
               de identificar en caso de cambio
             
-                    
+             DIAGRAMA EXCALIDRAW: 
+                https://excalidraw.com/#json=A00zFnnN69A_tlKI97yMk,EGTIhjfiZjsAylwyIBK6yA
          */
     }
 }
