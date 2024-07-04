@@ -1,19 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Scheduler.Interfaces;
+﻿using Scheduler.Interfaces;
 
 namespace Scheduler.Models
 {
-    public class Input : IInput
+    public class Input(DateTime currentDate) : IInput
     {
-        public DateTime CurrentDate { get; set; }
-
-        public Input(DateTime currentDate)
-        {
-            this.CurrentDate = currentDate;
-        }
+        public DateTime CurrentDate { get; set; } = currentDate;
     }
 }

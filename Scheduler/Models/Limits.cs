@@ -1,20 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Scheduler.Interfaces;
 
 namespace Scheduler.Models
 {
-    public class Limits
+    public class Limits(DateTime startDate, DateTime endDate) : ILimits
     {
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-
-        public Limits(DateTime startDate, DateTime endDate)
-        {
-            this.StartDate = startDate;
-            this.EndDate = endDate;
-        }
+        public DateTime StartDate { get; set; } = startDate;
+        public DateTime EndDate { get; set; } = endDate;
     }
 }

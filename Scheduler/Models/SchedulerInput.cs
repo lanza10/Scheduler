@@ -1,23 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Scheduler.Interfaces;
+﻿using Scheduler.Interfaces;
 
 namespace Scheduler.Models
 {
-    public class SchedulerInput
+    public class SchedulerInput(IConfiguration configuration, IInput input, ILimits limits) : ISchedulerInput
     {
-        public required IInput Input { get; set; }
-        public required Configuration Configuration { get; set; }
-        public required Limits Limits { get; set; }
-
-        public SchedulerInput(Configuration configuration, IInput input, Limits limits)
-        {
-            this.Configuration = configuration;
-            this.Input = input;
-            this.Limits = limits;
-        }
+        public required IInput Input { get; set; } = input;
+        public required IConfiguration Configuration { get; set; } = configuration;
+        public required ILimits Limits { get; set; } = limits;
     }
 }

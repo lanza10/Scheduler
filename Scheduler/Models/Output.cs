@@ -1,20 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Scheduler.Interfaces;
 
 namespace Scheduler.Models
 {
-    public class Output
+    public class Output(DateTime nextExecTime, String description) : IOutput
     {
-        public DateTime NextExecTime { get; set; }
-        public required string Description { get; set; }
-
-        public Output(DateTime nextExecTime, String description)
-        {
-            this.NextExecTime = nextExecTime; 
-            this.Description = description;
-        }
+        public DateTime NextExecTime { get; set; } = nextExecTime;
+        public string Description { get; set; } = description;
     }
 }

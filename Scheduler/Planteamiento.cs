@@ -34,7 +34,10 @@
               a partir del cual mediante su capa servicio calcule el output. La idea de este planteamiento es pensar en una futura expansion de las diferentes 
               secciones y así poder crear un código más mantenible evitando clases enormes.
               
-              Actualmente me planteo el uso de Interfaces a modo de poder ofrecer mayor flexibilidad a la hora poder introduccir nuevas secciones o cambios.
+              Tras pensarlo, decido que cada modelo tenga su Interfaz, incluido SchedulerInput. Esto proporcionará una mayor flexibilidad más adelante en caso de 
+              modificación de los datos de entrada, salida o del Scheduler en sí (incluso crear varios tipos de Scheduler). Por otro lado, decido abstraer los 
+              enums que he decidido definir a otra carpeta denominada Enums y definir cada uno en un archivo lo que será más mantenible a largo plazo y más fácil
+              de identificar en caso de cambio
             
                     
          */
