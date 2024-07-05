@@ -4,7 +4,7 @@ namespace Scheduler.Interfaces
 {
     public interface IConfiguration
     {
-        DateTime Date { get; }
+        DateTime? Date { get; }
         bool IsEnabled { get; }
         int Days { get; }
         Occurrence Occurs { get; }

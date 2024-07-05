@@ -8,8 +8,6 @@ namespace Scheduler.Enums
 {
     public enum Occurrence
     {
-        DAILY,
-        WEEKLY,
-        MONTHLY
+        Daily,
     }
 }

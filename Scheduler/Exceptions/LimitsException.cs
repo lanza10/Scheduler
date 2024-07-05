@@ -4,11 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Scheduler.Enums
+namespace Scheduler.Exceptions
 {
-    public enum ConfigurationType
-    {
-        Once,
-        Recurring
-    }
+    public class LimitsException(string message) : Exception(message);
 }
