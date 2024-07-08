@@ -12,12 +12,12 @@ namespace Scheduler.Validator
     {
         public bool ValidConfiguration(Configuration configuration)
         {
-            if (configuration.Type == ConfigurationType.Once)
+            if (configuration is { Type: ConfigurationType.Once, Date: null })
             {
-                return configuration.Date!=null;
+                return false;
             }
 
-            return true;
+            return configuration.Days >= 0;
         }
     }
 }

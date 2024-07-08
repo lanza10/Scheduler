@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using System.Runtime.InteropServices;
+using Xunit;
 using FluentAssertions;
 using FluentAssertions.Common;
 using FluentAssertions.Execution;
@@ -11,31 +12,36 @@ namespace SchedulerTests.Validators
 {
     public class ConfigurationValidatorShould
     {
-        [Fact]
-        public void ValidateValidConfigurations()
+        [Theory]
+        [InlineData("2024-07-10", true, 5, Occurrence.Daily, ConfigurationType.Once)]
+        [InlineData(null, false, 3, Occurrence.Daily, ConfigurationType.Recurring)]
+        public void ValidateValidConfigurations(string? date,bool isEnabled, int days,Occurrence occurs,ConfigurationType type)
         {
             //Arrange
+            DateTime? parsedDate = string.IsNullOrEmpty(date) ? null : DateTime.Parse(date);
             var validator = new ConfigurationValidator();
-            var onceConfiguration = new Configuration(new DateTime(2020,1,4), true, 1,Occurrence.Daily, ConfigurationType.Once);
-            var recurringConfiguration = new Configuration(null, true, 1, Occurrence.Daily, ConfigurationType.Recurring);
+            var configuration = new Configuration(parsedDate, isEnabled, days, occurs, type);
+
             //Act
-            var onceIsValid = validator.ValidConfiguration(onceConfiguration);
-            var recurringIsValid = validator.ValidConfiguration(recurringConfiguration);
+            var isValid = validator.ValidConfiguration(configuration);
             //Assert
-            Assert.True(onceIsValid);
-            Assert.True(recurringIsValid);
+            Assert.True(isValid);
         }
 
-        [Fact]
-        public void InvalidateInvalidConfigurations()
+        [Theory]
+        [InlineData("2024-07-10", true, -1, Occurrence.Daily, ConfigurationType.Once)]
+        [InlineData(null, false, 3, Occurrence.Daily, ConfigurationType.Once)]
+        public void InvalidateInvalidConfigurations(string? date, bool isEnabled, int days, Occurrence occurs, ConfigurationType type)
         {
             //Arrange
+            DateTime? parsedDate = string.IsNullOrEmpty(date) ? null : DateTime.Parse(date);
             var validator = new ConfigurationValidator();
-            var onceConfiguration = new Configuration(null, true, 1, Occurrence.Daily, ConfigurationType.Once);
+            var configuration = new Configuration(parsedDate, isEnabled, days, occurs, type);
+
             //Act
-            var onceIsValid = validator.ValidConfiguration(onceConfiguration);
+            var isValid = validator.ValidConfiguration(configuration);
             //Assert
-            Assert.False(onceIsValid);
+            Assert.False(isValid);
         }
     }
 }
