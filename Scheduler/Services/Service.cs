@@ -13,12 +13,12 @@ namespace Scheduler.Services
 
         public DateTime CalculateNextDate()
         {
-            return schedulerInputService.CalculateNextDate();
+            return DateTime.Now;
         }
 
         public string GenerateDescription()
         {
-            return schedulerInputService.GenerateDescription();
+            return "";
         }
     }
 }

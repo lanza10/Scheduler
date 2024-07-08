@@ -25,5 +25,17 @@ namespace SchedulerTests.Validators
             Assert.True(onceIsValid);
             Assert.True(recurringIsValid);
         }
+
+        [Fact]
+        public void InvalidateInvalidConfigurations()
+        {
+            //Arrange
+            var validator = new ConfigurationValidator();
+            var onceConfiguration = new Configuration(null, true, 1, Occurrence.Daily, ConfigurationType.Once);
+            //Act
+            var onceIsValid = validator.ValidConfiguration(onceConfiguration);
+            //Assert
+            Assert.False(onceIsValid);
+        }
     }
 }
