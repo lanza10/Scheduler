@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Scheduler.Exceptions;
 using Scheduler.Interfaces;
 using Scheduler.Utilities;
+using Scheduler.Validator;
 
 namespace Scheduler.Services
 {
@@ -12,7 +14,9 @@ namespace Scheduler.Services
     {
         public DateTime CalculateNextDate(ISchedulerInput schedulerInput)
         {
-            return schedulerInput.Input.CurrentDate.AddDays(schedulerInput.Configuration.Days);
+            var res = schedulerInput.Input.CurrentDate.AddDays(schedulerInput.Configuration.Days);
+            SchedulerServiceValidator.ValidateResultDoNotExceedLimits(res, schedulerInput.Limits);
+            return res;
         }
 
         public string GenerateDescription(ISchedulerInput schedulerInput)

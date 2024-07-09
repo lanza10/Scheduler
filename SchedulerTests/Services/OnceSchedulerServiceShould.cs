@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Scheduler.Exceptions;
 using Scheduler.Services;
 
 namespace SchedulerTests.Services
@@ -48,6 +49,26 @@ namespace SchedulerTests.Services
             var resultDescription = service.GenerateDescription(schedulerInput);
             //Assert
             Assert.Equal(expectedDescription, resultDescription);
+        }
+
+        [Theory]
+        [InlineData("2020-01-01", "2020-01-03", "2024-01-01")]
+        [InlineData("2020-01-01", "2020-01-03", "2018-01-01")]
+        public void RaiseErrorWhenExceedLimits(string stringStartDate, string stringEndDate, string stringDate)
+        {
+            //Arrange
+            var expectedDate = DateTime.Parse(stringDate);
+            var startDate = DateTime.Parse(stringStartDate);
+            var endDate = DateTime.Parse(stringEndDate);
+            var configuration = new Configuration(expectedDate, true, 5, Occurrence.Daily, ConfigurationType.Once);
+            var input = new Input(DateTime.Now);
+            var limits = new Limits(startDate, endDate);
+            ISchedulerInput schedulerInput = new SchedulerInput(input, configuration, limits);
+            var service = new OnceSchedulerService();
+            //Act
+
+            //Assert
+            Assert.Throws<LimitsException>(() => service.CalculateNextDate(schedulerInput));
         }
     }
 }

@@ -3,6 +3,7 @@ using Scheduler.Interfaces;
 using Scheduler.Models;
 using Xunit;
 using Scheduler.Services;
+using Scheduler.Exceptions;
 
 namespace SchedulerTests.Services
 {
@@ -45,6 +46,26 @@ namespace SchedulerTests.Services
             var resultDescription = service.GenerateDescription(schedulerInput);
             //Assert
             Assert.Equal(expectedDescription, resultDescription);
+        }
+
+        [Theory]
+        [InlineData("2020-01-01", "2020-01-03", "2024-01-01")]
+        [InlineData("2020-01-01", "2020-01-03", "2018-01-01")]
+        public void RaiseErrorWhenExceedLimits(string stringStartDate, string stringEndDate, string stringCurrentDate)
+        {
+            //Arrange
+            var currentDate = DateTime.Parse(stringCurrentDate);
+            var startDate = DateTime.Parse(stringStartDate);
+            var endDate = DateTime.Parse(stringEndDate);
+            var configuration = new Configuration(null, true, 0, Occurrence.Daily, ConfigurationType.Recurring);
+            var input = new Input(currentDate);
+            var limits = new Limits(startDate, endDate);
+            ISchedulerInput schedulerInput = new SchedulerInput(input, configuration, limits);
+            var service = new RecurringSchedulerService();
+            //Act
+
+            //Assert
+            Assert.Throws<LimitsException>(() => service.CalculateNextDate(schedulerInput));
         }
     }
 }
