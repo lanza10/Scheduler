@@ -13,10 +13,6 @@ namespace Scheduler.Validator
     {
         public static void ValidateResultDoNotExceedLimits(DateTime date, ILimits limits)
         {
-            if (!limits.EndDate.HasValue)
-            {
-                return;
-            }
             if (date < limits.StartDate || date > limits.EndDate)
             {
                 throw new LimitsException("The result date is out of the limits");
