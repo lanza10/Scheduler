@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace Scheduler.Services
 {
-    public interface IService
+    public interface ISchedulerService
     {
-        ISchedulerService GetSchedulerService(ISchedulerInput schedulerInput);
-        IOutput CalculateOutput(ISchedulerInput schedulerInput);
+        DateTime CalculateNextDate(ISchedulerInput schedulerInput);
+
+        string GenerateDescription(ISchedulerInput schedulerInput);  
     }
 }

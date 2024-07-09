@@ -12,15 +12,15 @@ namespace SchedulerTests.Models
         public void InitializeProperly()
         {
             //Arrange
-            var expectedNextExecDate = DateTime.Now;
+            var expectedNextExecTime = DateTime.Now;
             const string expectedDescription = "test";
 
             //Act
-            var output = new Output(expectedNextExecDate, expectedDescription);
+            var output = new Output(expectedNextExecTime, expectedDescription);
             
             //Assert
             Assert.IsType<Output>(output);
-            Assert.Equal(expectedNextExecDate, output.NextExecTime);
+            Assert.Equal(expectedNextExecTime, output.NextExecTime);
             Assert.Equal(expectedDescription, output.Description);
         }
 
@@ -29,17 +29,17 @@ namespace SchedulerTests.Models
         public void SetPropertiesCorrectly(string date, string expectedDescription)
         {
             //Arrange
-            var expectedNextExecDate = DateTime.Parse(date);
+            var expectedNextExecTime = DateTime.Parse(date);
 
             //Act
-            var output = new Output(expectedNextExecDate, expectedDescription)
+            var output = new Output(expectedNextExecTime, expectedDescription)
             {
-                NextExecTime = expectedNextExecDate,
+                NextExecTime = expectedNextExecTime,
                 Description = expectedDescription
             };
 
             //Assert
-            Assert.Equal(expectedNextExecDate, output.NextExecTime);
+            Assert.Equal(expectedNextExecTime, output.NextExecTime);
             Assert.Equal(expectedDescription, output.Description);
         }
     }
