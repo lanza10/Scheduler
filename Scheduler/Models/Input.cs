@@ -4,6 +4,6 @@ namespace Scheduler.Models
 {
     public class Input(DateTime currentDate) : IInput
     {
-        public DateTime CurrentDate { get; set; } = currentDate;
+        public DateTime CurrentDate { get; } = currentDate; 
     }
 }

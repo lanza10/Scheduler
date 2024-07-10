@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.JavaScript;
 using System.Text;
 using System.Threading.Tasks;
 using Scheduler.Enums;
@@ -31,20 +32,16 @@ namespace SchedulerTests.Services
             Assert.Equal(expectedSchedulerService.GetType(), resultSchedulerService.GetType());
         }
 
-        [Theory]
-        [InlineData("2024-07-09 10:30", "Occurs every day.Schedule will be used on 09/07/2024 at 10:30 starting on 01/01/0001", "2024-07-09 10:30", null, ConfigurationType.Recurring)]
-        [InlineData("2023-12-25 12:00", "Occurs every day.Schedule will be used on 25/12/2023 at 12:00 starting on 01/01/0001", "2023-12-25 12:00", "2023-12-24 08:00", ConfigurationType.Recurring)]
-        [InlineData("2025-01-01 08:00", "Occurs once.Schedule will be used on 01/01/2025 at 08:00 starting on 01/01/0001", "2024-12-31", "2025-01-01 08:00", ConfigurationType.Once)]
-        public void CalculateCorrectOutput(string stringNextExecTime, string expectedDescription, string stringCurrentDate, string stringDate, ConfigurationType type)
+        [Fact]
+        public void CalculateCorrectOutputWhenRecurring()
         {
             //Arrange
-            var currentDate = DateTime.Parse(stringCurrentDate);
-            DateTime? date = string.IsNullOrEmpty(stringDate)? null: DateTime.Parse(stringDate);
-            var expectedNextExecTime = DateTime.Parse(stringNextExecTime);
-            var expectedOutput = new Output(expectedNextExecTime, expectedDescription);
+            const string expectedDescription = "Occurs every day.Schedule will be used on 09/07/2024 at 10:30 starting on 01/01/0001";
+            var currentDate = new DateTime(2024, 7, 9, 10, 30, 0);
+            var expectedOutput = new Output(currentDate, expectedDescription);
             var schedulerInput = new SchedulerInput(
                 new Input(currentDate),
-                new Configuration(date, true, 0, Occurrence.Daily, type),
+                new Configuration(null, true, 0, Occurrence.Daily, ConfigurationType.Recurring),
                 new Limits(DateTime.MinValue, null)
             );
             var service = new Service();
@@ -52,11 +49,34 @@ namespace SchedulerTests.Services
             //Act
             var resultOutput = service.CalculateOutput(schedulerInput);
 
+            //Assert
+            Assert.Equal(expectedOutput.NextExecTime, resultOutput.NextExecTime);
+            Assert.Equal(expectedOutput.Description, resultOutput.Description);
+            Assert.Equal(currentDate, resultOutput.NextExecTime);
+            Assert.Equal(expectedDescription, resultOutput.Description);
+        }
+
+        [Fact]
+        public void CalculateCorrectOutputWhenOnce()
+        {
+            //Arrange
+            const string expectedDescription = "Occurs once.Schedule will be used on 09/07/2024 at 10:30 starting on 01/01/0001";
+            var date = new DateTime(2024, 7, 9, 10, 30, 0);
+            var expectedOutput = new Output(date, expectedDescription);
+            var schedulerInput = new SchedulerInput(
+                new Input(DateTime.Now),
+                new Configuration(date, true, 0, Occurrence.Daily, ConfigurationType.Once),
+                new Limits(DateTime.MinValue, null)
+            );
+            var service = new Service();
+
+            //Act
+            var resultOutput = service.CalculateOutput(schedulerInput);
 
             //Assert
             Assert.Equal(expectedOutput.NextExecTime, resultOutput.NextExecTime);
             Assert.Equal(expectedOutput.Description, resultOutput.Description);
-            Assert.Equal(expectedNextExecTime, resultOutput.NextExecTime);
+            Assert.Equal(date, resultOutput.NextExecTime);
             Assert.Equal(expectedDescription, resultOutput.Description);
         }
     }

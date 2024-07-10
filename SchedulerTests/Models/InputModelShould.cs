@@ -5,33 +5,15 @@ namespace SchedulerTests.Models
 {
     public class InputModelShould
     {
+
         [Fact]
-        public void InitializeProperly()
+        public void SetPropertiesCorrectly()
         {
             //Arrange
-            var expectedCurrentDate = DateTime.Now;
+            var expectedCurrentDate = new DateTime(2020, 1, 1);
 
             //Act
             var input = new Input(expectedCurrentDate);
-
-            //Assert
-            Assert.IsType<Input>(input);
-            Assert.Equal(expectedCurrentDate, input.CurrentDate);
-
-        }
-
-        [Theory]
-        [InlineData("2020,01,04")]
-        public void SetPropertiesCorrectly(string date)
-        {
-            //Arrange
-            var expectedCurrentDate = DateTime.Parse(date);
-
-            //Act
-            var input = new Input(expectedCurrentDate)
-            {
-                CurrentDate = expectedCurrentDate
-            };
 
             //Assert
             Assert.Equal(expectedCurrentDate, input.CurrentDate);

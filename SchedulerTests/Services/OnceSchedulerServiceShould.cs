@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FluentAssertions;
 using Scheduler.Exceptions;
 using Scheduler.Services;
 
@@ -13,14 +14,11 @@ namespace SchedulerTests.Services
 {
     public class OnceSchedulerServiceShould
     {
-        [Theory]
-        [InlineData("2020-01-01")]
-        [InlineData("9999-12-31")]
-        [InlineData("2222-01-01")]
-        public void ReturnCorrectDate(string stringDate)
+        [Fact]
+        public void ReturnCorrectDate()
         {
             //Arrange
-            var expectedDate = DateTime.Parse(stringDate);
+            var expectedDate = new DateTime(2020,1,1);
             var configuration = new Configuration(expectedDate, true, 5, Occurrence.Daily, ConfigurationType.Once);
             var input = new Input(DateTime.Now);
             var limits = new Limits(DateTime.MinValue, null);
@@ -32,14 +30,12 @@ namespace SchedulerTests.Services
             Assert.Equal(expectedDate, resultDate);
         }
 
-        [Theory]
-        [InlineData("2020-01-01", "Occurs once.Schedule will be used on 01/01/2020 at 00:00 starting on 01/01/0001")]
-        [InlineData("9999-12-31", "Occurs once.Schedule will be used on 31/12/9999 at 00:00 starting on 01/01/0001")]
-        [InlineData("2222-01-01", "Occurs once.Schedule will be used on 01/01/2222 at 00:00 starting on 01/01/0001")]
-        public void ReturnCorrectDescription(string stringDate, string expectedDescription)
+        [Fact]
+        public void ReturnCorrectDescription()
         {
             //Arrange
-            var expectedDate = DateTime.Parse(stringDate);
+            var expectedDate = new DateTime(2020,1,1);
+            var expectedDescription = "Occurs once.Schedule will be used on 01/01/2020 at 00:00 starting on 01/01/0001";
             var configuration = new Configuration(expectedDate, true, 5, Occurrence.Daily, ConfigurationType.Once);
             var input = new Input(DateTime.Now);
             var limits = new Limits(DateTime.MinValue, null);
@@ -51,24 +47,44 @@ namespace SchedulerTests.Services
             Assert.Equal(expectedDescription, resultDescription);
         }
 
-        [Theory]
-        [InlineData("2020-01-01", "2020-01-03", "2024-01-01")]
-        [InlineData("2020-01-01", "2020-01-03", "2018-01-01")]
-        public void RaiseErrorWhenExceedLimits(string stringStartDate, string stringEndDate, string stringDate)
+        [Fact]
+        public void RaiseErrorWhenExceedStartDateLimits()
         {
             //Arrange
-            var expectedDate = DateTime.Parse(stringDate);
-            var startDate = DateTime.Parse(stringStartDate);
-            var endDate = DateTime.Parse(stringEndDate);
+            var expectedDate = DateTime.MinValue;
+            var startDate = DateTime.Now;
+            var configuration = new Configuration(expectedDate, true, 5, Occurrence.Daily, ConfigurationType.Once);
+            var input = new Input(DateTime.Now);
+            var limits = new Limits(startDate, null);
+            ISchedulerInput schedulerInput = new SchedulerInput(input, configuration, limits);
+            var service = new OnceSchedulerService();
+
+            //Act
+            var act = () => service.CalculateNextDate(schedulerInput);
+            //Assert
+            act.Should().Throw<LimitsException>()
+                .WithMessage("The result date must not be earlier than the specified start date.");
+        }
+
+        [Fact]
+        public void RaiseErrorWhenExceedEndDateLimits()
+        {
+            //Arrange
+            var expectedDate = DateTime.MaxValue;
+            var startDate = DateTime.MinValue;
+            var endDate = DateTime.Now;
             var configuration = new Configuration(expectedDate, true, 5, Occurrence.Daily, ConfigurationType.Once);
             var input = new Input(DateTime.Now);
             var limits = new Limits(startDate, endDate);
             ISchedulerInput schedulerInput = new SchedulerInput(input, configuration, limits);
             var service = new OnceSchedulerService();
+
             //Act
+            var act = () => service.CalculateNextDate(schedulerInput);
 
             //Assert
-            Assert.Throws<LimitsException>(() => service.CalculateNextDate(schedulerInput));
+            act.Should().Throw<LimitsException>()
+                .WithMessage("The result date must not be later than the specified end date.");
         }
     }
 }

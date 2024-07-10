@@ -1,10 +1,23 @@
-﻿using Scheduler.Interfaces;
+﻿using Scheduler.Exceptions;
+using Scheduler.Interfaces;
+using Scheduler.Validator;
 
 namespace Scheduler.Models
 {
-    public class Limits(DateTime startDate, DateTime? endDate) : ILimits
+    public class Limits
     {
-        public DateTime StartDate { get; set; } = startDate;
-        public DateTime? EndDate { get; set; } = endDate;
+        public DateTime StartDate { get; }
+        public DateTime EndDate { get; }
+        public Limits(DateTime startDate, DateTime? endDate)
+        {
+            StartDate = startDate;
+            EndDate = endDate ?? DateTime.MaxValue;
+            if (!LimitsValidator.ValidLimits(StartDate, EndDate))
+            {
+                throw new LimitsException("Start date must be earlier than de end date");
+            }
+        }
+
+        
     }
 }

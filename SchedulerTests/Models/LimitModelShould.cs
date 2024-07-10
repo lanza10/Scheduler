@@ -1,12 +1,15 @@
-﻿using Scheduler.Models;
+﻿using FluentAssertions;
+using Scheduler.Exceptions;
+using Scheduler.Models;
 using Xunit;
 
 namespace SchedulerTests.Models
 {
     public class LimitModelShould
     {
+
         [Fact]
-        public void InitializeProperly()
+        public void SetPropertiesCorrectly()
         {
             //Arrange
             var expectedStartDate = DateTime.MinValue;
@@ -15,31 +18,35 @@ namespace SchedulerTests.Models
             //Act
             var limits = new Limits(expectedStartDate, expectedEndDate);
 
-            //Assert
-            Assert.IsType<Limits>(limits);
+            //Arrange
             Assert.Equal(expectedStartDate, limits.StartDate);
             Assert.Equal(expectedEndDate, limits.EndDate);
         }
 
-        [Theory]
-        [InlineData("2020-01-01", null)]
-        [InlineData("2020-01-01", "2024-01-01")]
-        public void SetPropertiesCorrectly(string startDate, string endDate)
+        [Fact]
+        public void AssignMaxValueWhenEndDateIsNull()
         {
             //Arrange
-            var expectedStartDate = DateTime.Parse(startDate);
-            DateTime? expectedEndDate = string.IsNullOrEmpty(endDate) ? null : DateTime.Parse(endDate);
+            var startDate = new DateTime(2020,1,1);
+            var expectedEndDate = DateTime.MaxValue;
 
             //Act
-            var limits = new Limits(expectedStartDate, expectedEndDate)
-            {
-                StartDate = expectedStartDate,
-                EndDate = expectedEndDate
-            };
+            var limits = new Limits(startDate, null);
 
             //Arrange
-            Assert.Equal(expectedStartDate, limits.StartDate);
             Assert.Equal(expectedEndDate, limits.EndDate);
+        }
+
+        [Fact]
+        public void RaiseErrorWhenInvalidLimits()
+        {
+            //Arrange
+            var startDate = DateTime.MaxValue;
+            var endDate = DateTime.MinValue;
+            //Act
+            var act = () => new Limits(startDate, endDate);
+            //Assert
+            act.Should().Throw<LimitsException>().WithMessage("Start date must be earlier than de end date");
         }
     }
 }

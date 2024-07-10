@@ -10,14 +10,14 @@ namespace Scheduler.Validator
 {
     public class ConfigurationValidator
     {
-        public bool ValidConfiguration(Configuration configuration)
+        public static bool ValidDateAndType(ConfigurationType type, DateTime? date)
         {
-            if (configuration is { Type: ConfigurationType.Once, Date: null })
-            {
-                return false;
-            }
+            return type != ConfigurationType.Once || date.HasValue;
+        }
 
-            return configuration.Days >= 0;
+        public static bool ValidDays(int days)
+        {
+            return days >= 0;
         }
     }
 }

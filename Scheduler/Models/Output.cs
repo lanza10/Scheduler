@@ -4,7 +4,7 @@ namespace Scheduler.Models
 {
     public class Output(DateTime nextExecTime, string description) : IOutput
     {
-        public DateTime NextExecTime { get; set; } = nextExecTime;
-        public string Description { get; set; } = description;
+        public DateTime NextExecTime { get; } = nextExecTime;
+        public string Description { get; } = description;
     }
 }

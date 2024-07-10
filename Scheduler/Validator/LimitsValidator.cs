@@ -4,19 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Scheduler.Interfaces;
+using Scheduler.Models;
 
 namespace Scheduler.Validator
 {
     public class LimitsValidator
     {
-        public static bool ValidLimits(ILimits limits)
+        public static bool ValidLimits(DateTime startDate, DateTime endDate)
         {
-            if (limits.EndDate.HasValue)
-            {
-                return limits.EndDate >= limits.StartDate;
-            }
-
-            return true;
+            return endDate >= startDate;
         }
     }
 }
