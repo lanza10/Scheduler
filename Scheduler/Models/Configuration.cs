@@ -1,6 +1,5 @@
 ﻿using Scheduler.Interfaces;
 using Scheduler.Enums;
-using Scheduler.Exceptions;
 using Scheduler.Validator;
 
 namespace Scheduler.Models
@@ -14,17 +13,9 @@ namespace Scheduler.Models
         public ConfigurationType Type { get; }
 
         public Configuration(DateTime? date, bool isEnabled, int days, Occurrence occurs, ConfigurationType type)
-        {
-            if (!ConfigurationValidator.ValidDateAndType(type, date))
-            {
-                throw new ConfigurationException(
-                    "This configuration isn't valid, date can´t be null if \"Once\" is selected.");
-            }
-
-            if (!ConfigurationValidator.ValidDays(days))
-            {
-                throw new ConfigurationException("This configuration isn't valid, days can´t be lower than 0.");
-            }
+        { 
+            ConfigurationValidator.ValidDateAndType(type, date);
+            ConfigurationValidator.ValidDays(days);
 
             Date = date;
             IsEnabled = isEnabled;

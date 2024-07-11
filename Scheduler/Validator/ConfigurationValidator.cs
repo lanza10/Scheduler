@@ -4,20 +4,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Scheduler.Enums;
+using Scheduler.Exceptions;
 using Scheduler.Models;
 
 namespace Scheduler.Validator
 {
     public class ConfigurationValidator
     {
-        public static bool ValidDateAndType(ConfigurationType type, DateTime? date)
+        public static void ValidDateAndType(ConfigurationType type, DateTime? date)
         {
-            return type != ConfigurationType.Once || date.HasValue;
+            if (type == ConfigurationType.Once && !date.HasValue)
+            {
+                throw new ConfigurationException(
+                    "This configuration isn't valid, date can´t be null if \"Once\" is selected.");
+            }
         }
 
-        public static bool ValidDays(int days)
+        public static void ValidDays(int days)
         {
-            return days >= 0;
+            if (days < 0)
+            {
+                throw new ConfigurationException("This configuration isn't valid, days can´t be lower than 0.");
+            }
         }
     }
 }

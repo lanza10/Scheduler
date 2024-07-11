@@ -1,6 +1,4 @@
-﻿using Scheduler.Exceptions;
-using Scheduler.Interfaces;
-using Scheduler.Validator;
+﻿using Scheduler.Validator;
 
 namespace Scheduler.Models
 {
@@ -12,10 +10,7 @@ namespace Scheduler.Models
         {
             StartDate = startDate;
             EndDate = endDate ?? DateTime.MaxValue;
-            if (!LimitsValidator.ValidLimits(StartDate, EndDate))
-            {
-                throw new LimitsException("Start date must be earlier than the end date");
-            }
+            LimitsValidator.ValidLimits(StartDate, EndDate);
         }
 
         
