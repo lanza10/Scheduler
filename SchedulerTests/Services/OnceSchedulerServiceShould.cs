@@ -19,12 +19,16 @@ namespace SchedulerTests.Services
         {
             //Arrange
             var expectedDate = new DateTime(2020,1,1);
-            var configuration = new Configuration(expectedDate, true, 5, Occurrence.Daily, ConfigurationType.Once);
-            var limits = new Limits(DateTime.MinValue, null);
-            ISchedulerInput schedulerInput = new SchedulerInput(DateTime.Now, configuration, limits);
+            ISchedulerInput schedulerInput = new SchedulerInput(
+                DateTime.Now,
+                new Configuration(expectedDate, true, 5, Occurrence.Daily, ConfigurationType.Once),
+                new Limits(DateTime.MinValue, null)
+                );
             var service = new OnceSchedulerService();
+
             //Act
             var resultDate = service.CalculateNextDate(schedulerInput);
+
             //Assert
             Assert.Equal(expectedDate, resultDate);
         }
@@ -35,13 +39,18 @@ namespace SchedulerTests.Services
             //Arrange
             var expectedDate = new DateTime(2020,1,1);
             const string expectedDescription = "Occurs once.Schedule will be used on 01/01/2020 at 00:00 starting on 01/01/0001";
-            var configuration = new Configuration(expectedDate, true, 5, Occurrence.Daily, ConfigurationType.Once);
-            var limits = new Limits(DateTime.MinValue, null);
-            ISchedulerInput schedulerInput = new SchedulerInput(DateTime.Now, configuration, limits);
+            ISchedulerInput schedulerInput = new SchedulerInput(
+                DateTime.Now,
+                new Configuration(expectedDate, true, 5, Occurrence.Daily, ConfigurationType.Once),
+                new Limits(DateTime.MinValue, null)
+                );
             var service = new OnceSchedulerService();
+
             //Act
             var resultDescription = service.GenerateDescription(schedulerInput);
+
             //Assert
+
             Assert.Equal(expectedDescription, resultDescription);
         }
 
@@ -51,13 +60,16 @@ namespace SchedulerTests.Services
             //Arrange
             var expectedDate = DateTime.MinValue;
             var startDate = DateTime.Now;
-            var configuration = new Configuration(expectedDate, true, 5, Occurrence.Daily, ConfigurationType.Once);
-            var limits = new Limits(startDate, null);
-            ISchedulerInput schedulerInput = new SchedulerInput(DateTime.Now, configuration, limits);
+            ISchedulerInput schedulerInput = new SchedulerInput(
+                DateTime.Now,
+                new Configuration(expectedDate, true, 5, Occurrence.Daily, ConfigurationType.Once),
+                new Limits(startDate, null)
+                );
             var service = new OnceSchedulerService();
 
             //Act
             var act = () => service.CalculateNextDate(schedulerInput);
+
             //Assert
             act.Should().Throw<LimitsException>()
                 .WithMessage("The result date must not be earlier than the specified start date.");
@@ -70,9 +82,11 @@ namespace SchedulerTests.Services
             var expectedDate = DateTime.MaxValue;
             var startDate = DateTime.MinValue;
             var endDate = DateTime.Now;
-            var configuration = new Configuration(expectedDate, true, 5, Occurrence.Daily, ConfigurationType.Once);
-            var limits = new Limits(startDate, endDate);
-            ISchedulerInput schedulerInput = new SchedulerInput(DateTime.Now, configuration, limits);
+            ISchedulerInput schedulerInput = new SchedulerInput(
+                DateTime.Now,
+                new Configuration(expectedDate, true, 5, Occurrence.Daily, ConfigurationType.Once),
+                new Limits(startDate, endDate)
+                );
             var service = new OnceSchedulerService();
 
             //Act

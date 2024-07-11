@@ -20,15 +20,17 @@ namespace SchedulerTests.Services
         public void GetCorrectSchedulerService(ConfigurationType type, bool isOnce)
         {
             //Arrange
+            ISchedulerService expectedSchedulerService = isOnce ? new OnceSchedulerService() : new RecurringSchedulerService();
             var schedulerInput = new SchedulerInput(
                 DateTime.Now,
                 new Configuration(DateTime.Today, true, 0, Occurrence.Daily, type),
                 new Limits(DateTime.MinValue, null)
             );
-            ISchedulerService expectedSchedulerService = isOnce ? new OnceSchedulerService() : new RecurringSchedulerService();
             var service = new Service();
+
             //Act
             var resultSchedulerService = service.GetSchedulerService(schedulerInput);
+
             //Assert
             Assert.Equal(expectedSchedulerService.GetType(), resultSchedulerService.GetType());
         }

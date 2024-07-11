@@ -20,9 +20,11 @@ namespace SchedulerTests.Services
             //Arrange
             var currentDate = DateTime.Now;
             var expectedDate = currentDate.AddDays(days);
-            var configuration = new Configuration(null, true, days, Occurrence.Daily, ConfigurationType.Recurring);
-            var limits = new Limits(DateTime.MinValue, null);
-            ISchedulerInput schedulerInput = new SchedulerInput(currentDate, configuration, limits);
+            ISchedulerInput schedulerInput = new SchedulerInput(
+                currentDate,
+                new Configuration(null, true, days, Occurrence.Daily, ConfigurationType.Recurring),
+                new Limits(DateTime.MinValue, null)
+                );
             var service = new RecurringSchedulerService();
 
             //Act
@@ -39,10 +41,11 @@ namespace SchedulerTests.Services
         public void ReturnCorrectDescription(int days, string expectedDescription, Occurrence occurs)
         {
             //Arrange
-            var expectedDate = new DateTime(2020,1,1, 14,0,0);
-            var configuration = new Configuration(null, true, days, occurs, ConfigurationType.Recurring);
-            var limits = new Limits(DateTime.MinValue, null);
-            ISchedulerInput schedulerInput = new SchedulerInput(expectedDate, configuration, limits);
+            ISchedulerInput schedulerInput = new SchedulerInput(
+                new DateTime(2020, 1, 1, 14, 0, 0),
+                new Configuration(null, true, days, occurs, ConfigurationType.Recurring),
+                new Limits(DateTime.MinValue, null)
+                );
             var service = new RecurringSchedulerService();
 
             //Act
@@ -56,13 +59,16 @@ namespace SchedulerTests.Services
         public void RaiseErrorWhenExceedStartDateLimits()
         {
             //Arrange
-            var configuration = new Configuration(null, true, 0, Occurrence.Daily, ConfigurationType.Recurring);
-            var limits = new Limits(DateTime.Now, null);
-            ISchedulerInput schedulerInput = new SchedulerInput(DateTime.MinValue, configuration, limits);
+            ISchedulerInput schedulerInput = new SchedulerInput(
+                DateTime.MinValue,
+                new Configuration(null, true, 0, Occurrence.Daily, ConfigurationType.Recurring),
+                new Limits(DateTime.Now, null)
+                );
             var service = new RecurringSchedulerService();
 
             //Act
             var act = () => service.CalculateNextDate(schedulerInput);
+
             //Assert
             act.Should().Throw<LimitsException>()
                 .WithMessage("The result date must not be earlier than the specified start date.");
@@ -72,13 +78,15 @@ namespace SchedulerTests.Services
         public void RaiseErrorWhenExceedEndDateLimits()
         {
             //Arrange
-            var configuration = new Configuration(null, true, 0, Occurrence.Daily, ConfigurationType.Recurring);
-            var limits = new Limits(DateTime.MinValue, DateTime.Now);
-            ISchedulerInput schedulerInput = new SchedulerInput(DateTime.MaxValue, configuration, limits);
+            ISchedulerInput schedulerInput = new SchedulerInput(
+                DateTime.MaxValue,
+                new Configuration(null, true, 0, Occurrence.Daily, ConfigurationType.Recurring),
+                new Limits(DateTime.MinValue, DateTime.Now));
             var service = new RecurringSchedulerService();
 
             //Act
             var act = () => service.CalculateNextDate(schedulerInput);
+
             //Assert
             act.Should().Throw<LimitsException>()
                 .WithMessage("The result date must not be later than the specified end date.");
@@ -90,12 +98,16 @@ namespace SchedulerTests.Services
         public void RaiseErrorWhenInvalidOccurrence(int occurs)
         {
             //Arrange
-            var configuration = new Configuration(null, true, 0, (Occurrence)occurs, ConfigurationType.Recurring);
-            var limits = new Limits(DateTime.MinValue, null);
-            ISchedulerInput schedulerInput = new SchedulerInput(DateTime.Now, configuration, limits);
+            ISchedulerInput schedulerInput = new SchedulerInput(
+                DateTime.Now,
+                new Configuration(null, true, 0, (Occurrence)occurs, ConfigurationType.Recurring),
+                new Limits(DateTime.MinValue, null)
+                );
             var service = new RecurringSchedulerService();
+
             //Act
             var act = () => service.GenerateDescription(schedulerInput);
+
             //Assert
             act.Should().Throw<KeyNotFoundException>();
         }
