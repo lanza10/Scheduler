@@ -15,7 +15,7 @@ namespace SchedulerTests.Services
         [InlineData(2)]
         [InlineData(5)]
         [InlineData(0)]
-        public void ReturnCorrectDate(int days)
+        public void ReturnExpectedDate(int days)
         {
             //Arrange
             var currentDate = DateTime.Now;
@@ -38,7 +38,7 @@ namespace SchedulerTests.Services
         [InlineData(2, "Occurs every day.Schedule will be used on 03/01/2020 at 14:00 starting on 01/01/0001", Occurrence.Daily)]
         [InlineData(5, "Occurs every day.Schedule will be used on 06/01/2020 at 14:00 starting on 01/01/0001", Occurrence.Daily)]
         [InlineData(0, "Occurs every day.Schedule will be used on 01/01/2020 at 14:00 starting on 01/01/0001", Occurrence.Daily)]
-        public void ReturnCorrectDescription(int days, string expectedDescription, Occurrence occurs)
+        public void ReturnExpectedDescription(int days, string expectedDescription, Occurrence occurs)
         {
             //Arrange
             ISchedulerInput schedulerInput = new SchedulerInput(

@@ -15,7 +15,7 @@ namespace SchedulerTests.Services
     public class OnceSchedulerServiceShould
     {
         [Fact]
-        public void ReturnCorrectDate()
+        public void ReturnExpectedDate()
         {
             //Arrange
             var expectedDate = new DateTime(2020,1,1);
@@ -34,7 +34,7 @@ namespace SchedulerTests.Services
         }
 
         [Fact]
-        public void ReturnCorrectDescription()
+        public void ReturnExpectedDescription()
         {
             //Arrange
             var expectedDate = new DateTime(2020,1,1);

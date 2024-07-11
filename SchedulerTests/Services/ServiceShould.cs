@@ -17,7 +17,7 @@ namespace SchedulerTests.Services
         [Theory]
         [InlineData(ConfigurationType.Once, true)]
         [InlineData(ConfigurationType.Recurring, false)]
-        public void GetCorrectSchedulerService(ConfigurationType type, bool isOnce)
+        public void GetExpectedSchedulerService(ConfigurationType type, bool isOnce)
         {
             //Arrange
             ISchedulerService expectedSchedulerService = isOnce ? new OnceSchedulerService() : new RecurringSchedulerService();
@@ -36,7 +36,7 @@ namespace SchedulerTests.Services
         }
 
         [Fact]
-        public void CalculateCorrectOutputWhenRecurring()
+        public void CalculateExpectedOutputWhenRecurring()
         {
             //Arrange
             const string expectedDescription = "Occurs every day.Schedule will be used on 09/07/2024 at 10:30 starting on 01/01/0001";
@@ -60,7 +60,7 @@ namespace SchedulerTests.Services
         }
 
         [Fact]
-        public void CalculateCorrectOutputWhenOnce()
+        public void CalculateExpectedOutputWhenOnce()
         {
             //Arrange
             const string expectedDescription = "Occurs once.Schedule will be used on 09/07/2024 at 10:30 starting on 01/01/0001";
