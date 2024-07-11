@@ -13,7 +13,7 @@ namespace SchedulerTests.Models
         public void SetPropertiesCorrectly()
         {
             //Arrange
-            var expectedNextExecTime = DateTime.Now;
+            var expectedNextExecTime = new DateTime(2020,1,1);
             const string expectedDescription = "test";
 
             //Act

@@ -22,7 +22,7 @@ namespace SchedulerTests.Services
             //Arrange
             ISchedulerService expectedSchedulerService = isOnce ? new OnceSchedulerService() : new RecurringSchedulerService();
             var schedulerInput = new SchedulerInput(
-                DateTime.Now,
+                new DateTime(2020, 1, 1),
                 new Configuration(DateTime.Today, true, 0, Occurrence.Daily, type),
                 new Limits(DateTime.MinValue, null)
             );
@@ -67,7 +67,7 @@ namespace SchedulerTests.Services
             var date = new DateTime(2024, 7, 9, 10, 30, 0);
             var expectedOutput = new Output(date, expectedDescription);
             var schedulerInput = new SchedulerInput(
-                DateTime.Now,
+                new DateTime(2020, 1, 1),
                 new Configuration(date, true, 0, Occurrence.Daily, ConfigurationType.Once),
                 new Limits(DateTime.MinValue, null)
             );

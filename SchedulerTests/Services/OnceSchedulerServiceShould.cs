@@ -20,7 +20,7 @@ namespace SchedulerTests.Services
             //Arrange
             var expectedDate = new DateTime(2020,1,1);
             ISchedulerInput schedulerInput = new SchedulerInput(
-                DateTime.Now,
+                new DateTime(2020, 1, 1),
                 new Configuration(expectedDate, true, 5, Occurrence.Daily, ConfigurationType.Once),
                 new Limits(DateTime.MinValue, null)
                 );
@@ -40,7 +40,7 @@ namespace SchedulerTests.Services
             var expectedDate = new DateTime(2020,1,1);
             const string expectedDescription = "Occurs once.Schedule will be used on 01/01/2020 at 00:00 starting on 01/01/0001";
             ISchedulerInput schedulerInput = new SchedulerInput(
-                DateTime.Now,
+                new DateTime(2020, 1, 1),
                 new Configuration(expectedDate, true, 5, Occurrence.Daily, ConfigurationType.Once),
                 new Limits(DateTime.MinValue, null)
                 );
@@ -59,9 +59,9 @@ namespace SchedulerTests.Services
         {
             //Arrange
             var expectedDate = DateTime.MinValue;
-            var startDate = DateTime.Now;
+            var startDate = new DateTime(2020, 1, 1);
             ISchedulerInput schedulerInput = new SchedulerInput(
-                DateTime.Now,
+                new DateTime(2020, 1, 1),
                 new Configuration(expectedDate, true, 5, Occurrence.Daily, ConfigurationType.Once),
                 new Limits(startDate, null)
                 );
@@ -81,9 +81,9 @@ namespace SchedulerTests.Services
             //Arrange
             var expectedDate = DateTime.MaxValue;
             var startDate = DateTime.MinValue;
-            var endDate = DateTime.Now;
+            var endDate = new DateTime(2020, 1, 1);
             ISchedulerInput schedulerInput = new SchedulerInput(
-                DateTime.Now,
+                new DateTime(2020, 1, 1),
                 new Configuration(expectedDate, true, 5, Occurrence.Daily, ConfigurationType.Once),
                 new Limits(startDate, endDate)
                 );

@@ -18,7 +18,7 @@ namespace SchedulerTests.Services
         public void ReturnExpectedDate(int days)
         {
             //Arrange
-            var currentDate = DateTime.Now;
+            var currentDate = new DateTime(2020, 1, 1);
             var expectedDate = currentDate.AddDays(days);
             ISchedulerInput schedulerInput = new SchedulerInput(
                 currentDate,
@@ -62,7 +62,7 @@ namespace SchedulerTests.Services
             ISchedulerInput schedulerInput = new SchedulerInput(
                 DateTime.MinValue,
                 new Configuration(null, true, 0, Occurrence.Daily, ConfigurationType.Recurring),
-                new Limits(DateTime.Now, null)
+                new Limits(DateTime.MaxValue, null)
                 );
             var service = new RecurringSchedulerService();
 
@@ -81,7 +81,7 @@ namespace SchedulerTests.Services
             ISchedulerInput schedulerInput = new SchedulerInput(
                 DateTime.MaxValue,
                 new Configuration(null, true, 0, Occurrence.Daily, ConfigurationType.Recurring),
-                new Limits(DateTime.MinValue, DateTime.Now));
+                new Limits(DateTime.MinValue, DateTime.MinValue));
             var service = new RecurringSchedulerService();
 
             //Act
@@ -99,7 +99,7 @@ namespace SchedulerTests.Services
         {
             //Arrange
             ISchedulerInput schedulerInput = new SchedulerInput(
-                DateTime.Now,
+                new DateTime(2020, 1, 1),
                 new Configuration(null, true, 0, (Occurrence)occurs, ConfigurationType.Recurring),
                 new Limits(DateTime.MinValue, null)
                 );

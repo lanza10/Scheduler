@@ -11,7 +11,7 @@ namespace SchedulerTests.Models
         public void SetPropertiesCorrectly()
         {
             //Arrange
-            var expectedCurrentDate = DateTime.Now;
+            var expectedCurrentDate = new DateTime(2020, 1, 1);
             var expectedStartDate = DateTime.MinValue;
             var expectedEndDate = DateTime.MaxValue;
             var expectedConfiguration = new Configuration(null, true, 0, Occurrence.Daily, ConfigurationType.Recurring);
