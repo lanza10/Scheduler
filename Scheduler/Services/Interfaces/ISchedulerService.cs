@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Scheduler.Services
+namespace Scheduler.Services.Interfaces
 {
     public interface ISchedulerService
     {
         DateTime CalculateNextDate(ISchedulerInput schedulerInput);
 
-        string GenerateDescription(ISchedulerInput schedulerInput);  
+        string GenerateDescription(ISchedulerInput schedulerInput);
     }
 }

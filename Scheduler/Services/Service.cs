@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Scheduler.Enums;
 using Scheduler.Interfaces;
 using Scheduler.Models;
+using Scheduler.Services.Interfaces;
 
 namespace Scheduler.Services
 {

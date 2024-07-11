@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Scheduler.Exceptions;
 using Scheduler.Interfaces;
 using Scheduler.Models;
+using Scheduler.Services.Interfaces;
 using Scheduler.Validator;
 
 namespace Scheduler.Services

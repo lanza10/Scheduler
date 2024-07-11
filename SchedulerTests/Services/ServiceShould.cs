@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Scheduler.Enums;
 using Scheduler.Models;
 using Scheduler.Services;
+using Scheduler.Services.Interfaces;
 using Xunit.Sdk;
 
 namespace SchedulerTests.Services
