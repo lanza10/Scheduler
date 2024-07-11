@@ -14,7 +14,7 @@ namespace Scheduler.Models
             EndDate = endDate ?? DateTime.MaxValue;
             if (!LimitsValidator.ValidLimits(StartDate, EndDate))
             {
-                throw new LimitsException("Start date must be earlier than de end date");
+                throw new LimitsException("Start date must be earlier than the end date");
             }
         }
 

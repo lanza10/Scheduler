@@ -46,7 +46,7 @@ namespace SchedulerTests.Models
             //Act
             var act = () => new Limits(startDate, endDate);
             //Assert
-            act.Should().Throw<LimitsException>().WithMessage("Start date must be earlier than de end date");
+            act.Should().Throw<LimitsException>().WithMessage("Start date must be earlier than the end date");
         }
     }
 }
