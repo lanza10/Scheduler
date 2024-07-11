@@ -45,7 +45,7 @@ public class ConfigurationModelShould
             true,
             0,
             Occurrence.Daily,
-            ConfigurationType.Recurring
+            ConfigurationType.Once
         );
         //Assert
         Assert.Equal(expectedDate, config.Date);

@@ -102,7 +102,7 @@ namespace SchedulerTests.Services
             //Act
             var act = () => service.GenerateDescription(schedulerInput);
             //Assert
-            Assert.Throws<KeyNotFoundException>(() => service.GenerateDescription(schedulerInput));
+            act.Should().Throw<KeyNotFoundException>();
         }
     }
 }
