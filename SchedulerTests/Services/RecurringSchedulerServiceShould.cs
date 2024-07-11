@@ -21,9 +21,8 @@ namespace SchedulerTests.Services
             var currentDate = DateTime.Now;
             var expectedDate = currentDate.AddDays(days);
             var configuration = new Configuration(null, true, days, Occurrence.Daily, ConfigurationType.Recurring);
-            var input = new Input(currentDate);
             var limits = new Limits(DateTime.MinValue, null);
-            ISchedulerInput schedulerInput = new SchedulerInput(input, configuration, limits);
+            ISchedulerInput schedulerInput = new SchedulerInput(currentDate, configuration, limits);
             var service = new RecurringSchedulerService();
 
             //Act
@@ -42,9 +41,8 @@ namespace SchedulerTests.Services
             //Arrange
             var expectedDate = new DateTime(2020,1,1, 14,0,0);
             var configuration = new Configuration(null, true, days, occurs, ConfigurationType.Recurring);
-            var input = new Input(expectedDate);
             var limits = new Limits(DateTime.MinValue, null);
-            ISchedulerInput schedulerInput = new SchedulerInput(input, configuration, limits);
+            ISchedulerInput schedulerInput = new SchedulerInput(expectedDate, configuration, limits);
             var service = new RecurringSchedulerService();
 
             //Act
@@ -59,9 +57,8 @@ namespace SchedulerTests.Services
         {
             //Arrange
             var configuration = new Configuration(null, true, 0, Occurrence.Daily, ConfigurationType.Recurring);
-            var input = new Input(DateTime.MinValue);
             var limits = new Limits(DateTime.Now, null);
-            ISchedulerInput schedulerInput = new SchedulerInput(input, configuration, limits);
+            ISchedulerInput schedulerInput = new SchedulerInput(DateTime.MinValue, configuration, limits);
             var service = new RecurringSchedulerService();
 
             //Act
@@ -76,9 +73,8 @@ namespace SchedulerTests.Services
         {
             //Arrange
             var configuration = new Configuration(null, true, 0, Occurrence.Daily, ConfigurationType.Recurring);
-            var input = new Input(DateTime.MaxValue);
             var limits = new Limits(DateTime.MinValue, DateTime.Now);
-            ISchedulerInput schedulerInput = new SchedulerInput(input, configuration, limits);
+            ISchedulerInput schedulerInput = new SchedulerInput(DateTime.MaxValue, configuration, limits);
             var service = new RecurringSchedulerService();
 
             //Act
@@ -95,9 +91,8 @@ namespace SchedulerTests.Services
         {
             //Arrange
             var configuration = new Configuration(null, true, 0, (Occurrence)occurs, ConfigurationType.Recurring);
-            var input = new Input(DateTime.Now);
             var limits = new Limits(DateTime.MinValue, null);
-            ISchedulerInput schedulerInput = new SchedulerInput(input, configuration, limits);
+            ISchedulerInput schedulerInput = new SchedulerInput(DateTime.Now, configuration, limits);
             var service = new RecurringSchedulerService();
             //Act
             var act = () => service.GenerateDescription(schedulerInput);

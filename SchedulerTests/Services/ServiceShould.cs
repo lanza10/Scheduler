@@ -20,7 +20,7 @@ namespace SchedulerTests.Services
         {
             //Arrange
             var schedulerInput = new SchedulerInput(
-                new Input(DateTime.Now),
+                DateTime.Now,
                 new Configuration(DateTime.Today, true, 0, Occurrence.Daily, type),
                 new Limits(DateTime.MinValue, null)
             );
@@ -40,7 +40,7 @@ namespace SchedulerTests.Services
             var currentDate = new DateTime(2024, 7, 9, 10, 30, 0);
             var expectedOutput = new Output(currentDate, expectedDescription);
             var schedulerInput = new SchedulerInput(
-                new Input(currentDate),
+                currentDate,
                 new Configuration(null, true, 0, Occurrence.Daily, ConfigurationType.Recurring),
                 new Limits(DateTime.MinValue, null)
             );
@@ -64,7 +64,7 @@ namespace SchedulerTests.Services
             var date = new DateTime(2024, 7, 9, 10, 30, 0);
             var expectedOutput = new Output(date, expectedDescription);
             var schedulerInput = new SchedulerInput(
-                new Input(DateTime.Now),
+                DateTime.Now,
                 new Configuration(date, true, 0, Occurrence.Daily, ConfigurationType.Once),
                 new Limits(DateTime.MinValue, null)
             );

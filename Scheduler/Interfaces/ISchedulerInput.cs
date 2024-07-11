@@ -6,7 +6,7 @@ namespace Scheduler.Interfaces
 {
     public interface ISchedulerInput
     {
-        IInput Input { get; }
+        DateTime CurrentDate { get; }
         IConfiguration Configuration { get; } 
         Limits Limits { get; }
     }

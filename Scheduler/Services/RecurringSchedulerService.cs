@@ -14,7 +14,7 @@ namespace Scheduler.Services
     {
         public DateTime CalculateNextDate(ISchedulerInput schedulerInput)
         {
-            var res = schedulerInput.Input.CurrentDate.AddDays(schedulerInput.Configuration.Days);
+            var res = schedulerInput.CurrentDate.AddDays(schedulerInput.Configuration.Days);
             SchedulerServiceValidator.ValidateResultDoNotExceedLimits(res, schedulerInput.Limits);
             return res;
         }
