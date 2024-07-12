@@ -1,5 +1,4 @@
-﻿using Scheduler.Interfaces;
-
+﻿
 namespace Scheduler.Models
 {
     public class Output(DateTime nextExecTime, string description)

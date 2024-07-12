@@ -9,8 +9,15 @@ using Scheduler.Models;
 
 namespace Scheduler.Validator
 {
-    public class ConfigurationValidator
+    public class SchedulerValidator
     {
+        public static void ValidateSchedulerConfiguration(ConfigurationType type, DateTime? configurationDate, int days,
+            DateTime startDate, DateTime endDate)
+        {
+            ValidDateAndType(type, configurationDate);
+            ValidDays(days);
+            ValidLimits(startDate, endDate);
+        }
         public static void ValidDateAndType(ConfigurationType type, DateTime? date)
         {
             if (type == ConfigurationType.Once && !date.HasValue)
@@ -25,6 +32,13 @@ namespace Scheduler.Validator
             if (days < 0)
             {
                 throw new SchedulerException("This configuration isn't valid, days can´t be lower than 0.");
+            }
+        }
+        public static void ValidLimits(DateTime startDate, DateTime endDate)
+        {
+            if (endDate < startDate)
+            {
+                throw new SchedulerException("Start date must be earlier than the end date");
             }
         }
     }
