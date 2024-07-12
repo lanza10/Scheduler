@@ -17,11 +17,11 @@ namespace Scheduler.Validator
         {
             if (date < limits.StartDate)
             {
-                throw new LimitsException("The result date must not be earlier than the specified start date.");
+                throw new SchedulerException("The result date must not be earlier than the specified start date.");
             }
             if (date > limits.EndDate)
             {
-                throw new LimitsException("The result date must not be later than the specified end date.");
+                throw new SchedulerException("The result date must not be later than the specified end date.");
             }
         }
     }

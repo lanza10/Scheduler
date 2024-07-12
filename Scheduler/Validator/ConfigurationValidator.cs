@@ -15,7 +15,7 @@ namespace Scheduler.Validator
         {
             if (type == ConfigurationType.Once && !date.HasValue)
             {
-                throw new ConfigurationException(
+                throw new SchedulerException(
                     "This configuration isn't valid, date can´t be null if \"Once\" is selected.");
             }
         }
@@ -24,7 +24,7 @@ namespace Scheduler.Validator
         {
             if (days < 0)
             {
-                throw new ConfigurationException("This configuration isn't valid, days can´t be lower than 0.");
+                throw new SchedulerException("This configuration isn't valid, days can´t be lower than 0.");
             }
         }
     }

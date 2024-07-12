@@ -70,7 +70,7 @@ namespace SchedulerTests.Services
             var act = () => service.CalculateNextDate(schedulerInput);
 
             //Assert
-            act.Should().Throw<LimitsException>()
+            act.Should().Throw<SchedulerException>()
                 .WithMessage("The result date must not be earlier than the specified start date.");
         }
 
@@ -88,7 +88,7 @@ namespace SchedulerTests.Services
             var act = () => service.CalculateNextDate(schedulerInput);
 
             //Assert
-            act.Should().Throw<LimitsException>()
+            act.Should().Throw<SchedulerException>()
                 .WithMessage("The result date must not be later than the specified end date.");
         }
 

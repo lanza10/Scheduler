@@ -59,7 +59,7 @@ public class ConfigurationModelShould
         //Act
         var act = () => new Configuration(null, true, 0, Occurrence.Daily, ConfigurationType.Once);
         //Assert
-        act.Should().Throw<ConfigurationException>()
+        act.Should().Throw<SchedulerException>()
             .WithMessage("This configuration isn't valid, date can´t be null if \"Once\" is selected.");
     }
 
@@ -71,7 +71,7 @@ public class ConfigurationModelShould
         //Act
         var act = () => new Configuration(null, true, -1, Occurrence.Daily, ConfigurationType.Recurring);
         //Assert
-        act.Should().Throw<ConfigurationException>()
+        act.Should().Throw<SchedulerException>()
             .WithMessage("This configuration isn't valid, days can´t be lower than 0.");
     }
 }

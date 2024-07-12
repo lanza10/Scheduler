@@ -15,7 +15,7 @@ namespace Scheduler.Validator
         {
             if (endDate < startDate)
             {
-                throw new LimitsException("Start date must be earlier than the end date");
+                throw new SchedulerException("Start date must be earlier than the end date");
             }
         }
     }

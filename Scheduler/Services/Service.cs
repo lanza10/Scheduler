@@ -22,7 +22,7 @@ namespace Scheduler.Services
             return new RecurringSchedulerService();
         }
 
-        public IOutput CalculateOutput(ISchedulerInput schedulerInput)
+        public Output CalculateOutput(ISchedulerInput schedulerInput)
         {
             var schedulerService = GetSchedulerService(schedulerInput);
             return new Output(schedulerService.CalculateNextDate(schedulerInput),

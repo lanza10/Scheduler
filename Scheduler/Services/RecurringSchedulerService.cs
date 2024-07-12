@@ -22,13 +22,13 @@ namespace Scheduler.Services
 
         public string GenerateDescription(ISchedulerInput schedulerInput)
         {
-            var nextExecTime = CalculateNextDate(schedulerInput);
-            var formattedNextExecTime = nextExecTime.ToString("dd/MM/yyyy 'at' HH:mm");
-            var formattedStartDate = schedulerInput.Limits.StartDate.ToString("dd/MM/yyyy");
             if (!OccurrenceDictionary.OccurrenceMap.TryGetValue(schedulerInput.Configuration.Occurs, out var frequency))
             {
                 throw new KeyNotFoundException();
             }
+            var nextExecTime = CalculateNextDate(schedulerInput);
+            var formattedNextExecTime = nextExecTime.ToString("dd/MM/yyyy 'at' HH:mm");
+            var formattedStartDate = schedulerInput.Limits.StartDate.ToString("dd/MM/yyyy");
             return
                 $"Occurs every {frequency}." +
                 $"Schedule will be used on {formattedNextExecTime} starting on {formattedStartDate}";
