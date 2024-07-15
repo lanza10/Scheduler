@@ -1,7 +1,6 @@
 ﻿
 using FluentAssertions;
 using Scheduler.Enums;
-using Scheduler.Exceptions;
 using Scheduler.Models;
 using Scheduler.Services;
 

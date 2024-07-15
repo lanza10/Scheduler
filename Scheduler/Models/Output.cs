@@ -1,5 +1,4 @@
-﻿
-namespace Scheduler.Models
+﻿namespace Scheduler.Models
 {
     public class Output(DateTime nextExecTime, string description, List<DateTime>? recurringDates)
     {
