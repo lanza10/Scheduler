@@ -19,11 +19,11 @@ namespace Scheduler.Models
         public ConfigurationType Type { get; set; }
         public DateTime StartDate { get; set; }
 
-        private DateTime? _endDate;
+        private DateTime _endDate;
         public DateTime? EndDate
         {
-            get => _endDate ?? DateTime.MaxValue;
-            set => _endDate = value;
+            get => _endDate;
+            set => _endDate = value ?? DateTime.MaxValue;
         }
 
         //public SchedulerConfiguration(DateTime currentDate, bool isEnabled, DateTime? configurationDate, int days, Occurrence occurs, ConfigurationType type, DateTime startDate, DateTime? endDate)
