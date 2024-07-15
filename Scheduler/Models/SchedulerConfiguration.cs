@@ -25,18 +25,5 @@ namespace Scheduler.Models
             get => _endDate;
             set => _endDate = value ?? DateTime.MaxValue;
         }
-
-        //public SchedulerConfiguration(DateTime currentDate, bool isEnabled, DateTime? configurationDate, int days, Occurrence occurs, ConfigurationType type, DateTime startDate, DateTime? endDate)
-        //{
-        //    EndDate = endDate ?? DateTime.MaxValue;
-        //    SchedulerValidator.ValidateSchedulerConfiguration(type,configurationDate,days,startDate,EndDate);
-        //    CurrentDate = currentDate;
-        //    IsEnabled = isEnabled;
-        //    ConfigurationDate = configurationDate;
-        //    Days = days;
-        //    Occurs = occurs;
-        //    Type = type;
-        //    StartDate = startDate;
-        //}
     }
 }
