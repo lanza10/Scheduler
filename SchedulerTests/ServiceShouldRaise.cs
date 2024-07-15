@@ -134,7 +134,31 @@ namespace SchedulerTests
             action.Should().Throw<SchedulerException>()
                 .WithMessage("Start date must be earlier than the end date");
         }
+        [Fact]
+        public void ErrorWhenConfigDateIsEarlierThanCurrent()
+        {
+            //Arrange
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2020, 1, 1),
+                Days = 2,
+                IsEnabled = true,
+                Occurs = Occurrence.Daily,
 
+                ConfigurationDate = new DateTime(2019, 1, 1),
+                Type = ConfigurationType.Recurring,
+
+                StartDate = DateTime.MinValue,
+                EndDate = DateTime.MaxValue,
+            };
+
+            //Act
+            var action = () => new Service(sc);
+
+            //Assert
+            action.Should().Throw<SchedulerException>()
+                .WithMessage("Configuration date can´t be earlier than the currentDate.");
+        }
         [Fact]
         public void ErrorWhenResultDateExceedsStartDate()
         {

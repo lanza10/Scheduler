@@ -123,7 +123,7 @@ namespace SchedulerTests
 
             //Assert
             output.RecurringDates.Should().HaveCount(3);
-            output.RecurringDates[0].Should().Be(new DateTime(2020, 1, 3));
+            output.RecurringDates![0].Should().Be(new DateTime(2020, 1, 3));
             output.RecurringDates[1].Should().Be(new DateTime(2020, 1, 5));
             output.RecurringDates[2].Should().Be(new DateTime(2020, 1, 7));
         }
@@ -177,8 +177,8 @@ namespace SchedulerTests
             var output = service.GetOutput();
 
             //Assert
-            output.RecurringDates.First().Year.Should().Be(2021);
-            output.RecurringDates.First().Month.Should().Be(1);
+            output.RecurringDates!.First().Year.Should().Be(2021);
+            output.RecurringDates!.First().Month.Should().Be(1);
         }
 
         [Theory]

@@ -12,6 +12,7 @@ namespace Scheduler.Validator
             ValidDays(sc.Days, sc.Type);
             ValidLimits(sc.StartDate, sc.EndDate);
             ValidIsEnabled(sc.IsEnabled);
+            ValidCurrentAndConfigurationDates(sc.CurrentDate, sc.ConfigurationDate);
         }
         public static void ValidDateAndType(ConfigurationType type, DateTime? date)
         {
@@ -46,5 +47,12 @@ namespace Scheduler.Validator
             }
         }
 
+        public static void ValidCurrentAndConfigurationDates(DateTime currentDate, DateTime? configurationDate)
+        {
+            if (configurationDate < currentDate)
+            {
+                throw new SchedulerException("Configuration date can´t be earlier than the currentDate.");
+            }
+        }
     }
 }
