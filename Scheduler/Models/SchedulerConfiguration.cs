@@ -18,7 +18,13 @@ namespace Scheduler.Models
         public Occurrence Occurs { get; set; }
         public ConfigurationType Type { get; set; }
         public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+
+        private DateTime? _endDate;
+        public DateTime? EndDate
+        {
+            get => _endDate ?? DateTime.MaxValue;
+            set => _endDate = value;
+        }
 
         //public SchedulerConfiguration(DateTime currentDate, bool isEnabled, DateTime? configurationDate, int days, Occurrence occurs, ConfigurationType type, DateTime startDate, DateTime? endDate)
         //{

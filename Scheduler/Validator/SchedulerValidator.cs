@@ -11,12 +11,12 @@ namespace Scheduler.Validator
 {
     public class SchedulerValidator
     {
-        public static void ValidateSchedulerConfiguration(ConfigurationType type, DateTime? configurationDate, int days,
-            DateTime startDate, DateTime endDate)
+        public static void ValidateSchedulerConfiguration(SchedulerConfiguration sc)
         {
-            ValidDateAndType(type, configurationDate);
-            ValidDays(days);
-            ValidLimits(startDate, endDate);
+            ValidDateAndType(sc.Type, sc.ConfigurationDate);
+            ValidDays(sc.Days, sc.Type);
+            ValidLimits(sc.StartDate, sc.EndDate);
+            ValidIsEnabled(sc.IsEnabled);
         }
         public static void ValidDateAndType(ConfigurationType type, DateTime? date)
         {
@@ -27,19 +27,29 @@ namespace Scheduler.Validator
             }
         }
 
-        public static void ValidDays(int days)
+        public static void ValidDays(int days, ConfigurationType type)
         {
-            if (days < 0)
+            var minDays = type == ConfigurationType.Once ? 0 : 1;
+            if (days < minDays)
             {
-                throw new SchedulerException("This configuration isn't valid, days can´t be lower than 0.");
+                throw new SchedulerException($"This configuration isn't valid, days can´t be lower than {minDays} for the selected configuration type.");
             }
         }
-        public static void ValidLimits(DateTime startDate, DateTime endDate)
+        public static void ValidLimits(DateTime startDate, DateTime? endDate)
         {
             if (endDate < startDate)
             {
                 throw new SchedulerException("Start date must be earlier than the end date");
             }
         }
+
+        public static void ValidIsEnabled(bool isEnabled)
+        {
+            if (!isEnabled)
+            {
+                throw new SchedulerException("To create a configuration is mandatory to establish it enabled");
+            }
+        }
+
     }
 }

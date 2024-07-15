@@ -13,7 +13,7 @@ namespace Scheduler.Validator
 {
     public class SchedulerServiceValidator
     {
-        public static void ValidateResultDoNotExceedLimits(DateTime date, DateTime startDate, DateTime endDate)
+        public static void ValidateResultDoNotExceedLimits(DateTime date, DateTime startDate, DateTime? endDate)
         {
             if (date < startDate)
             {
