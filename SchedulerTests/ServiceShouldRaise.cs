@@ -5,7 +5,7 @@ using Scheduler.Models;
 using Scheduler.Services;
 namespace SchedulerTests
 {
-    public class SchedulerServiceShouldRaise
+    public class ServiceShouldRaise
     {
         [Fact]
         public void ErrorWhenResultIsNotEnabled()
@@ -26,7 +26,7 @@ namespace SchedulerTests
             };
 
             //Act
-            var action = () => new SchedulerService(sc);
+            var action = () => new Service(sc);
 
             //Assert
             action.Should().Throw<SchedulerException>()
@@ -51,7 +51,7 @@ namespace SchedulerTests
             };
 
             //Act
-            var action = () => new SchedulerService(sc);
+            var action = () => new Service(sc);
 
             //Assert
             action.Should().Throw<SchedulerException>()
@@ -77,7 +77,7 @@ namespace SchedulerTests
             };
 
             //Act
-            var action = () => new SchedulerService(sc);
+            var action = () => new Service(sc);
 
             //Assert
             action.Should().Throw<SchedulerException>()
@@ -102,7 +102,7 @@ namespace SchedulerTests
             };
 
             //Act
-            var action = () => new SchedulerService(sc);
+            var action = () => new Service(sc);
 
             //Assert
             action.Should().Throw<SchedulerException>()
@@ -128,7 +128,7 @@ namespace SchedulerTests
             };
 
             //Act
-            var action = () => new SchedulerService(sc);
+            var action = () => new Service(sc);
 
             //Assert
             action.Should().Throw<SchedulerException>()
@@ -152,7 +152,7 @@ namespace SchedulerTests
                 StartDate = new DateTime(2020, 1, 6),
                 EndDate = DateTime.MaxValue,
             };
-            var service = new SchedulerService(sc);
+            var service = new Service(sc);
             //Act
             var action = () => service.GetOutput();
 
@@ -178,7 +178,7 @@ namespace SchedulerTests
                 StartDate = DateTime.MinValue,
                 EndDate = new DateTime(2020, 1, 2),
             };
-            var service = new SchedulerService(sc);
+            var service = new Service(sc);
             //Act
             var action = () => service.GetOutput();
 
@@ -203,7 +203,7 @@ namespace SchedulerTests
                 StartDate = DateTime.MinValue,
                 EndDate = DateTime.MaxValue,
             };
-            var service = new SchedulerService(sc);
+            var service = new Service(sc);
             //Act
             var action = () => service.GetOutput();
 
