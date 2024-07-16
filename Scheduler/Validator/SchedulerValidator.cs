@@ -14,7 +14,7 @@ namespace Scheduler.Validator
             ValidIsEnabled(sc.IsEnabled);
             ValidCurrentAndConfigurationDates(sc.CurrentDate, sc.ConfigurationDate);
         }
-        public static void ValidDateAndType(ConfigurationType type, DateTime? date)
+        private static void ValidDateAndType(ConfigurationType type, DateTime? date)
         {
             if (type == ConfigurationType.Once && !date.HasValue)
             {
@@ -23,7 +23,7 @@ namespace Scheduler.Validator
             }
         }
 
-        public static void ValidDays(int days, ConfigurationType type)
+        private static void ValidDays(int days, ConfigurationType type)
         {
             var minDays = type == ConfigurationType.Once ? 0 : 1;
             if (days < minDays)
@@ -31,7 +31,7 @@ namespace Scheduler.Validator
                 throw new SchedulerException($"This configuration isn't valid, days can´t be lower than {minDays} for the selected configuration type.");
             }
         }
-        public static void ValidLimits(DateTime startDate, DateTime? endDate)
+        private static void ValidLimits(DateTime startDate, DateTime? endDate)
         {
             if (endDate < startDate)
             {
@@ -39,7 +39,7 @@ namespace Scheduler.Validator
             }
         }
 
-        public static void ValidIsEnabled(bool isEnabled)
+        private static void ValidIsEnabled(bool isEnabled)
         {
             if (!isEnabled)
             {
@@ -47,7 +47,7 @@ namespace Scheduler.Validator
             }
         }
 
-        public static void ValidCurrentAndConfigurationDates(DateTime currentDate, DateTime? configurationDate)
+        private static void ValidCurrentAndConfigurationDates(DateTime currentDate, DateTime? configurationDate)
         {
             if (configurationDate < currentDate)
             {
