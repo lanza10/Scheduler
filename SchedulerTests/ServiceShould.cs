@@ -179,6 +179,40 @@ namespace SchedulerTests
             output.AllNextDates .First().Month.Should().Be(1);
         }
 
+        [Fact]
+        public void ReturnMaxDatesWhenCoincideWithLimits()
+        {
+            //Arrange
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2020, 1, 1),
+                Days = 1,
+                IsEnabled = true,
+                Occurs = Occurrence.Daily,
+
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
+
+                StartDate = DateTime.MinValue,
+                EndDate = new DateTime(2020,1,1).AddDays(RecurringSchedulerService.MaxDates),
+            };
+            var service = new Service(sc);
+
+            //Act
+            var output = service.GetOutput();
+
+            //Assert
+            output.AllNextDates.Should().HaveCount(RecurringSchedulerService.MaxDates);
+            output.AllNextDates[0].Should().Be(new DateTime(2020, 1, 2));
+            output.AllNextDates[1].Should().Be(new DateTime(2020, 1, 3));
+            output.AllNextDates[2].Should().Be(new DateTime(2020, 1, 4));
+            output.AllNextDates[3].Should().Be(new DateTime(2020, 1, 5));
+            output.AllNextDates[4].Should().Be(new DateTime(2020, 1, 6));
+            output.AllNextDates[5].Should().Be(new DateTime(2020, 1, 7));
+            output.AllNextDates[6].Should().Be(new DateTime(2020, 1, 8));
+        }
+    
+
         [Theory]
         [InlineData("Occurs once.Schedule will be used on 03/02/2024 at 00:00 starting on 01/01/0001", 2024,2,3,ConfigurationType.Once)]
         [InlineData("Occurs every day.Schedule will be used on 05/02/2024 at 00:00 starting on 01/01/0001", 2024, 2, 3, ConfigurationType.Recurring)]
