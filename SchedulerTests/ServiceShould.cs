@@ -35,7 +35,7 @@ namespace SchedulerTests
             output.NextExecTime.Should().Be(new DateTime(2020, 1, 4,14,0,0));
             output.Description.Should()
                 .Be("Occurs once.Schedule will be used on 04/01/2020 at 14:00 starting on 01/01/0001");
-            output.RecurringDates.Should().HaveCount(1);
+            output.AllNextDates.Should().HaveCount(1);
         }
 
         [Fact]
@@ -64,7 +64,7 @@ namespace SchedulerTests
             output.NextExecTime.Should().Be(new DateTime(2020, 1, 2));
             output.Description.Should()
                 .Be("Occurs every day.Schedule will be used on 02/01/2020 at 00:00 starting on 01/01/0001");
-            output.RecurringDates.Should().NotBeNull();
+            output.AllNextDates.Should().NotBeNull();
         }
 
         [Fact]
@@ -90,14 +90,14 @@ namespace SchedulerTests
             var output = service.GetOutput();
 
             //Assert
-            output.RecurringDates.Should().HaveCount(7);
-            output.RecurringDates![0].Should().Be(new DateTime(2020, 1, 3));
-            output.RecurringDates![1].Should().Be(new DateTime(2020, 1, 5));
-            output.RecurringDates![2].Should().Be(new DateTime(2020, 1, 7));
-            output.RecurringDates![3].Should().Be(new DateTime(2020, 1, 9));
-            output.RecurringDates![4].Should().Be(new DateTime(2020, 1, 11));
-            output.RecurringDates![5].Should().Be(new DateTime(2020, 1, 13));
-            output.RecurringDates![6].Should().Be(new DateTime(2020, 1, 15));
+            output.AllNextDates.Should().HaveCount(7);
+            output.AllNextDates[0].Should().Be(new DateTime(2020, 1, 3));
+            output.AllNextDates[1].Should().Be(new DateTime(2020, 1, 5));
+            output.AllNextDates[2].Should().Be(new DateTime(2020, 1, 7));
+            output.AllNextDates[3].Should().Be(new DateTime(2020, 1, 9));
+            output.AllNextDates[4].Should().Be(new DateTime(2020, 1, 11));
+            output.AllNextDates[5].Should().Be(new DateTime(2020, 1, 13));
+            output.AllNextDates[6].Should().Be(new DateTime(2020, 1, 15));
         }
         [Fact]
         public void ReturnDatesUntilTheEndDate()
@@ -122,10 +122,10 @@ namespace SchedulerTests
             var output = service.GetOutput();
 
             //Assert
-            output.RecurringDates.Should().HaveCount(3);
-            output.RecurringDates![0].Should().Be(new DateTime(2020, 1, 3));
-            output.RecurringDates[1].Should().Be(new DateTime(2020, 1, 5));
-            output.RecurringDates[2].Should().Be(new DateTime(2020, 1, 7));
+            output.AllNextDates.Should().HaveCount(3);
+            output.AllNextDates[0].Should().Be(new DateTime(2020, 1, 3));
+            output.AllNextDates[1].Should().Be(new DateTime(2020, 1, 5));
+            output.AllNextDates[2].Should().Be(new DateTime(2020, 1, 7));
         }
 
         [Fact]
@@ -151,7 +151,7 @@ namespace SchedulerTests
             var output = service.GetOutput();
 
             //Assert
-            output.RecurringDates![0].Month.Should().Be(2);
+            output.AllNextDates[0].Month.Should().Be(2);
         }
 
         [Fact]
@@ -177,8 +177,8 @@ namespace SchedulerTests
             var output = service.GetOutput();
 
             //Assert
-            output.RecurringDates!.First().Year.Should().Be(2021);
-            output.RecurringDates!.First().Month.Should().Be(1);
+            output.AllNextDates.First().Year.Should().Be(2021);
+            output.AllNextDates .First().Month.Should().Be(1);
         }
 
         [Theory]
@@ -221,7 +221,7 @@ namespace SchedulerTests
         {
             var sc = new SchedulerConfiguration
             {
-                CurrentDate = new DateTime(2020, 1, 1),
+                CurrentDate = new DateTime(2020, 1, 1,12,37,0),
                 Days = days,
                 IsEnabled = true,
                 Occurs = Occurrence.Daily,
@@ -233,14 +233,14 @@ namespace SchedulerTests
                 EndDate = DateTime.MaxValue,
             };
             var service = new Service(sc);
-            var expectedDate = new DateTime(2020, 1, 1).AddDays(days);
+            var expectedDate = new DateTime(2020, 1, 1, 12, 37, 0).AddDays(days);
 
             //Act
             var output = service.GetOutput();
 
             //Assert
-            output.RecurringDates.Should().HaveCount(7);
-            foreach (var date in output.RecurringDates!)
+            output.AllNextDates.Should().HaveCount(7);
+            foreach (var date in output.AllNextDates)
             {
                 date.Should().Be(expectedDate);
                 expectedDate = expectedDate.AddDays(days);
