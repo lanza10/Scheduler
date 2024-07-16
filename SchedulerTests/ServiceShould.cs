@@ -210,5 +210,41 @@ namespace SchedulerTests
             //Assert
             output.Description.Should().Be(expectedDescription);
         }
+
+        [Theory]
+        [InlineData(1)]
+        [InlineData(5)]
+        [InlineData(50)]
+        [InlineData(100)]
+        [InlineData(200)]
+        public void ReturnExpectedDatesDependingOnDays(int days)
+        {
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2020, 1, 1),
+                Days = days,
+                IsEnabled = true,
+                Occurs = Occurrence.Daily,
+
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
+
+                StartDate = DateTime.MinValue,
+                EndDate = DateTime.MaxValue,
+            };
+            var service = new Service(sc);
+            var expectedDate = new DateTime(2020, 1, 1).AddDays(days);
+
+            //Act
+            var output = service.GetOutput();
+
+            //Assert
+            output.RecurringDates.Should().HaveCount(7);
+            foreach (var date in output.RecurringDates!)
+            {
+                date.Should().Be(expectedDate);
+                expectedDate = expectedDate.AddDays(days);
+            }
+        }
     }
 }
