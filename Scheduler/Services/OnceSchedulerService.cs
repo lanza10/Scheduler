@@ -5,7 +5,7 @@ namespace Scheduler.Services
 {
     public class OnceSchedulerService(SchedulerConfiguration sc) : ISchedulerService
     {
-        public List<DateTime> CalculateAllNextDates()
+        public List<DateTime> CalculateAllNextDates(int length)
         {
             var datesList = new List<DateTime> { CalculateNextDate() };
             return datesList;
@@ -18,9 +18,9 @@ namespace Scheduler.Services
             return resultDate;
         }
 
-        public string GenerateDescription()
+        public string GenerateDescription(DateTime date)
         {
-            var formattedNextExecTime = CalculateNextDate().ToString("dd/MM/yyyy 'at' HH:mm");
+            var formattedNextExecTime = date.ToString("dd/MM/yyyy 'at' HH:mm");
             var formattedStartDate = sc.StartDate.ToString("dd/MM/yyyy");
             return $"Occurs once.Schedule will be used on {formattedNextExecTime} starting on {formattedStartDate}";
         }

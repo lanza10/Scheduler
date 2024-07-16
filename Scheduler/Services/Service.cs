@@ -24,7 +24,19 @@ namespace Scheduler.Services
         }
         public Output GetOutput()
         {
-            return new Output(_schedulerService.CalculateNextDate(), _schedulerService.GenerateDescription(), _schedulerService.CalculateAllNextDates());
+            var date = _schedulerService.CalculateNextDate();
+            return new Output(date, _schedulerService.GenerateDescription(date));
+        }
+
+        public List<Output> GetOutputList(int maxLength)
+        {
+            var outputList = new List<Output>();
+            var allDates = _schedulerService.CalculateAllNextDates(maxLength);
+            foreach (var date in allDates)
+            {
+                outputList.Add(new Output(date, _schedulerService.GenerateDescription(date)));
+            }
+            return outputList;
         }
 
     }

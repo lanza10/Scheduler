@@ -9,5 +9,14 @@ namespace Scheduler.Utilities
             {Occurrence.Daily, "day" },
         };
 
+        public static string GetFrequencyQuote(int frequency, Occurrence occurrence)
+        {
+            if (!OccurrenceMap.TryGetValue(occurrence, out var occurs))
+            {
+                throw new KeyNotFoundException();
+            }
+
+            return frequency == 1 ? occurs : $"{frequency} {occurs}s";
+        }
     }
 }
