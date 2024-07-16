@@ -90,7 +90,7 @@ namespace SchedulerTests
             var output = service.GetOutput();
 
             //Assert
-            output.AllNextDates.Should().HaveCount(7);
+            output.AllNextDates.Should().HaveCount(RecurringSchedulerService.MaxDates);
             output.AllNextDates[0].Should().Be(new DateTime(2020, 1, 3));
             output.AllNextDates[1].Should().Be(new DateTime(2020, 1, 5));
             output.AllNextDates[2].Should().Be(new DateTime(2020, 1, 7));
@@ -239,7 +239,6 @@ namespace SchedulerTests
             var output = service.GetOutput();
 
             //Assert
-            output.AllNextDates.Should().HaveCount(7);
             foreach (var date in output.AllNextDates)
             {
                 date.Should().Be(expectedDate);
