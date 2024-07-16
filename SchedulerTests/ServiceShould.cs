@@ -1,6 +1,4 @@
-﻿
-using System.Text;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Scheduler.Enums;
 using Scheduler.Models;
 using Scheduler.Services;

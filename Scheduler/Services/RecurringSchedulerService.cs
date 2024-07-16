@@ -9,8 +9,7 @@ namespace Scheduler.Services
         public const int MaxDates = 7;
         public List<DateTime> CalculateAllNextDates()
         {
-            var auxDate = sc.CurrentDate.AddDays(sc.Days);
-            SchedulerServiceValidator.ValidateResultDoNotExceedLimits(auxDate, sc.StartDate, sc.EndDate);
+            var auxDate = CalculateNextDate();
             var recurringDates = new List<DateTime>();
             for (var i = 0; i < MaxDates && auxDate <= sc.EndDate; i++)
             {
@@ -21,7 +20,9 @@ namespace Scheduler.Services
         }
         public DateTime CalculateNextDate()
         {
-            return CalculateAllNextDates().First();
+            var nextDate = sc.CurrentDate.AddDays(sc.Days);
+            SchedulerServiceValidator.ValidateResultDoNotExceedLimits(nextDate, sc.StartDate, sc.EndDate);
+            return nextDate;
         }
 
         public string GenerateDescription()
