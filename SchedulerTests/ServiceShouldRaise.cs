@@ -14,7 +14,6 @@ namespace SchedulerTests
             var sc = new SchedulerConfiguration
             {
                 CurrentDate = new DateTime(2020, 1, 1),
-                Days = 2,
                 IsEnabled = false,
                 Occurs = Occurrence.Daily,
 
@@ -39,7 +38,6 @@ namespace SchedulerTests
             var sc = new SchedulerConfiguration
             {
                 CurrentDate = new DateTime(2020, 1, 1),
-                Days = 1,
                 IsEnabled = true,
                 Occurs = Occurrence.Daily,
 
@@ -58,56 +56,6 @@ namespace SchedulerTests
                 .WithMessage("This configuration isn't valid, date can´t be null if \"Once\" is selected.");
 
         }
-        [Fact]
-        public void ErrorWhenInvalidDaysInOnceConfiguration()
-        {
-            //Arrange
-            var sc = new SchedulerConfiguration
-            {
-                CurrentDate = new DateTime(2020, 1, 1),
-                Days = -4,
-                IsEnabled = true,
-                Occurs = Occurrence.Daily,
-
-                ConfigurationDate = new DateTime(2020, 1, 1),
-                Type = ConfigurationType.Once,
-
-                StartDate = DateTime.MinValue,
-                EndDate = DateTime.MaxValue,
-            };
-
-            //Act
-            var action = () => new Service(sc);
-
-            //Assert
-            action.Should().Throw<SchedulerException>()
-                .WithMessage("This configuration isn't valid, days can´t be lower than 0 for the selected configuration type.");
-        }
-        [Fact]
-        public void ErrorWhenInvalidDaysInRecurringConfiguration()
-        {
-            //Arrange
-            var sc = new SchedulerConfiguration
-            {
-                CurrentDate = new DateTime(2020, 1, 1),
-                Days = 0,
-                IsEnabled = true,
-                Occurs = Occurrence.Daily,
-
-                ConfigurationDate = null,
-                Type = ConfigurationType.Recurring,
-
-                StartDate = DateTime.MinValue,
-                EndDate = DateTime.MaxValue,
-            };
-
-            //Act
-            var action = () => new Service(sc);
-
-            //Assert
-            action.Should().Throw<SchedulerException>()
-                .WithMessage("This configuration isn't valid, days can´t be lower than 1 for the selected configuration type.");
-        }
 
         [Fact]
         public void ErrorWhenInvalidLimits()
@@ -116,7 +64,6 @@ namespace SchedulerTests
             var sc = new SchedulerConfiguration
             {
                 CurrentDate = new DateTime(2020, 1, 1),
-                Days = 2,
                 IsEnabled = true,
                 Occurs = Occurrence.Daily,
 
@@ -141,7 +88,6 @@ namespace SchedulerTests
             var sc = new SchedulerConfiguration
             {
                 CurrentDate = new DateTime(2020, 1, 1),
-                Days = 2,
                 IsEnabled = true,
                 Occurs = Occurrence.Daily,
 
@@ -166,7 +112,6 @@ namespace SchedulerTests
             var sc = new SchedulerConfiguration
             {
                 CurrentDate = new DateTime(2020, 1, 1),
-                Days = 2,
                 IsEnabled = true,
                 Occurs = Occurrence.Daily,
 
@@ -191,8 +136,7 @@ namespace SchedulerTests
             //Arrange
             var sc = new SchedulerConfiguration
             {
-                CurrentDate = new DateTime(2020, 1, 1),
-                Days = 2,
+                CurrentDate = new DateTime(2020, 2, 1),
                 IsEnabled = true,
                 Occurs = Occurrence.Daily,
 
@@ -217,7 +161,6 @@ namespace SchedulerTests
             var sc = new SchedulerConfiguration
             {
                 CurrentDate = new DateTime(2020, 1, 1),
-                Days = 2,
                 IsEnabled = true,
                 Occurs = (Occurrence)10,
 

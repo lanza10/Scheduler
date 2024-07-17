@@ -3,5 +3,6 @@
     public enum Occurrence
     {
         Daily,
+        Weekly
     }
 }

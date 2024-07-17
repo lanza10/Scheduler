@@ -18,7 +18,7 @@ namespace Scheduler.Services
                     _schedulerService = new OnceSchedulerService(sc);
                     break;
                 default:
-                    _schedulerService = new RecurringSchedulerService(sc);
+                    _schedulerService = new RecurringDailySchedulerService(sc);
                     break;
             }
         }

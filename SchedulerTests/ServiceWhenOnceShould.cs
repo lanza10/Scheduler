@@ -14,7 +14,6 @@ namespace SchedulerTests
             var sc = new SchedulerConfiguration
             {
                 CurrentDate = new DateTime(2020, 1, 1),
-                Days = 1,
                 IsEnabled = true,
                 Occurs = Occurrence.Daily,
 
@@ -42,7 +41,6 @@ namespace SchedulerTests
             var sc = new SchedulerConfiguration
             {
                 CurrentDate = new DateTime(2020, 1, 1),
-                Days = 2,
                 IsEnabled = true,
                 Occurs = Occurrence.Daily,
 
@@ -73,7 +71,6 @@ namespace SchedulerTests
             var sc = new SchedulerConfiguration
             {
                 CurrentDate = new DateTime(year, month, day),
-                Days = 2,
                 IsEnabled = true,
                 Occurs = Occurrence.Daily,
 
@@ -103,7 +100,6 @@ namespace SchedulerTests
             var sc = new SchedulerConfiguration
             {
                 CurrentDate = new DateTime(year, month, day),
-                Days = 2,
                 IsEnabled = true,
                 Occurs = Occurrence.Daily,
 
