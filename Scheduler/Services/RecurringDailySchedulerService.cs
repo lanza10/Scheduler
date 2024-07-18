@@ -10,12 +10,11 @@ namespace Scheduler.Services
     {
         public List<DateTime> CalculateAllNextDates(int maxLength)
         {
-            var span = GetSpan();
             var auxDate = CalculateNextDate();
             var resultList = new List<DateTime>();
-            while (resultList.Count <= maxLength && auxDate <= sc.EndDate)
+            while (resultList.Count < maxLength && auxDate <= sc.EndDate)
             {
-                AuxiliarService.GetDatesOfDay(sc, auxDate, resultList, maxLength, span);
+                AuxiliarService.GetDatesOfDay(sc, auxDate, resultList, maxLength);
                 auxDate = auxDate.AddDays(1);
             }
             return resultList;
@@ -62,18 +61,7 @@ namespace Scheduler.Services
             return isInLimits ? sc.CurrentDate : new DateTime(currentDateOnly.AddDays(1), occursAt);
         }
 
-        private TimeSpan GetSpan()
-        {
-            switch (sc.OccursEveryType)
-            {
-                case DailyOccursEveryType.Hours:
-                    return new TimeSpan(sc.DailyOccursEvery, 0, 0);
-                case DailyOccursEveryType.Minutes:
-                    return new TimeSpan(0, sc.DailyOccursEvery, 0);
-                default:
-                    return new TimeSpan(0, 0, sc.DailyOccursEvery);
-            }
-        }
+       
 
         private List<DateTime> CalculateAllNextOnceDates(int maxLength)
         {
@@ -87,26 +75,26 @@ namespace Scheduler.Services
             return recurringDates;
         }
 
-        private List<DateTime> CalculateAllNextEveryDates(int maxLength)
-        {
-            var auxDate = CalculateNextDate();
-            var everySpan = GetSpan();
-            var recurringDates = new List<DateTime>();
+        //private List<DateTime> CalculateAllNextEveryDates(int maxLength)
+        //{
+        //    var auxDate = CalculateNextDate();
+        //    var everySpan = GetSpan();
+        //    var recurringDates = new List<DateTime>();
 
-            for (var i = 0; i < maxLength && auxDate <= sc.EndDate; i++)
-            {
-                recurringDates.Add(auxDate);
-                auxDate = auxDate.Add(everySpan);
+        //    for (var i = 0; i < maxLength && auxDate <= sc.EndDate; i++)
+        //    {
+        //        recurringDates.Add(auxDate);
+        //        auxDate = auxDate.Add(everySpan);
 
-                if (auxDate.TimeOfDay > sc.DailyEndingAt)
-                {
-                    auxDate = auxDate.Date.AddDays(1)
-                        .Add(new TimeSpan(sc.DailyStartingAt.Hours, sc.DailyStartingAt.Minutes, sc.DailyStartingAt.Seconds));
-                }
-            }
+        //        if (auxDate.TimeOfDay > sc.DailyEndingAt)
+        //        {
+        //            auxDate = auxDate.Date.AddDays(1)
+        //                .Add(new TimeSpan(sc.DailyStartingAt.Hours, sc.DailyStartingAt.Minutes, sc.DailyStartingAt.Seconds));
+        //        }
+        //    }
 
-            return recurringDates;
-        }
+        //    return recurringDates;
+        //}
 
         private string GenerateDescriptionWhenEvery(string startingDate)
         {

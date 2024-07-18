@@ -166,6 +166,8 @@ namespace SchedulerTests
 
                 ConfigurationDate = null,
                 Type = ConfigurationType.Recurring,
+                WeeklyFrequency = 2,
+
 
                 StartDate = DateTime.MinValue,
                 EndDate = DateTime.MaxValue,
