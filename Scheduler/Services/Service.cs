@@ -12,14 +12,19 @@ namespace Scheduler.Services
         public Service(SchedulerConfiguration sc)
         {
             SchedulerValidator.ValidateSchedulerConfiguration(sc);
-            switch (sc.Type)
+
+            if (sc.Type == ConfigurationType.Once)
             {
-                case ConfigurationType.Once:
-                    _schedulerService = new OnceSchedulerService(sc);
-                    break;
-                default:
-                    _schedulerService = new RecurringDailySchedulerService(sc);
-                    break;
+                _schedulerService = new OnceSchedulerService(sc);
+            }
+            else
+            {
+                _schedulerService = sc.Occurs switch
+                {
+                    Occurrence.Daily => new RecurringDailySchedulerService(sc),
+                    //Occurrence.Weekly => new RecurringMonthlySchedulerService(sc)new RecurringWeeklySchedulerService(sc),
+                    _ => new RecurringWeeklySchedulerService(sc)
+                };
             }
         }
         public Output GetOutput()

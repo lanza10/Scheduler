@@ -10,16 +10,15 @@ namespace Scheduler.Services
     {
         public List<DateTime> CalculateAllNextDates(int maxLength)
         {
-            List<DateTime> recurringDates;
-            if (sc.DailyType == DailyOccursType.Once)
+            var span = GetSpan();
+            var auxDate = CalculateNextDate();
+            var resultList = new List<DateTime>();
+            while (resultList.Count <= maxLength && auxDate <= sc.EndDate)
             {
-                recurringDates = CalculateAllNextOnceDates(maxLength);
+                AuxiliarService.GetDatesOfDay(sc, auxDate, resultList, maxLength, span);
+                auxDate = auxDate.AddDays(1);
             }
-            else
-            {
-                recurringDates = CalculateAllNextRecurringDates(maxLength);
-            }
-            return recurringDates;
+            return resultList;
         }
         public DateTime CalculateNextDate()
         {
@@ -38,12 +37,13 @@ namespace Scheduler.Services
 
         public string GenerateDescription(DateTime date)
         {
-            var frequency = OccurrenceDictionary.GetFrequencyQuote(1, sc.Occurs);
-            var formattedNextExecTime = date.ToString("dd/MM/yyyy 'at' HH:mm");
             var formattedStartDate = sc.StartDate.ToString("dd/MM/yyyy");
-            return
-                $"Occurs every {frequency}." +
-                $"Schedule will be used on {formattedNextExecTime} starting on {formattedStartDate}";
+            if (sc.DailyType == DailyOccursType.Every)
+            {
+                return GenerateDescriptionWhenEvery(formattedStartDate);
+            }
+
+            return GenerateDescriptionWhenOnce(formattedStartDate);
         }
 
         private DateTime GetNextDateWhenOnce(DateOnly currentDateOnly)
@@ -87,7 +87,7 @@ namespace Scheduler.Services
             return recurringDates;
         }
 
-        private List<DateTime> CalculateAllNextRecurringDates(int maxLength)
+        private List<DateTime> CalculateAllNextEveryDates(int maxLength)
         {
             var auxDate = CalculateNextDate();
             var everySpan = GetSpan();
@@ -106,6 +106,20 @@ namespace Scheduler.Services
             }
 
             return recurringDates;
+        }
+
+        private string GenerateDescriptionWhenEvery(string startingDate)
+        {
+            var startingAt = sc.DailyStartingAt.ToString(@"hh\:mm");
+            var endingAt = sc.DailyEndingAt.ToString(@"hh\:mm");
+            var interval = OccurrenceDictionary.GetIntervalQuote(sc.DailyOccursEvery, sc.OccursEveryType);
+            return
+                $"Occurs every day, every {interval} between {startingAt} and {endingAt} starting on {startingDate}";
+        }
+        private string GenerateDescriptionWhenOnce(string startingDate)
+        {
+            var formmattedOnceAt = sc.DailyOccursOnceAt.ToString(@"hh\:mm");
+            return $"Occurs every day at {formmattedOnceAt} starting on {startingDate}";
         }
     }
 }
