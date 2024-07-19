@@ -12,7 +12,7 @@ namespace Scheduler.Models
 
         public int WeeklyFrequency { get; set; } = 1;
 
-        public DayOfWeek[] DaysOfWeek { get; set; } =
+        public List<DayOfWeek> DaysOfWeek { get; set; } =
         [   DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday,
             DayOfWeek.Thursday, DayOfWeek.Friday ,DayOfWeek.Saturday, 
             DayOfWeek.Sunday,

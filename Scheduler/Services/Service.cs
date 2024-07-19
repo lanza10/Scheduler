@@ -29,7 +29,7 @@ namespace Scheduler.Services
         }
         public Output GetOutput()
         {
-            var date = _schedulerService.CalculateNextDate();
+            var date = _schedulerService.CalculateFirstDate();
             return new Output(date, _schedulerService.GenerateDescription(date));
         }
 

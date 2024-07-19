@@ -1,4 +1,6 @@
-﻿using FluentAssertions;
+﻿using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.JavaScript;
+using FluentAssertions;
 using Scheduler.Enums;
 using Scheduler.Models;
 using Scheduler.Services;
@@ -8,7 +10,7 @@ namespace SchedulerTests
     public class ServiceWhenRecurringDailyShould
     {
         [Fact]
-        public void ReturnRecurringOutput()
+        public void ReturnRecurringDailyOutput()
         {
             //Arrange
             var sc = new SchedulerConfiguration
@@ -93,7 +95,7 @@ namespace SchedulerTests
                 DailyEndingAt = new TimeSpan(13, 0, 0),
 
                 StartDate = DateTime.MinValue,
-                EndDate = new DateTime(2020, 1, 2, 12, 30, 0)
+                EndDate = new DateTime(2020, 1, 2, 13, 0, 0)
             };
             var service = new Service(sc);
 
@@ -101,11 +103,12 @@ namespace SchedulerTests
             var outputList = service.GetOutputList(7);
 
             //Assert
-            outputList.Should().HaveCount(4);
+            outputList.Should().HaveCount(5);
             outputList[0].NextExecTime.Should().Be(new DateTime(2020, 1, 1, 12, 30, 0));
             outputList[1].NextExecTime.Should().Be(new DateTime(2020, 1, 2, 11, 0, 0));
             outputList[2].NextExecTime.Should().Be(new DateTime(2020, 1, 2, 11, 40, 0));
             outputList[3].NextExecTime.Should().Be(new DateTime(2020, 1, 2, 12, 20, 0));
+            outputList[4].NextExecTime.Should().Be(new DateTime(2020, 1, 2, 13, 0, 0));
 
         }
 
@@ -236,5 +239,119 @@ namespace SchedulerTests
             output.Description.Should().Be(expectedDescription);
         }
 
+        [Fact]
+        public void ReturnTheDateAddingTheAccumulatedInterval()
+        {
+            //Arrange
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2020, 1, 1, 23, 40, 0),
+                IsEnabled = true,
+                Occurs = Occurrence.Daily,
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
+
+                DailyType = DailyOccursType.Every,
+                DailyOccursEvery = 40,
+                OccursEveryType = DailyOccursEveryType.Minutes,
+                DailyStartingAt = new TimeSpan(0, 10, 0),
+                DailyEndingAt = new TimeSpan(23, 50, 0),
+
+                DailyOccursOnceAt = new TimeSpan(12, 0, 0),
+
+
+                StartDate = DateTime.MinValue,
+                EndDate = DateTime.MaxValue
+
+            };
+            var service = new Service(sc);
+            //Act
+            var outputList = service.GetOutputList(2);
+
+            //Assert
+            outputList.Should().HaveCount(2);
+            outputList[0].NextExecTime.Should().Be(new DateTime(2020, 1, 1, 23, 40, 0));
+            outputList[1].NextExecTime.Should().Be(new DateTime(2020, 1, 2, 0, 20, 0));
+        }
+        [Theory]
+        [InlineData(10)]
+        [InlineData(50)]
+        [InlineData(100)]
+        [InlineData(200)]
+        public void ReturnAsManyDatesAsRequestedWhenNoEndDateAndEvery(int maxLength)
+        {
+            //Arrange
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2020, 1, 1, 23, 40, 0),
+                IsEnabled = true,
+                Occurs = Occurrence.Daily,
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
+
+                DailyType = DailyOccursType.Every,
+                DailyOccursEvery = 40,
+                OccursEveryType = DailyOccursEveryType.Minutes,
+                DailyStartingAt = new TimeSpan(0, 0, 0),
+                DailyEndingAt = new TimeSpan(23, 59, 0),
+
+                DailyOccursOnceAt = new TimeSpan(12, 0, 0),
+
+
+                StartDate = DateTime.MinValue,
+                EndDate = null
+
+            };
+            var expectedDate = new DateTime(2020, 1, 1, 23, 40, 0);
+            var service = new Service(sc);
+            //Act
+            var outputList = service.GetOutputList(maxLength);
+
+            //Assert
+            outputList.Should().HaveCount(maxLength);
+            foreach (var output in outputList)
+            {
+                output.NextExecTime.Should().Be(expectedDate);
+                expectedDate = expectedDate.Add(new TimeSpan(0, 40, 0));
+            }
+        }
+        [Theory]
+        [InlineData(10)]
+        [InlineData(50)]
+        [InlineData(100)]
+        [InlineData(200)]
+        public void ReturnAsManyDatesAsRequestedWhenNoEndDateAndOnce(int maxLength)
+        {
+            //Arrange
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2020, 1, 1, 23, 40, 0),
+                IsEnabled = true,
+                Occurs = Occurrence.Daily,
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
+
+                DailyType = DailyOccursType.Once,
+                DailyOccursOnceAt = new TimeSpan(12,30,0),
+
+
+
+                StartDate = DateTime.MinValue,
+                EndDate = null
+
+            };
+            var expectedDate = new DateTime(2020, 1, 2, 12, 30, 0);
+            var service = new Service(sc);
+            //Act
+            var outputList = service.GetOutputList(maxLength);
+
+            //Assert
+            outputList.Should().HaveCount(maxLength);
+            foreach (var output in outputList)
+            {
+                output.NextExecTime.Should().Be(expectedDate);
+                expectedDate = expectedDate.AddDays(1);
+            }
+        }
     }
 }

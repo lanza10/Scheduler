@@ -1,11 +1,6 @@
-﻿using Scheduler.Models;
+﻿using Scheduler.Enums;
+using Scheduler.Models;
 using Scheduler.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Scheduler.Enums;
 
 namespace Scheduler.Services
 {
@@ -13,49 +8,71 @@ namespace Scheduler.Services
     {
         public List<DateTime> CalculateAllNextDates(int maxLength)
         {
-            var auxDate = sc.CurrentDate; 
-            var resultList = new List<DateTime>();
-            while (resultList.Count < maxLength && auxDate <= sc.EndDate)
+            var currentDate = CalculateFirstDate();
+            var initDate = currentDate;
+            var initDayOfWeek = sc.CurrentDate.DayOfWeek;
+            var datesList = new List<DateTime>();
+            while (datesList.Count < maxLength && currentDate <= sc.EndDate)
             {
-                if (sc.DaysOfWeek.Contains(auxDate.DayOfWeek))
+                if (sc.DaysOfWeek.Contains(currentDate.DayOfWeek))
                 {
-                    AuxiliarService.GetDatesOfDay(sc, auxDate, resultList, maxLength);
+                    datesList.Add(currentDate.Date);
                 }
-                else
-                {
-                   auxDate = auxDate.AddDays(1);
-                }
+                currentDate = currentDate.AddDays(1);
+                
 
-                if (auxDate.Day - sc.CurrentDate.Day == 7)
+                if (currentDate.DayOfWeek == initDayOfWeek && currentDate != initDate )
                 {
-                    auxDate = auxDate.AddDays(7 * (sc.WeeklyFrequency - 1));
+                    currentDate = currentDate.AddDays(7 * (sc.WeeklyFrequency - 1));
                 }
             }
-            return resultList;
+
+            return HoursCalculatorService.GetDatesOfDays(datesList, sc, maxLength, currentDate.TimeOfDay);
         }
 
-        public DateTime CalculateNextDate()
+        public DateTime CalculateFirstDate()
         {
-            var auxDate = sc.CurrentDate;
-            while (!sc.DaysOfWeek.Contains(auxDate.DayOfWeek))
+            var currentDate = sc.CurrentDate;
+            while (!sc.DaysOfWeek.Contains(currentDate.DayOfWeek))
             {
-                auxDate = auxDate.AddDays(1);
+                currentDate = currentDate.Date.AddDays(1);
             }
 
-            auxDate = auxDate.Date;
-            return auxDate;
+
+            return HoursCalculatorService.CalculateNextHour(currentDate, sc);
+
 
         }
 
         public string GenerateDescription(DateTime date)
         {
-            var frequency = OccurrenceDictionary.GetFrequencyQuote(sc.WeeklyFrequency, sc.Occurs);
+            var daysOfWeek = WeeklyDictionaries.GetDaysQuote(sc.DaysOfWeek);
+            var frequency = OccurrenceDictionaries.GetFrequencyQuote(sc.WeeklyFrequency, sc.Occurs);
+            var dailyQuote = GetDailyQuote();
+
+
+            return
+                $"Occurs every {frequency} on {daysOfWeek} " + dailyQuote;
+        }
+
+        private string GetDailyQuote()
+        {
+            string result;
             var formattedStartDate = sc.StartDate.ToString("dd/MM/yyyy");
+            var interval = OccurrenceDictionaries.GetIntervalQuote(sc.DailyOccursEvery, sc.OccursEveryType);
             var startingAt = sc.DailyStartingAt.ToString(@"hh\:mm");
             var endingAt = sc.DailyEndingAt.ToString(@"hh\:mm");
-            var interval = OccurrenceDictionary.GetIntervalQuote(sc.DailyOccursEvery, sc.OccursEveryType);
-            return
-                $"Occurs every {frequency}, every {interval} between {startingAt} and {endingAt} starting on {formattedStartDate}";
+            var formmattedOnceAt = sc.DailyOccursOnceAt.ToString(@"hh\:mm");
+
+            if (sc.DailyType == DailyOccursType.Once)
+            {
+                result = $"at {formmattedOnceAt}";
+            }
+            else
+            {
+                result = $"every {interval} between {startingAt} and {endingAt}";
+            }
+            return result + $" starting on {formattedStartDate}";
         }
     }
 }

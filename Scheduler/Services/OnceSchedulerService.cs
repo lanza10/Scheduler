@@ -7,11 +7,11 @@ namespace Scheduler.Services
     {
         public List<DateTime> CalculateAllNextDates(int length)
         {
-            var datesList = new List<DateTime> { CalculateNextDate() };
+            var datesList = new List<DateTime> { CalculateFirstDate() };
             return datesList;
         }
 
-        public DateTime CalculateNextDate()
+        public DateTime CalculateFirstDate()
         {
             var resultDate = (DateTime)sc.ConfigurationDate!;
             SchedulerServiceValidator.ValidateResultDoNotExceedLimits(resultDate, sc.StartDate, sc.EndDate);

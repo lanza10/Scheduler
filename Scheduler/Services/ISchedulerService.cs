@@ -3,7 +3,7 @@
     public interface ISchedulerService
     {
         public List<DateTime> CalculateAllNextDates(int length);
-        public DateTime CalculateNextDate();
+        public DateTime CalculateFirstDate();
         public string GenerateDescription(DateTime date);
     }
 }

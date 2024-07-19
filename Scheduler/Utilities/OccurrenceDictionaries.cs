@@ -2,7 +2,7 @@
 
 namespace Scheduler.Utilities
 {
-    public static class OccurrenceDictionary
+    public static class OccurrenceDictionaries
     {
         private static readonly Dictionary<Occurrence, string> OccurrenceMap = new()
         {
