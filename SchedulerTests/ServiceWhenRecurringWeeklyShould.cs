@@ -1,12 +1,7 @@
-﻿using Scheduler.Enums;
+﻿using FluentAssertions;
+using Scheduler.Enums;
 using Scheduler.Models;
 using Scheduler.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentAssertions;
 
 namespace SchedulerTests
 {
@@ -226,7 +221,7 @@ namespace SchedulerTests
 
             //Assert
             output.Description.Should().Be("Occurs every 2 weeks on monday at 23:30 starting on 01/01/0001");
-            
+
         }
 
         [Fact]
@@ -522,7 +517,66 @@ namespace SchedulerTests
             output.Description.Should()
                 .Be("Occurs every 50 weeks on monday every 90 minutes between 08:00 and 10:00 starting on 01/01/0001");
         }
+
+        [Fact]
+        public void ReturnExpectedDatesWithDifferentDaysOfWeek()
+        {
+            //Arrange
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2024, 7, 1, 12, 0, 0),
+                IsEnabled = true,
+                Occurs = Occurrence.Weekly,
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
+
+                WeeklyFrequency = 5,
+                DaysOfWeek = [DayOfWeek.Monday, DayOfWeek.Wednesday, DayOfWeek.Saturday],
+
+                DailyType = DailyOccursType.Every,
+                DailyOccursEvery = 75,
+                OccursEveryType = DailyOccursEveryType.Minutes,
+
+                DailyStartingAt = new TimeSpan(11, 0, 0),
+                DailyEndingAt = new TimeSpan(15, 0, 0),
+
+                StartDate = DateTime.MinValue,
+                EndDate = null,
+            };
+            var service = new Service(sc);
+
+            //Act
+            var outputList = service.GetOutputList(23);
+
+            //Assert
+            outputList.Should().HaveCount(23);
+            outputList[0].NextExecTime.Should().Be(new DateTime(2024, 7, 1, 12, 0, 0));
+            outputList[1].NextExecTime.Should().Be(new DateTime(2024, 7, 1, 13, 15, 0));
+            outputList[2].NextExecTime.Should().Be(new DateTime(2024, 7, 1, 14, 30, 0));
+            outputList[3].NextExecTime.Should().Be(new DateTime(2024, 7, 3, 11, 0, 0));
+            outputList[4].NextExecTime.Should().Be(new DateTime(2024, 7, 3, 12, 15, 0));
+            outputList[5].NextExecTime.Should().Be(new DateTime(2024, 7, 3, 13, 30, 0));
+            outputList[6].NextExecTime.Should().Be(new DateTime(2024, 7, 3, 14, 45, 0));
+            outputList[7].NextExecTime.Should().Be(new DateTime(2024, 7, 6, 11, 0, 0));
+            outputList[8].NextExecTime.Should().Be(new DateTime(2024, 7, 6, 12, 15, 0));
+            outputList[9].NextExecTime.Should().Be(new DateTime(2024, 7, 6, 13, 30, 0));
+            outputList[10].NextExecTime.Should().Be(new DateTime(2024, 7, 6, 14, 45, 0));
+            outputList[11].NextExecTime.Should().Be(new DateTime(2024, 8, 5, 11, 0, 0));
+            outputList[12].NextExecTime.Should().Be(new DateTime(2024, 8, 5, 12, 15, 0));
+            outputList[13].NextExecTime.Should().Be(new DateTime(2024, 8, 5, 13, 30, 0));
+            outputList[14].NextExecTime.Should().Be(new DateTime(2024, 8, 5, 14, 45, 0));
+            outputList[15].NextExecTime.Should().Be(new DateTime(2024, 8, 7, 11, 0, 0));
+            outputList[16].NextExecTime.Should().Be(new DateTime(2024, 8, 7, 12, 15, 0));
+            outputList[17].NextExecTime.Should().Be(new DateTime(2024, 8, 7, 13, 30, 0));
+            outputList[18].NextExecTime.Should().Be(new DateTime(2024, 8, 7, 14, 45, 0));
+            outputList[19].NextExecTime.Should().Be(new DateTime(2024, 8, 10, 11, 0, 0));
+            outputList[20].NextExecTime.Should().Be(new DateTime(2024, 8, 10, 12, 15, 0));
+            outputList[21].NextExecTime.Should().Be(new DateTime(2024, 8, 10, 13, 30, 0));
+            outputList[22].NextExecTime.Should().Be(new DateTime(2024, 8, 10, 14, 45, 0));
+
+
+        }
     }
-    
+
 }
 
