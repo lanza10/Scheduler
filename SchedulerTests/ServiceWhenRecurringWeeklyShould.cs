@@ -649,6 +649,40 @@ namespace SchedulerTests
             outputList[4].NextExecTime.Should().Be(new DateTime(2024, 8, 7, 12, 0, 0));
 
         }
+
+        [Fact]
+        public void ReturnExpectedDatesWithAYearOfInterval()
+        {
+            //Arrange
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2020, 1, 1, 0, 0, 0),
+                IsEnabled = true,
+                Occurs = Occurrence.Weekly,
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
+
+                WeeklyFrequency = 53,
+                DaysOfWeek = [DayOfWeek.Wednesday],
+
+                DailyType = DailyOccursType.Once,
+                DailyOccursOnceAt = new TimeSpan(12, 0, 0),
+
+                StartDate = DateTime.MinValue,
+                EndDate = null,
+            };
+            var service = new Service(sc);
+
+            //Act
+            var outputList = service.GetOutputList(3);
+
+            //Assert
+            outputList.Should().HaveCount(3);
+            outputList[0].NextExecTime.Should().Be(new DateTime(2020, 1, 1, 12, 0, 0));
+            outputList[1].NextExecTime.Should().Be(new DateTime(2021, 1, 6, 12, 0, 0));
+            outputList[2].NextExecTime.Should().Be(new DateTime(2022, 1, 12, 12, 0, 0));
+
+        }
     }
 
 }
