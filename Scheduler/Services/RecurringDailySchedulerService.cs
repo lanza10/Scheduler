@@ -1,12 +1,13 @@
 ﻿
 using Scheduler.Enums;
 using Scheduler.Models;
+using Scheduler.Services.HoursCalculators;
 using Scheduler.Utilities;
 using Scheduler.Validator;
 
 namespace Scheduler.Services
 {
-    public class RecurringDailySchedulerService(SchedulerConfiguration sc) : ISchedulerService
+    public class RecurringDailySchedulerService(SchedulerConfiguration sc, IHoursCalculator hc) : ISchedulerService
     {
         public List<DateTime> CalculateAllNextDates(int maxLength)
         {
@@ -22,12 +23,12 @@ namespace Scheduler.Services
             }
 
 
-            var resultList = HoursCalculatorService.GetDatesOfDays(dateList, sc, maxLength, initTime);
+            var resultList = hc.GetHoursOfDates(dateList, sc, maxLength, initTime);
             return resultList;
         }
         public DateTime CalculateFirstDate()
         {
-           return HoursCalculatorService.CalculateNextHour(sc.CurrentDate, sc);
+           return hc.CalculateNextHour(sc.CurrentDate, sc);
         }
 
         public string GenerateDescription(DateTime date)

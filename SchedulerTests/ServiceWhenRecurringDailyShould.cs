@@ -240,7 +240,7 @@ namespace SchedulerTests
         }
 
         [Fact]
-        public void ReturnTheDateAddingTheAccumulatedInterval()
+        public void ReturnTheDateRestartingTheIntervalCountWhenDayChanges()
         {
             //Arrange
             var sc = new SchedulerConfiguration
@@ -271,7 +271,7 @@ namespace SchedulerTests
             //Assert
             outputList.Should().HaveCount(2);
             outputList[0].NextExecTime.Should().Be(new DateTime(2020, 1, 1, 23, 40, 0));
-            outputList[1].NextExecTime.Should().Be(new DateTime(2020, 1, 2, 0, 20, 0));
+            outputList[1].NextExecTime.Should().Be(new DateTime(2020, 1, 2, 0, 10, 0));
         }
         [Theory]
         [InlineData(10)]
@@ -292,8 +292,8 @@ namespace SchedulerTests
                 DailyType = DailyOccursType.Every,
                 DailyOccursEvery = 40,
                 OccursEveryType = DailyOccursEveryType.Minutes,
-                DailyStartingAt = new TimeSpan(0, 0, 0),
-                DailyEndingAt = new TimeSpan(23, 59, 0),
+                DailyStartingAt = new TimeSpan(15, 0, 0),
+                DailyEndingAt = new TimeSpan(20, 20, 0),
 
                 DailyOccursOnceAt = new TimeSpan(12, 0, 0),
 
@@ -302,7 +302,6 @@ namespace SchedulerTests
                 EndDate = null
 
             };
-            var expectedDate = new DateTime(2020, 1, 1, 23, 40, 0);
             var service = new Service(sc);
             //Act
             var outputList = service.GetOutputList(maxLength);
@@ -311,8 +310,8 @@ namespace SchedulerTests
             outputList.Should().HaveCount(maxLength);
             foreach (var output in outputList)
             {
-                output.NextExecTime.Should().Be(expectedDate);
-                expectedDate = expectedDate.Add(new TimeSpan(0, 40, 0));
+                output.NextExecTime.TimeOfDay.Should().BeGreaterThanOrEqualTo(new TimeSpan(15, 0, 0)).And
+                    .BeLessOrEqualTo(new TimeSpan(20,20,0));
             }
         }
         [Theory]
@@ -352,6 +351,78 @@ namespace SchedulerTests
                 output.NextExecTime.Should().Be(expectedDate);
                 expectedDate = expectedDate.AddDays(1);
             }
+        }
+
+        [Fact]
+        public void ReturnTheDateWhitSecondsInterval()
+        {
+            //Arrange
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2020, 1, 1, 23, 40, 0),
+                IsEnabled = true,
+                Occurs = Occurrence.Daily,
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
+
+                DailyType = DailyOccursType.Every,
+                DailyOccursEvery = 30,
+                OccursEveryType = DailyOccursEveryType.Seconds,
+                DailyStartingAt = new TimeSpan(0, 10, 0),
+                DailyEndingAt = new TimeSpan(23, 50, 0),
+
+                DailyOccursOnceAt = new TimeSpan(12, 0, 0),
+
+
+                StartDate = DateTime.MinValue,
+                EndDate = DateTime.MaxValue
+
+            };
+            var service = new Service(sc);
+            //Act
+            var outputList = service.GetOutputList(3);
+
+            //Assert
+            outputList.Should().HaveCount(3);
+            outputList[0].NextExecTime.Should().Be(new DateTime(2020, 1, 1, 23, 40, 0));
+            outputList[1].NextExecTime.Should().Be(new DateTime(2020, 1, 1, 23, 40, 30));
+            outputList[2].NextExecTime.Should().Be(new DateTime(2020, 1, 1, 23, 41, 0));
+        }
+
+        [Fact]
+        public void ReturnTheDateWhitHoursInterval()
+        {
+            //Arrange
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2020, 1, 1, 23, 40, 0),
+                IsEnabled = true,
+                Occurs = Occurrence.Daily,
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
+
+                DailyType = DailyOccursType.Every,
+                DailyOccursEvery = 1,
+                OccursEveryType = DailyOccursEveryType.Hours,
+                DailyStartingAt = new TimeSpan(0, 10, 0),
+                DailyEndingAt = new TimeSpan(23, 50, 0),
+
+                DailyOccursOnceAt = new TimeSpan(12, 0, 0),
+
+
+                StartDate = DateTime.MinValue,
+                EndDate = DateTime.MaxValue
+
+            };
+            var service = new Service(sc);
+            //Act
+            var outputList = service.GetOutputList(3);
+
+            //Assert
+            outputList.Should().HaveCount(3);
+            outputList[0].NextExecTime.Should().Be(new DateTime(2020, 1, 1, 23, 40, 0));
+            outputList[1].NextExecTime.Should().Be(new DateTime(2020, 1, 2, 0, 10, 0));
+            outputList[2].NextExecTime.Should().Be(new DateTime(2020, 1, 2, 1, 10, 0));
         }
     }
 }

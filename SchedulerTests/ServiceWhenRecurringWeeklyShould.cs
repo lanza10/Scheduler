@@ -299,6 +299,119 @@ namespace SchedulerTests
                 .Be(
                     "Occurs every 2 weeks on monday, tuesday, wednesday, thursday and friday every 90 minutes between 08:00 and 10:00 starting on 01/01/0001");
         }
+
+        [Fact]
+        public void ReturnExpectedOutputsWhenWeeklyFrequencyIsOne()
+        {
+            //Arrange
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2024, 1, 1, 12, 0, 0),
+                IsEnabled = true,
+                Occurs = Occurrence.Weekly,
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
+
+                WeeklyFrequency = 1,
+                DaysOfWeek = [DayOfWeek.Monday],
+
+                DailyType = DailyOccursType.Every,
+                DailyOccursEvery = 90,
+                OccursEveryType = DailyOccursEveryType.Minutes,
+
+                DailyStartingAt = new TimeSpan(8, 0, 0),
+                DailyEndingAt = new TimeSpan(10, 0, 0),
+
+                StartDate = DateTime.MinValue,
+                EndDate = null,
+            };
+            var service = new Service(sc);
+
+            //Act
+            var outputList = service.GetOutputList(4);
+
+            //Assert
+            outputList[0].NextExecTime.Should().Be(new DateTime(2024, 1, 8, 8, 0, 0));
+            outputList[1].NextExecTime.Should().Be(new DateTime(2024, 1, 8, 9, 30, 0));
+            outputList[2].NextExecTime.Should().Be(new DateTime(2024, 1, 15, 8, 0, 0));
+            outputList[3].NextExecTime.Should().Be(new DateTime(2024, 1, 15, 9, 30, 0));
+            outputList[0].Description.Should()
+                .Be(
+                    "Occurs every week on monday every 90 minutes between 08:00 and 10:00 starting on 01/01/0001");
+            outputList[1].Description.Should()
+                .Be(
+                    "Occurs every week on monday every 90 minutes between 08:00 and 10:00 starting on 01/01/0001");
+            outputList[2].Description.Should()
+                .Be(
+                    "Occurs every week on monday every 90 minutes between 08:00 and 10:00 starting on 01/01/0001");
+            outputList[3].Description.Should()
+                .Be(
+                    "Occurs every week on monday every 90 minutes between 08:00 and 10:00 starting on 01/01/0001");
+        }
+        [Fact]
+        public void ReturnExactlyTheSameDatesAsDailyIfEverydayEachWeekSelected()
+        {
+            //Arrange
+            var scWeek = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2024, 1, 1, 12, 0, 0),
+                IsEnabled = true,
+                Occurs = Occurrence.Weekly,
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
+
+                WeeklyFrequency = 1,
+                DaysOfWeek = [DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday, DayOfWeek.Thursday,
+                    DayOfWeek.Friday, DayOfWeek.Saturday, DayOfWeek.Sunday],
+
+                DailyType = DailyOccursType.Every,
+                DailyOccursEvery = 90,
+                OccursEveryType = DailyOccursEveryType.Minutes,
+
+                DailyStartingAt = new TimeSpan(8, 0, 0),
+                DailyEndingAt = new TimeSpan(10, 0, 0),
+
+                StartDate = DateTime.MinValue,
+                EndDate = null,
+            };
+            var serviceWeek = new Service(scWeek);
+
+            var scDay = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2024, 1, 1, 12, 0, 0),
+                IsEnabled = true,
+                Occurs = Occurrence.Daily,
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
+
+                DailyType = DailyOccursType.Every,
+                DailyOccursEvery = 90,
+                OccursEveryType = DailyOccursEveryType.Minutes,
+
+                DailyStartingAt = new TimeSpan(8, 0, 0),
+                DailyEndingAt = new TimeSpan(10, 0, 0),
+
+                StartDate = DateTime.MinValue,
+                EndDate = null,
+            };
+            var serviceDay = new Service(scDay);
+
+            //Act
+            var outputWeek = serviceWeek.GetOutput();
+            var outputWeekList = serviceWeek.GetOutputList(7);
+            var outputDay = serviceDay.GetOutput();
+            var outputDayList = serviceDay.GetOutputList(7);
+
+            //Assert
+            outputWeek.NextExecTime.Should().Be(outputDay.NextExecTime);
+            outputWeekList[0].NextExecTime.Should().Be(outputDayList[0].NextExecTime);
+            outputWeekList[1].NextExecTime.Should().Be(outputDayList[1].NextExecTime);
+            outputWeekList[2].NextExecTime.Should().Be(outputDayList[2].NextExecTime);
+            outputWeekList[3].NextExecTime.Should().Be(outputDayList[3].NextExecTime);
+            outputWeekList[4].NextExecTime.Should().Be(outputDayList[4].NextExecTime);
+            outputWeekList[5].NextExecTime.Should().Be(outputDayList[5].NextExecTime);
+            outputWeekList[6].NextExecTime.Should().Be(outputDayList[6].NextExecTime);
+        }
     }
     
 }

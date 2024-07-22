@@ -1,10 +1,11 @@
 ﻿using Scheduler.Enums;
 using Scheduler.Models;
+using Scheduler.Services.HoursCalculators;
 using Scheduler.Utilities;
 
 namespace Scheduler.Services
 {
-    public class RecurringWeeklySchedulerService(SchedulerConfiguration sc) : ISchedulerService
+    public class RecurringWeeklySchedulerService(SchedulerConfiguration sc, IHoursCalculator hc) : ISchedulerService
     {
         public List<DateTime> CalculateAllNextDates(int maxLength)
         {
@@ -27,7 +28,7 @@ namespace Scheduler.Services
                 }
             }
 
-            return HoursCalculatorService.GetDatesOfDays(datesList, sc, maxLength, currentDate.TimeOfDay);
+            return hc.GetHoursOfDates(datesList, sc, maxLength, currentDate.TimeOfDay);
         }
 
         public DateTime CalculateFirstDate()
@@ -39,7 +40,7 @@ namespace Scheduler.Services
             }
 
 
-            return HoursCalculatorService.CalculateNextHour(currentDate, sc);
+            return hc.CalculateNextHour(currentDate, sc);
 
 
         }
@@ -52,7 +53,7 @@ namespace Scheduler.Services
 
 
             return
-                $"Occurs every {frequency} on {daysOfWeek} " + dailyQuote;
+                $"Occurs every {frequency} {daysOfWeek} " + dailyQuote;
         }
 
         private string GetDailyQuote()

@@ -115,8 +115,8 @@ namespace SchedulerTests
                 IsEnabled = true,
                 Occurs = Occurrence.Daily,
 
-                ConfigurationDate = null,
-                Type = ConfigurationType.Recurring,
+                ConfigurationDate = new DateTime(2020, 1, 1),
+                Type = ConfigurationType.Once,
 
                 StartDate = new DateTime(2020, 1, 6),
                 EndDate = DateTime.MaxValue,
@@ -140,8 +140,8 @@ namespace SchedulerTests
                 IsEnabled = true,
                 Occurs = Occurrence.Daily,
 
-                ConfigurationDate = null,
-                Type = ConfigurationType.Recurring,
+                ConfigurationDate = new DateTime(2020, 2, 1),
+                Type = ConfigurationType.Once,
 
                 StartDate = DateTime.MinValue,
                 EndDate = new DateTime(2020, 1, 2),
@@ -179,5 +179,164 @@ namespace SchedulerTests
             //Assert
             action.Should().Throw<KeyNotFoundException>();
         }
+        [Fact]
+        public void ErrorWhenNoExistingDailyFrequency()
+        {
+            //Arrange
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2020, 1, 1),
+                IsEnabled = true,
+                Occurs = Occurrence.Daily,
+
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
+                WeeklyFrequency = 2,
+                OccursEveryType = (DailyOccursEveryType)10,
+
+
+                StartDate = DateTime.MinValue,
+                EndDate = DateTime.MaxValue,
+            };
+            var service = new Service(sc);
+            //Act
+            var action = () => service.GetOutput();
+
+            //Assert
+            action.Should().Throw<KeyNotFoundException>();
+        }
+        [Fact]
+        public void ErrorWhenRepeatedDaysOfWeek()
+        {
+            //Arrange
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2020, 1, 1),
+                IsEnabled = true,
+                Occurs = Occurrence.Weekly,
+
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
+                WeeklyFrequency = 2,
+                DaysOfWeek = [DayOfWeek.Monday, DayOfWeek.Monday],
+
+
+                StartDate = DateTime.MinValue,
+                EndDate = DateTime.MaxValue,
+            };
+
+            //Act
+            var action = () => new Service(sc);
+
+            //Assert
+            action.Should().Throw<SchedulerException>().WithMessage("Days of week should not be repeated.");
+        }
+
+        [Fact]
+        public void ErrorWhenNoDaysSelectedAndWeeklyConfig()
+        {
+            //Arrange
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2020, 1, 1),
+                IsEnabled = true,
+                Occurs = Occurrence.Weekly,
+
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
+                WeeklyFrequency = 2,
+                DaysOfWeek = [],
+
+
+                StartDate = DateTime.MinValue,
+                EndDate = DateTime.MaxValue,
+            };
+            //Act
+            var action = () => new Service(sc);
+
+            //Assert
+            action.Should().Throw<SchedulerException>()
+                .WithMessage("Weekly configuration requires to select at least one day of week.");
+        }
+
+        [Fact]
+        public void ErrorWhenInvalidWeeklyFrequency()
+        {
+            //Arrange
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2020, 1, 1),
+                IsEnabled = true,
+                Occurs = Occurrence.Weekly,
+
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
+                WeeklyFrequency = 0,
+
+
+                StartDate = DateTime.MinValue,
+                EndDate = DateTime.MaxValue,
+            };
+            //Act
+            var action = () => new Service(sc);
+
+            //Assert
+            action.Should().Throw<SchedulerException>()
+                .WithMessage("Weekly configuration requires a frequency higher than 0.");
+        }
+
+        [Fact]
+        public void ErrorWhenInvalidDailyFrequency()
+        {
+            //Arrange
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2020, 1, 1),
+                IsEnabled = true,
+                Occurs = Occurrence.Weekly,
+
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
+                DailyOccursEvery = 0,
+
+
+                StartDate = DateTime.MinValue,
+                EndDate = DateTime.MaxValue,
+            };
+            //Act
+            var action = () => new Service(sc);
+
+            //Assert
+            action.Should().Throw<SchedulerException>()
+                .WithMessage("Daily frequency must be higher than 0.");
+        }
+
+        [Fact]
+        public void ErrorWhenInvalidRangeOfHours()
+        {
+            //Arrange
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2020, 1, 1),
+                IsEnabled = true,
+                Occurs = Occurrence.Weekly,
+
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
+                DailyStartingAt = TimeSpan.MaxValue,
+                DailyEndingAt = TimeSpan.MaxValue,
+
+
+                StartDate = DateTime.MinValue,
+                EndDate = DateTime.MaxValue,
+            };
+            //Act
+            var action = () => new Service(sc);
+
+            //Assert
+            action.Should().Throw<SchedulerException>()
+                .WithMessage("Starting hour must be earlier than the end hour.");
+        }
     }
+    
 }

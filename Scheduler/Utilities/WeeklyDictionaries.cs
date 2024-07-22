@@ -37,13 +37,14 @@ namespace Scheduler.Utilities
         public static string GetDaysQuote(List<DayOfWeek> days)
         {
             var result = new StringBuilder();
-
+            if (days.Count == 7)
+            {
+                return "everyday";
+            }
+            result.Append("on ");
             for (var i = 0; i < days.Count; i++)
             {
-                if (!DaysOfWeekMap.TryGetValue(days[i], out var stringDay))
-                {
-                    throw new KeyNotFoundException();
-                }
+                DaysOfWeekMap.TryGetValue(days[i], out var stringDay);
 
                 if (i == days.Count - 1 && days.Count > 1)
                 {

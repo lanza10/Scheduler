@@ -1,5 +1,6 @@
 ﻿using Scheduler.Enums;
 using Scheduler.Models;
+using Scheduler.Services.HoursCalculators;
 using Scheduler.Validator;
 
 namespace Scheduler.Services
@@ -13,19 +14,7 @@ namespace Scheduler.Services
         {
             SchedulerValidator.ValidateSchedulerConfiguration(sc);
 
-            if (sc.Type == ConfigurationType.Once)
-            {
-                _schedulerService = new OnceSchedulerService(sc);
-            }
-            else
-            {
-                _schedulerService = sc.Occurs switch
-                {
-                    Occurrence.Daily => new RecurringDailySchedulerService(sc),
-                    //Occurrence.Weekly => new RecurringMonthlySchedulerService(sc)new RecurringWeeklySchedulerService(sc),
-                    _ => new RecurringWeeklySchedulerService(sc)
-                };
-            }
+            _schedulerService = sc.Type == ConfigurationType.Once ? new OnceSchedulerService(sc) : GetRecurringService(sc);
         }
         public Output GetOutput()
         {
@@ -44,5 +33,25 @@ namespace Scheduler.Services
             return outputList;
         }
 
+        private IHoursCalculator GetHoursCalculator(SchedulerConfiguration sc)
+        {
+            if (sc.DailyType == DailyOccursType.Every)
+            {
+                return new HoursCalculatorEvery();
+            }
+            return new HoursCalculatorOnce();
+        }
+
+        private ISchedulerService GetRecurringService(SchedulerConfiguration sc)
+        {
+            var hc = GetHoursCalculator(sc);
+            switch (sc.Occurs)
+            {
+                case Occurrence.Daily:
+                    return new RecurringDailySchedulerService(sc, hc);
+                default:
+                    return new RecurringWeeklySchedulerService(sc, hc);
+            }
+        }
     }
 }
