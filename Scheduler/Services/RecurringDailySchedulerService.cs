@@ -11,15 +11,15 @@ namespace Scheduler.Services
     {
         public List<DateTime> CalculateAllNextDates(int maxLength)
         {
-            var auxDate = CalculateFirstDate();
-            var initTime = auxDate.TimeOfDay;
+            var currentDate = CalculateFirstDate();
+            var initTime = currentDate.TimeOfDay;
             var dateList = new List<DateTime>();
 
 
-            while (auxDate <= sc.EndDate && dateList.Count < maxLength)
+            while (currentDate <= sc.EndDate && dateList.Count < maxLength)
             {
-                dateList.Add(auxDate.Date);
-                auxDate = auxDate.AddDays(1);
+                dateList.Add(currentDate.Date);
+                currentDate = currentDate.AddDays(1);
             }
 
 
