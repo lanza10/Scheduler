@@ -577,7 +577,8 @@ namespace SchedulerTests
 
         }
 
-        [Fact] public void ReturnExpectedDatesWithDailyModeOnceAndInterval()
+        [Fact] 
+        public void ReturnExpectedDatesWithDailyModeOnceAndInterval()
         {
             //Arrange
             var sc = new SchedulerConfiguration
@@ -611,6 +612,41 @@ namespace SchedulerTests
             outputList[4].NextExecTime.Should().Be(new DateTime(2024, 8, 7, 12, 0, 0));
             outputList[5].NextExecTime.Should().Be(new DateTime(2024, 8, 10, 12, 0, 0));
             outputList[6].NextExecTime.Should().Be(new DateTime(2024, 9, 9, 12, 0, 0));
+
+        }
+        [Fact]
+        public void ReturnExpectedDatesWithDailyModeOnceAndIntervalUntilEndDate()
+        {
+            //Arrange
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2024, 7, 1, 12, 0, 0),
+                IsEnabled = true,
+                Occurs = Occurrence.Weekly,
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
+
+                WeeklyFrequency = 5,
+                DaysOfWeek = [DayOfWeek.Monday, DayOfWeek.Wednesday, DayOfWeek.Saturday],
+
+                DailyType = DailyOccursType.Once,
+                DailyOccursOnceAt = new TimeSpan(12, 0, 0),
+
+                StartDate = DateTime.MinValue,
+                EndDate = new DateTime(2024,8,10,11,59,59),
+            };
+            var service = new Service(sc);
+
+            //Act
+            var outputList = service.GetOutputList(7);
+
+            //Assert
+            outputList.Should().HaveCount(5);
+            outputList[0].NextExecTime.Should().Be(new DateTime(2024, 7, 1, 12, 0, 0));
+            outputList[1].NextExecTime.Should().Be(new DateTime(2024, 7, 3, 12, 0, 0));
+            outputList[2].NextExecTime.Should().Be(new DateTime(2024, 7, 6, 12, 0, 0));
+            outputList[3].NextExecTime.Should().Be(new DateTime(2024, 8, 5, 12, 0, 0));
+            outputList[4].NextExecTime.Should().Be(new DateTime(2024, 8, 7, 12, 0, 0));
 
         }
     }
