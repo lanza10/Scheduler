@@ -412,6 +412,116 @@ namespace SchedulerTests
             outputWeekList[5].NextExecTime.Should().Be(outputDayList[5].NextExecTime);
             outputWeekList[6].NextExecTime.Should().Be(outputDayList[6].NextExecTime);
         }
+
+        [Fact]
+        public void ReturnDaysOfWeekSelected()
+        {
+            //Arrange
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2024, 1, 1, 12, 0, 0),
+                IsEnabled = true,
+                Occurs = Occurrence.Weekly,
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
+
+                WeeklyFrequency = 1,
+                DaysOfWeek = [DayOfWeek.Monday, DayOfWeek.Thursday],
+
+                DailyType = DailyOccursType.Every,
+                DailyOccursEvery = 90,
+                OccursEveryType = DailyOccursEveryType.Minutes,
+
+                DailyStartingAt = new TimeSpan(8, 0, 0),
+                DailyEndingAt = new TimeSpan(10, 0, 0),
+
+                StartDate = DateTime.MinValue,
+                EndDate = null,
+            };
+            var service = new Service(sc);
+
+            //Act
+            var outputList = service.GetOutputList(10);
+
+            //Assert
+            foreach (var output in outputList)
+            {
+                output.NextExecTime.DayOfWeek.Should().BeOneOf([DayOfWeek.Monday, DayOfWeek.Thursday]);
+            }
+        }
+        [Fact]
+        public void ReturnDatesThatRespectHourRanges()
+        {
+            //Arrange
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2024, 1, 1, 12, 0, 0),
+                IsEnabled = true,
+                Occurs = Occurrence.Weekly,
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
+
+                WeeklyFrequency = 1,
+                DaysOfWeek = [DayOfWeek.Monday, DayOfWeek.Thursday],
+
+                DailyType = DailyOccursType.Every,
+                DailyOccursEvery = 90,
+                OccursEveryType = DailyOccursEveryType.Minutes,
+
+                DailyStartingAt = new TimeSpan(8, 0, 0),
+                DailyEndingAt = new TimeSpan(10, 0, 0),
+
+                StartDate = DateTime.MinValue,
+                EndDate = null,
+            };
+            var service = new Service(sc);
+
+            //Act
+            var outputList = service.GetOutputList(10);
+
+            //Assert
+            foreach (var output in outputList)
+            {
+                output.NextExecTime.TimeOfDay.Should().BeGreaterThanOrEqualTo(sc.DailyStartingAt);
+                output.NextExecTime.TimeOfDay.Should().BeLessOrEqualTo(sc.DailyEndingAt);
+            }
+        }
+
+        [Fact]
+        public void ReturnExpectedOutputWithToHighFrequency()
+        {
+            //Arrange
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2024, 1, 1, 12, 0, 0),
+                IsEnabled = true,
+                Occurs = Occurrence.Weekly,
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
+
+                WeeklyFrequency = 50,
+                DaysOfWeek = [DayOfWeek.Monday],
+
+                DailyType = DailyOccursType.Every,
+                DailyOccursEvery = 90,
+                OccursEveryType = DailyOccursEveryType.Minutes,
+
+                DailyStartingAt = new TimeSpan(8, 0, 0),
+                DailyEndingAt = new TimeSpan(10, 0, 0),
+
+                StartDate = DateTime.MinValue,
+                EndDate = null,
+            };
+            var service = new Service(sc);
+
+            //Act
+            var output = service.GetOutput();
+
+            //Assert
+            output.NextExecTime.Should().Be(new DateTime(2024, 12, 16, 8, 0, 0));
+            output.Description.Should()
+                .Be("Occurs every 50 weeks on monday every 90 minutes between 08:00 and 10:00 starting on 01/01/0001");
+        }
     }
     
 }

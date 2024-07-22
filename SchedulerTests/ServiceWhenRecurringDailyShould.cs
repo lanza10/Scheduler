@@ -424,5 +424,43 @@ namespace SchedulerTests
             outputList[1].NextExecTime.Should().Be(new DateTime(2020, 1, 2, 0, 10, 0));
             outputList[2].NextExecTime.Should().Be(new DateTime(2020, 1, 2, 1, 10, 0));
         }
+
+        [Fact]
+        public void ReturnTheInitDateOfEveryDayIfIntervalIsToHigh()
+        {
+            //Arrange
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2020, 1, 1, 23, 40, 0),
+                IsEnabled = true,
+                Occurs = Occurrence.Daily,
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
+
+                DailyType = DailyOccursType.Every,
+                DailyOccursEvery = 50,
+                OccursEveryType = DailyOccursEveryType.Hours,
+                DailyStartingAt = new TimeSpan(0, 10, 0),
+                DailyEndingAt = new TimeSpan(23, 50, 0),
+
+                DailyOccursOnceAt = new TimeSpan(12, 0, 0),
+
+
+                StartDate = DateTime.MinValue,
+                EndDate = DateTime.MaxValue
+
+            };
+            var service = new Service(sc);
+            //Act
+            var outputList = service.GetOutputList(5);
+
+            //Assert
+            outputList.Should().HaveCount(5);
+            outputList[0].NextExecTime.Should().Be(new DateTime(2020, 1, 1, 23, 40, 0));
+            outputList[1].NextExecTime.Should().Be(new DateTime(2020, 1, 2, 0, 10, 0));
+            outputList[2].NextExecTime.Should().Be(new DateTime(2020, 1, 3, 0, 10, 0));
+            outputList[3].NextExecTime.Should().Be(new DateTime(2020, 1, 4, 0, 10, 0));
+            outputList[4].NextExecTime.Should().Be(new DateTime(2020, 1, 5, 0, 10, 0));
+        }
     }
 }

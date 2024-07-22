@@ -34,9 +34,16 @@ namespace Scheduler.Services
         public DateTime CalculateFirstDate()
         {
             var currentDate = sc.CurrentDate;
-            while (!sc.DaysOfWeek.Contains(currentDate.DayOfWeek))
+            var initDate = currentDate;
+            var initDayOfWeek = sc.CurrentDate.DayOfWeek;
+            while (!sc.DaysOfWeek.Contains(currentDate.DayOfWeek) || currentDate.TimeOfDay > sc.DailyEndingAt)
             {
                 currentDate = currentDate.Date.AddDays(1);
+
+                if (currentDate.DayOfWeek == initDayOfWeek && currentDate != initDate)
+                {
+                    currentDate = currentDate.AddDays(7 * (sc.WeeklyFrequency - 1));
+                }
             }
 
 
