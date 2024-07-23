@@ -49,8 +49,10 @@ namespace Scheduler.Services
             {
                 case Occurrence.Daily:
                     return new RecurringDailySchedulerService(sc, hc);
-                default:
+                case Occurrence.Weekly:
                     return new RecurringWeeklySchedulerService(sc, hc);
+                default:
+                    return new RecurringMonthlySchedulerService(sc, hc);
             }
         }
     }

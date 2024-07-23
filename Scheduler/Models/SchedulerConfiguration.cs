@@ -10,6 +10,16 @@ namespace Scheduler.Models
         public Occurrence Occurs { get; set; }
         public ConfigurationType Type { get; set; }
 
+        public MonthlyType MonthlyType { get; set; } = MonthlyType.Day;
+
+        public int MonthlyDay { get; set; } = 1;
+        public int MonthlyDayFrequency { get; set; } = 1;
+
+        public MonthlyDateOrder MonthlyDateOrder { get; set; } = MonthlyDateOrder.First;
+        public MonthlyDateDay MonthlyDateDay { get; set; } = MonthlyDateDay.Day;
+        public int MonthlyDateFrequency { get; set; } = 1;
+        
+
         public int WeeklyFrequency { get; set; } = 1;
 
         public List<DayOfWeek> DaysOfWeek { get; set; } =

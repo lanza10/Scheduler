@@ -26,7 +26,7 @@ namespace Scheduler.Services.HoursCalculators
 
         public DateTime CalculateNextHour(DateTime currentDate, SchedulerConfiguration sc)
         {
-            return sc.CurrentDate.TimeOfDay > sc.DailyOccursOnceAt
+            return currentDate.TimeOfDay > sc.DailyOccursOnceAt
                 ? currentDate.Date.AddDays(1).Add(sc.DailyOccursOnceAt)
                 : currentDate.Date.Add(sc.DailyOccursOnceAt);
         }

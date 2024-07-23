@@ -3,6 +3,8 @@ using Scheduler.Enums;
 using Scheduler.Models;
 using Scheduler.Services.HoursCalculators;
 using Scheduler.Utilities;
+using Scheduler.Validator;
+using System.Globalization;
 
 namespace Scheduler.Services
 {
@@ -27,12 +29,15 @@ namespace Scheduler.Services
         }
         public DateTime CalculateFirstDate()
         {
-            return hc.CalculateNextHour(sc.CurrentDate, sc);
+            var resultDate = hc.CalculateNextHour(sc.CurrentDate, sc);
+            SchedulerServiceValidator.ValidateResultDoNotExceedLimits(resultDate, sc.StartDate, sc.EndDate);
+            return resultDate;
         }
 
         public string GenerateDescription(DateTime date)
         {
-            var formattedStartDate = sc.StartDate.ToString("dd/MM/yyyy");
+            var culture = CultureInfo.CurrentCulture;
+            var formattedStartDate = sc.StartDate.ToString("d", culture);
 
             if (sc.DailyType == DailyOccursType.Every)
             {

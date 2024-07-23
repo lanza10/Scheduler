@@ -1,5 +1,6 @@
 ﻿using Scheduler.Validator;
 using Scheduler.Models;
+using System.Globalization;
 
 namespace Scheduler.Services
 {
@@ -20,8 +21,9 @@ namespace Scheduler.Services
 
         public string GenerateDescription(DateTime date)
         {
-            var formattedNextExecTime = date.ToString("dd/MM/yyyy 'at' HH:mm");
-            var formattedStartDate = sc.StartDate.ToString("dd/MM/yyyy");
+            var culture = CultureInfo.CurrentCulture;
+            var formattedNextExecTime = date.ToString("dd/MM/yyyy 'at' HH:mm", culture);
+            var formattedStartDate = sc.StartDate.ToString("d", culture);
             return $"Occurs once.Schedule will be used on {formattedNextExecTime} starting on {formattedStartDate}";
         }
     }

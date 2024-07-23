@@ -48,7 +48,7 @@ namespace Scheduler.Services.HoursCalculators
 
             if (currentTime >= sc.DailyStartingAt && currentTime <= sc.DailyEndingAt)
             {
-                return sc.CurrentDate;
+                return currentDate;
             }
 
             return currentDate.Date.AddDays(1).Add(sc.DailyStartingAt);

@@ -1,7 +1,9 @@
-﻿using Scheduler.Enums;
+﻿using System.Globalization;
+using Scheduler.Enums;
 using Scheduler.Models;
 using Scheduler.Services.HoursCalculators;
 using Scheduler.Utilities;
+using Scheduler.Validator;
 
 namespace Scheduler.Services
 {
@@ -47,9 +49,9 @@ namespace Scheduler.Services
             }
 
 
-            return hc.CalculateNextHour(currentDate, sc);
-
-
+            var resultDate =  hc.CalculateNextHour(currentDate, sc);
+            SchedulerServiceValidator.ValidateResultDoNotExceedLimits(resultDate,sc.StartDate,sc.EndDate);
+            return resultDate;
         }
 
         public string GenerateDescription(DateTime date)
@@ -66,7 +68,9 @@ namespace Scheduler.Services
         private string GetDailyQuote()
         {
             string result;
-            var formattedStartDate = sc.StartDate.ToString("dd/MM/yyyy");
+            //yield
+            var culture = CultureInfo.CurrentCulture;
+            var formattedStartDate = sc.StartDate.ToString("d", culture);
             var interval = OccurrenceDictionaries.GetIntervalQuote(sc.DailyOccursEvery, sc.OccursEveryType);
             var startingAt = sc.DailyStartingAt.ToString(@"hh\:mm");
             var endingAt = sc.DailyEndingAt.ToString(@"hh\:mm");

@@ -11,6 +11,9 @@ namespace Scheduler.Utilities
             },
             {
                 Occurrence.Weekly, "week"
+            },
+            {
+                Occurrence.Monthly, "month"
             }
         };
 
