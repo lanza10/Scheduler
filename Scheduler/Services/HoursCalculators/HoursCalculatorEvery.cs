@@ -1,6 +1,5 @@
 ﻿using Scheduler.Enums;
 using Scheduler.Models;
-using Scheduler.Validator;
 
 namespace Scheduler.Services.HoursCalculators
 {

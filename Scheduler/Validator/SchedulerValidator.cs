@@ -1,7 +1,6 @@
 ﻿using Scheduler.Enums;
 using Scheduler.Exceptions;
 using Scheduler.Models;
-using System;
 
 namespace Scheduler.Validator
 {

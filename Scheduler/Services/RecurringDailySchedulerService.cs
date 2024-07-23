@@ -3,7 +3,6 @@ using Scheduler.Enums;
 using Scheduler.Models;
 using Scheduler.Services.HoursCalculators;
 using Scheduler.Utilities;
-using Scheduler.Validator;
 
 namespace Scheduler.Services
 {
@@ -28,7 +27,7 @@ namespace Scheduler.Services
         }
         public DateTime CalculateFirstDate()
         {
-           return hc.CalculateNextHour(sc.CurrentDate, sc);
+            return hc.CalculateNextHour(sc.CurrentDate, sc);
         }
 
         public string GenerateDescription(DateTime date)
