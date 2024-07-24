@@ -1,7 +1,5 @@
 ﻿
-using System.Runtime.InteropServices.JavaScript;
 using Scheduler.Enums;
-using Scheduler.Exceptions;
 using Scheduler.Models;
 using Scheduler.Services.HoursCalculators;
 using Scheduler.Utilities;
@@ -11,9 +9,40 @@ namespace Scheduler.Services
 {
     public class RecurringMonthlySchedulerService(SchedulerConfiguration sc, IHoursCalculator hc): ISchedulerService
     {
-        public List<DateTime> CalculateAllNextDates(int length)
+        public List<DateTime> CalculateAllNextDates(int maxLength)
         {
-            return [];
+            var currentDate = CalculateFirstDate();
+            var initDate = currentDate;
+            var initTime = currentDate.TimeOfDay;
+            var daysOfWeek = GetDayOfWeekList(sc.MonthlyDateDay);
+            var datesList = new List<DateTime>();
+            while (datesList.Count < maxLength && currentDate <= sc.EndDate)
+            {
+                var i = daysOfWeek.FindIndex(day => day == currentDate.DayOfWeek);
+                while (i < daysOfWeek.Count && datesList.Count < maxLength && currentDate <= sc.EndDate)
+                {
+                    var month = currentDate.Month;
+                    if (currentDate.DayOfWeek != daysOfWeek[i])
+                    {
+                        break;
+                    }
+
+                    datesList.Add(currentDate.Date);
+                    currentDate = currentDate.AddDays(1);
+                    i++;
+
+                    if (month != currentDate.Month)
+                    {
+                        break;
+                    }
+                }
+
+                currentDate = CalculateDayOfMonth(new DateTime(currentDate.Year,currentDate.Month,1).AddMonths(sc.MonthlyDateFrequency -1));
+
+
+            }
+
+            return hc.GetHoursOfDates(datesList, sc, maxLength, initTime);
         }
 
         public DateTime CalculateFirstDate()
