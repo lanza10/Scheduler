@@ -772,5 +772,40 @@ namespace SchedulerTests
             outputList[4].NextExecTime.Should().Be(new DateTime(2024, 3, 8, 12, 30, 0));
             outputList[5].NextExecTime.Should().Be(new DateTime(2024, 5, 6, 12, 30, 0));
         }
+        [Fact]
+        public void ReturnExpectedDatesWhenSearchingDay()
+        {
+            //Arrange
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2024, 1, 1, 0, 0, 0),
+                IsEnabled = true,
+                Occurs = Occurrence.Monthly,
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
+
+                MonthlyType = MonthlyType.Day,
+                MonthlyDay = 1,
+                MonthlyDayFrequency = 3,
+
+                DailyType = DailyOccursType.Once,
+                DailyOccursOnceAt = new TimeSpan(12, 30, 0),
+
+                StartDate = DateTime.MinValue,
+                EndDate = DateTime.MaxValue,
+            };
+            var service = new Service(sc);
+            //Act
+            var outputList = service.GetOutputList(6);
+
+            //Assert
+            outputList.Should().HaveCount(6);
+            outputList[0].NextExecTime.Should().Be(new DateTime(2024, 1, 1, 12, 30, 0));
+            outputList[1].NextExecTime.Should().Be(new DateTime(2024, 3, 1, 12, 30, 0));
+            outputList[2].NextExecTime.Should().Be(new DateTime(2024, 5, 1, 12, 30, 0));
+            outputList[3].NextExecTime.Should().Be(new DateTime(2024, 7, 1, 12, 30, 0));
+            outputList[4].NextExecTime.Should().Be(new DateTime(2024, 9, 1, 12, 30, 0));
+            outputList[5].NextExecTime.Should().Be(new DateTime(2025, 11, 1, 12, 30, 0));
+        }
     }
 }

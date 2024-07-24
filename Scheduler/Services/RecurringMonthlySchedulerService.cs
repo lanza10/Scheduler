@@ -4,6 +4,7 @@ using Scheduler.Models;
 using Scheduler.Services.HoursCalculators;
 using Scheduler.Utilities;
 using Scheduler.Validator;
+using System;
 
 namespace Scheduler.Services
 {
@@ -12,34 +13,16 @@ namespace Scheduler.Services
         public List<DateTime> CalculateAllNextDates(int maxLength)
         {
             var currentDate = CalculateFirstDate();
-            var initDate = currentDate;
             var initTime = currentDate.TimeOfDay;
             var daysOfWeek = GetDayOfWeekList(sc.MonthlyDateDay);
             var datesList = new List<DateTime>();
-            while (datesList.Count < maxLength && currentDate <= sc.EndDate)
+            if (sc.MonthlyType == MonthlyType.Date)
             {
-                var i = daysOfWeek.FindIndex(day => day == currentDate.DayOfWeek);
-                while (i < daysOfWeek.Count && datesList.Count < maxLength && currentDate <= sc.EndDate)
-                {
-                    var month = currentDate.Month;
-                    if (currentDate.DayOfWeek != daysOfWeek[i])
-                    {
-                        break;
-                    }
-
-                    datesList.Add(currentDate.Date);
-                    currentDate = currentDate.AddDays(1);
-                    i++;
-
-                    if (month != currentDate.Month)
-                    {
-                        break;
-                    }
-                }
-
-                currentDate = CalculateDayOfMonth(new DateTime(currentDate.Year,currentDate.Month,1).AddMonths(sc.MonthlyDateFrequency -1));
-
-
+                datesList = GetAllDatesWhenDateMode(datesList, maxLength, daysOfWeek, currentDate);
+            }
+            else
+            {
+                datesList = GetAllDatesWhenDayMode(datesList, maxLength, currentDate);
             }
 
             return hc.GetHoursOfDates(datesList, sc, maxLength, initTime);
@@ -140,6 +123,47 @@ namespace Scheduler.Services
                 throw new KeyNotFoundException();
             }
             return res;
+        }
+
+        private List<DateTime> GetAllDatesWhenDateMode(List<DateTime> datesList, int maxLength, List<DayOfWeek> daysOfWeek, DateTime currentDate)
+        {
+            while (datesList.Count < maxLength && currentDate <= sc.EndDate)
+            {
+                var i = daysOfWeek.FindIndex(day => day == currentDate.DayOfWeek);
+                while (i < daysOfWeek.Count && datesList.Count < maxLength && currentDate <= sc.EndDate)
+                {
+                    var month = currentDate.Month;
+                    if (currentDate.DayOfWeek != daysOfWeek[i])
+                    {
+                        break;
+                    }
+
+                    datesList.Add(currentDate.Date);
+                    currentDate = currentDate.AddDays(1);
+                    i++;
+
+                    if (month != currentDate.Month)
+                    {
+                        break;
+                    }
+                }
+
+                currentDate = CalculateDayOfMonth(new DateTime(currentDate.Year, currentDate.Month, 1).AddMonths(sc.MonthlyDateFrequency - 1));
+
+
+            }
+
+            return datesList;
+        }
+        private List<DateTime> GetAllDatesWhenDayMode(List<DateTime> datesList, int maxLength, DateTime currentDate)
+        {
+            while (datesList.Count < maxLength && currentDate <= sc.EndDate)
+            {
+                datesList.Add(currentDate);
+                currentDate = currentDate.AddMonths(sc.MonthlyDayFrequency - 1);
+            }
+
+            return datesList;
         }
     }
 }
