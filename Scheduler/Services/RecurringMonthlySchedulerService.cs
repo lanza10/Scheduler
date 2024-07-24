@@ -1,6 +1,7 @@
 ﻿
 using System.Runtime.InteropServices.JavaScript;
 using Scheduler.Enums;
+using Scheduler.Exceptions;
 using Scheduler.Models;
 using Scheduler.Services.HoursCalculators;
 using Scheduler.Utilities;
@@ -41,22 +42,34 @@ namespace Scheduler.Services
         {
             var currentDate = sc.CurrentDate;
             var monthlyDayDate = new DateTime(currentDate.Year, currentDate.Month, sc.MonthlyDay);
-            var limitDate = hc.CalculateNextHour(monthlyDayDate, sc);
+            var endLimit = hc.CalculateEndLimit(monthlyDayDate, sc);
+            var startLimit = hc.CalculateStartLimit(monthlyDayDate, sc);
 
-            return currentDate <= limitDate ? monthlyDayDate : monthlyDayDate.AddMonths(sc.MonthlyDayFrequency - 1);
+            if (currentDate <= endLimit)
+            {
+                return currentDate >= startLimit ? currentDate : monthlyDayDate;
+            }
+            return monthlyDayDate.AddMonths(sc.MonthlyDayFrequency - 1);
         }
         private DateTime GetFirstDateDateMode()
         {
             var currentDate = sc.CurrentDate;
-            var test = CalculateDayOfMonth(currentDate);
-            test = hc.CalculateNextHour(test, sc);
-            return currentDate <= test ? test : CalculateDayOfMonth(currentDate.AddMonths(sc.MonthlyDateFrequency - 1));
+            var monthlyDayDate = CalculateDayOfMonth(currentDate);
+            var endLimit = hc.CalculateEndLimit(monthlyDayDate, sc);
+            var startLimit = hc.CalculateStartLimit(monthlyDayDate, sc);
+
+            if (currentDate <= endLimit)
+            {
+                return currentDate >= startLimit ? currentDate : monthlyDayDate;
+            }
+            return CalculateDayOfMonth(currentDate.AddMonths(sc.MonthlyDateFrequency - 1));
         }
 
         private DateTime CalculateDayOfMonth(DateTime startingDate)
         {
             var test = new DateTime(startingDate.Year, startingDate.Month, 1);
-            while ((int)test.DayOfWeek != (int)sc.MonthlyDateDay)
+            var days = GetDayOfWeekList(sc.MonthlyDateDay);
+            while (days.First() != test.DayOfWeek)
             {
                 test = test.AddDays(1);
             }
@@ -69,6 +82,15 @@ namespace Scheduler.Services
             }
 
             return aux;
+        }
+
+        private List<DayOfWeek> GetDayOfWeekList(MonthlyDateDay key)
+        {
+            if (!MonthlyDictionaries.WeekDaysMap.TryGetValue(key, out var res))
+            {
+                throw new KeyNotFoundException();
+            }
+            return res;
         }
     }
 }

@@ -32,8 +32,8 @@ namespace Scheduler.Models
         public TimeSpan DailyOccursOnceAt { get; set; } = TimeSpan.Zero;
         public int DailyOccursEvery { get; set; } = 1;
         public DailyOccursEveryType OccursEveryType { get; set; } = DailyOccursEveryType.Hours;
-        public TimeSpan DailyStartingAt { get; set; } = new TimeSpan(0, 0, 0);
-        public TimeSpan DailyEndingAt { get; set; } = new TimeSpan(23, 59, 59);
+        public TimeSpan DailyStartingAt { get; set; } = new (0, 0, 0);
+        public TimeSpan DailyEndingAt { get; set; } = new (23, 59, 59);
 
         public DateTime StartDate { get; set; }
         private DateTime _endDate;

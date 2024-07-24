@@ -30,5 +30,13 @@ namespace Scheduler.Services.HoursCalculators
                 ? currentDate.Date.AddDays(1).Add(sc.DailyOccursOnceAt)
                 : currentDate.Date.Add(sc.DailyOccursOnceAt);
         }
+        public DateTime CalculateStartLimit(DateTime date, SchedulerConfiguration sc)
+        {
+            return date.Date;
+        }
+        public DateTime CalculateEndLimit(DateTime date, SchedulerConfiguration sc)
+        {
+            return date.Date.Add(sc.DailyOccursOnceAt);
+        }
     }
 }

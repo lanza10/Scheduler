@@ -65,5 +65,13 @@ namespace Scheduler.Services.HoursCalculators
                     return new TimeSpan(0, 0, sc.DailyOccursEvery);
             }
         }
+        public DateTime CalculateStartLimit(DateTime date, SchedulerConfiguration sc)
+        {
+            return date.Date.Add(sc.DailyStartingAt);
+        }
+        public DateTime CalculateEndLimit(DateTime date, SchedulerConfiguration sc)
+        {
+            return date.Date.Add(sc.DailyEndingAt);
+        }
     }
 }

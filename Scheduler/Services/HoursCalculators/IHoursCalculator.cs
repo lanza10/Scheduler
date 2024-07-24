@@ -8,6 +8,7 @@ namespace Scheduler.Services.HoursCalculators
             int maxLength, TimeSpan initTime);
 
         public DateTime CalculateNextHour(DateTime currentDate, SchedulerConfiguration sc);
-
+        public DateTime CalculateStartLimit(DateTime date, SchedulerConfiguration sc);
+        public DateTime CalculateEndLimit(DateTime date, SchedulerConfiguration sc);
     }
 }
