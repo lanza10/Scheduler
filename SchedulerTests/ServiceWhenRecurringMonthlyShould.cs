@@ -518,7 +518,7 @@ namespace SchedulerTests
 
                 MonthlyType = MonthlyType.Date,
                 MonthlyDateFrequency = 3,
-                MonthlyDateDay = MonthlyDateDay.Day,
+                MonthlyDateDay = MonthlyDateDay.Weekday,
                 MonthlyDateOrder = MonthlyDateOrder.Second,
 
 
@@ -662,6 +662,79 @@ namespace SchedulerTests
             //Assert
             output.NextExecTime.Should().Be(new DateTime(2024, 3, 4, 12, 30, 0));
 
+        }
+
+        [Theory]
+        [InlineData(MonthlyDateOrder.First, 1)]
+        [InlineData(MonthlyDateOrder.Second, 2)]
+        [InlineData(MonthlyDateOrder.Third, 3)]
+        [InlineData(MonthlyDateOrder.Fourth, 4)]
+        [InlineData(MonthlyDateOrder.Last, 31)]
+
+        public void ReturnExpectedDatesDependingOnOrderRequested(MonthlyDateOrder order, int day)
+        {
+            //Arrange
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2024, 1, 1, 0, 0, 0),
+                IsEnabled = true,
+                Occurs = Occurrence.Monthly,
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
+
+                MonthlyType = MonthlyType.Date,
+                MonthlyDateOrder = order,
+                MonthlyDateDay = MonthlyDateDay.Day,
+                MonthlyDateFrequency = 3,
+
+                DailyType = DailyOccursType.Once,
+                DailyOccursOnceAt = new TimeSpan(12, 30, 0),
+
+                StartDate = DateTime.MinValue,
+                EndDate = DateTime.MaxValue,
+            };
+            var service = new Service(sc);
+            //Act
+            var output = service.GetOutput();
+
+            //Assert
+            output.NextExecTime.Should().Be(new DateTime(2024, 1, day, 12, 30, 0));
+        }
+        [Theory]
+        [InlineData(MonthlyDateOrder.First, 1)]
+        [InlineData(MonthlyDateOrder.Second, 2)]
+        [InlineData(MonthlyDateOrder.Third, 3)]
+        [InlineData(MonthlyDateOrder.Fourth, 4)]
+        [InlineData(MonthlyDateOrder.Last, 31)]
+
+        public void ReturnExpectedDatesDependingOnOrderRequestedButCurrentIsLate(MonthlyDateOrder order, int day)
+        {
+            //Arrange
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2024, 1, day, 23, 59, 0),
+                IsEnabled = true,
+                Occurs = Occurrence.Monthly,
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
+
+                MonthlyType = MonthlyType.Date,
+                MonthlyDateOrder = order,
+                MonthlyDateDay = MonthlyDateDay.Day,
+                MonthlyDateFrequency = 3,
+
+                DailyType = DailyOccursType.Once,
+                DailyOccursOnceAt = new TimeSpan(12, 30, 0),
+
+                StartDate = DateTime.MinValue,
+                EndDate = DateTime.MaxValue,
+            };
+            var service = new Service(sc);
+            //Act
+            var output = service.GetOutput();
+
+            //Assert
+            output.NextExecTime.Should().Be(new DateTime(2024, 3, day, 12, 30, 0));
         }
 
     }

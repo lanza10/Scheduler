@@ -69,9 +69,13 @@ namespace Scheduler.Services
         {
             var test = new DateTime(startingDate.Year, startingDate.Month, 1);
             var days = GetDayOfWeekList(sc.MonthlyDateDay);
+            if (days.Count == 7)
+            {
+                return CalculateWhenSearchingDay(test);
+            }
             while (days.First() != test.DayOfWeek)
             {
-                test = test.AddDays(1);
+                    test = test.AddDays(1);
             }
 
             var aux =  test.AddDays((int)sc.MonthlyDateOrder * 7);
@@ -82,6 +86,22 @@ namespace Scheduler.Services
             }
 
             return aux;
+        }
+
+        private DateTime CalculateWhenSearchingDay(DateTime date)
+        {
+            if (sc.MonthlyDateOrder == MonthlyDateOrder.Last)
+            {
+                date = date.AddDays(27);
+                while (date.AddDays(1).Month == date.Month)
+                {
+                    date = date.AddDays(1);
+                }
+
+                return date;
+            }
+
+            return date.AddDays((int)sc.MonthlyDateOrder);
         }
 
         private List<DayOfWeek> GetDayOfWeekList(MonthlyDateDay key)
