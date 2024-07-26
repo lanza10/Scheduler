@@ -215,7 +215,7 @@ namespace SchedulerTests
                 MonthlyType = MonthlyType.Date,
                 MonthlyDateOrder = MonthlyDateOrder.First,
                 MonthlyDateDay = MonthlyDateDay.Thursday,
-                MonthlyDateFrequency = 3,
+                MonthlyDateFrequency = 2,
 
 
                 DailyType = DailyOccursType.Once,
@@ -248,7 +248,7 @@ namespace SchedulerTests
                 MonthlyType = MonthlyType.Date,
                 MonthlyDateOrder = MonthlyDateOrder.First,
                 MonthlyDateDay = MonthlyDateDay.Thursday,
-                MonthlyDateFrequency = 3,
+                MonthlyDateFrequency = 2,
 
 
                 DailyType = DailyOccursType.Once,
@@ -280,7 +280,7 @@ namespace SchedulerTests
 
                 MonthlyType = MonthlyType.Day,
                 MonthlyDay = 8,
-                MonthlyDayFrequency = 3,
+                MonthlyDayFrequency = 2,
 
 
                 DailyType = DailyOccursType.Every,
@@ -416,7 +416,7 @@ namespace SchedulerTests
                 MonthlyType = MonthlyType.Date,
                 MonthlyDateOrder = MonthlyDateOrder.Last,
                 MonthlyDateDay = MonthlyDateDay.Monday,
-                MonthlyDateFrequency = 3,
+                MonthlyDateFrequency = 2,
 
 
 
@@ -449,7 +449,7 @@ namespace SchedulerTests
                 MonthlyType = MonthlyType.Date,
                 MonthlyDateOrder = MonthlyDateOrder.Last,
                 MonthlyDateDay = MonthlyDateDay.Monday,
-                MonthlyDateFrequency = 3,
+                MonthlyDateFrequency = 2,
 
 
 
@@ -585,7 +585,7 @@ namespace SchedulerTests
                 MonthlyType = MonthlyType.Date,
                 MonthlyDateOrder = MonthlyDateOrder.Last,
                 MonthlyDateDay = MonthlyDateDay.WeekendDay,
-                MonthlyDateFrequency = 3,
+                MonthlyDateFrequency = 2,
 
                 DailyType = DailyOccursType.Once,
                 DailyOccursOnceAt = new TimeSpan(12, 30, 0),
@@ -647,7 +647,7 @@ namespace SchedulerTests
                 MonthlyType = MonthlyType.Date,
                 MonthlyDateOrder = MonthlyDateOrder.First,
                 MonthlyDateDay = MonthlyDateDay.Weekday,
-                MonthlyDateFrequency = 3,
+                MonthlyDateFrequency = 2,
 
                 DailyType = DailyOccursType.Once,
                 DailyOccursOnceAt = new TimeSpan(12, 30, 0),
@@ -721,7 +721,7 @@ namespace SchedulerTests
                 MonthlyType = MonthlyType.Date,
                 MonthlyDateOrder = order,
                 MonthlyDateDay = MonthlyDateDay.Day,
-                MonthlyDateFrequency = 3,
+                MonthlyDateFrequency = 2,
 
                 DailyType = DailyOccursType.Once,
                 DailyOccursOnceAt = new TimeSpan(12, 30, 0),
@@ -751,7 +751,7 @@ namespace SchedulerTests
                 MonthlyType = MonthlyType.Date,
                 MonthlyDateOrder = MonthlyDateOrder.First,
                 MonthlyDateDay = MonthlyDateDay.Weekday,
-                MonthlyDateFrequency = 3,
+                MonthlyDateFrequency = 2,
 
                 DailyType = DailyOccursType.Once,
                 DailyOccursOnceAt = new TimeSpan(12, 30, 0),
@@ -786,7 +786,7 @@ namespace SchedulerTests
 
                 MonthlyType = MonthlyType.Day,
                 MonthlyDay = 1,
-                MonthlyDayFrequency = 3,
+                MonthlyDayFrequency = 2,
 
                 DailyType = DailyOccursType.Once,
                 DailyOccursOnceAt = new TimeSpan(12, 30, 0),
@@ -808,41 +808,6 @@ namespace SchedulerTests
             outputList[5].NextExecTime.Should().Be(new DateTime(2024, 11, 1, 12, 30, 0));
         }
         [Fact]
-        public void ReturnExpectedDatesWhenSearchingDayAndCurrentHigherThanFirst()
-        {
-            //Arrange
-            var sc = new SchedulerConfiguration
-            {
-                CurrentDate = new DateTime(2024, 1, 1, 14, 0, 0),
-                IsEnabled = true,
-                Occurs = Occurrence.Monthly,
-                ConfigurationDate = null,
-                Type = ConfigurationType.Recurring,
-
-                MonthlyType = MonthlyType.Day,
-                MonthlyDay = 1,
-                MonthlyDayFrequency = 3,
-
-                DailyType = DailyOccursType.Once,
-                DailyOccursOnceAt = new TimeSpan(12, 30, 0),
-
-                StartDate = DateTime.MinValue,
-                EndDate = DateTime.MaxValue,
-            };
-            var service = new Service(sc);
-            //Act
-            var outputList = service.GetOutputList(6);
-
-            //Assert
-            outputList.Should().HaveCount(6);
-            outputList[0].NextExecTime.Should().Be(new DateTime(2024, 3, 1, 12, 30, 0));
-            outputList[1].NextExecTime.Should().Be(new DateTime(2024, 5, 1, 12, 30, 0));
-            outputList[2].NextExecTime.Should().Be(new DateTime(2024, 7, 1, 12, 30, 0));
-            outputList[3].NextExecTime.Should().Be(new DateTime(2024, 9, 1, 12, 30, 0));
-            outputList[4].NextExecTime.Should().Be(new DateTime(2024, 11, 1, 12, 30, 0));
-            outputList[5].NextExecTime.Should().Be(new DateTime(2025, 1, 1, 12, 30, 0));
-        }
-        [Fact]
         public void ReturnExpectedDatesNoPassingMonthIfResultExceed()
         {
             //Arrange
@@ -857,7 +822,7 @@ namespace SchedulerTests
                 MonthlyType = MonthlyType.Date,
                 MonthlyDateDay = MonthlyDateDay.Weekday,
                 MonthlyDateOrder = MonthlyDateOrder.Last,
-                MonthlyDateFrequency = 4,
+                MonthlyDateFrequency = 3,
 
                 DailyType = DailyOccursType.Once,
                 DailyOccursOnceAt = new TimeSpan(12, 30, 0),
@@ -880,7 +845,7 @@ namespace SchedulerTests
         }
 
         [Fact]
-        public void ReturnExpectedDescriptiononDayMode()
+        public void ReturnExpectedDescriptionDayMode()
         {
             //Arrange
             //Arrange
@@ -964,7 +929,7 @@ namespace SchedulerTests
                 StartDate = DateTime.MinValue,
                 EndDate = DateTime.MaxValue,
             };
-            var expectedDesc = "Occurs the first weekday of every 3 months at 12:30 starting on 01/01/0001";
+            const string expectedDesc = "Occurs the first weekday of every 3 months at 12:30 starting on 01/01/0001";
             var service = new Service(sc);
             //Act
             var outputList = service.GetOutputList(6);

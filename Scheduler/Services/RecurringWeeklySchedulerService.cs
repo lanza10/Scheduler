@@ -1,8 +1,5 @@
-﻿using System.Globalization;
-using Scheduler.Enums;
-using Scheduler.Models;
+﻿using Scheduler.Models;
 using Scheduler.Services.HoursCalculators;
-using Scheduler.Utilities;
 using Scheduler.Validator;
 
 namespace Scheduler.Services
@@ -22,9 +19,9 @@ namespace Scheduler.Services
                     datesList.Add(currentDate.Date);
                 }
                 currentDate = currentDate.AddDays(1);
-                
 
-                if (currentDate.DayOfWeek == initDayOfWeek && currentDate != initDate )
+
+                if (currentDate.DayOfWeek == initDayOfWeek && currentDate != initDate)
                 {
                     currentDate = currentDate.AddDays(7 * (sc.WeeklyFrequency - 1));
                 }
@@ -49,8 +46,8 @@ namespace Scheduler.Services
             }
 
 
-            var resultDate =  hc.CalculateNextHour(currentDate, sc);
-            SchedulerServiceValidator.ValidateResultDoNotExceedLimits(resultDate,sc.StartDate,sc.EndDate);
+            var resultDate = hc.CalculateNextHour(currentDate, sc);
+            SchedulerServiceValidator.ValidateResultDoNotExceedLimits(resultDate, sc.StartDate, sc.EndDate);
             return resultDate;
         }
 

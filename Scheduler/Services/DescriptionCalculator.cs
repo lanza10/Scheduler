@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Scheduler.Enums;
+﻿using Scheduler.Enums;
 using Scheduler.Models;
 using Scheduler.Utilities;
+using System.Globalization;
 
 namespace Scheduler.Services
 {

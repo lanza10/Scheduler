@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Scheduler.Enums;
-using Scheduler.Exceptions;
+﻿using Scheduler.Enums;
 
 namespace Scheduler.Utilities
 {
@@ -34,11 +28,11 @@ namespace Scheduler.Utilities
                 MonthlyDateDay.Saturday, [DayOfWeek.Saturday]
             },
             {
-                MonthlyDateDay.Day,  [DayOfWeek.Monday, DayOfWeek.Tuesday, 
-                                        DayOfWeek.Wednesday, DayOfWeek.Thursday, 
+                MonthlyDateDay.Day,  [DayOfWeek.Monday, DayOfWeek.Tuesday,
+                                        DayOfWeek.Wednesday, DayOfWeek.Thursday,
                                         DayOfWeek.Friday, DayOfWeek.Saturday, DayOfWeek.Sunday]
             },
-            { 
+            {
                 MonthlyDateDay.Weekday, [DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday,
                                             DayOfWeek.Thursday, DayOfWeek.Friday]
 
@@ -65,7 +59,7 @@ namespace Scheduler.Utilities
             {
                 MonthlyDateOrder.Last, "last"
             },
-        }; 
+        };
         public static readonly Dictionary<MonthlyDateDay, string> DayOfMonthMap = new()
         {
             {
@@ -109,7 +103,7 @@ namespace Scheduler.Utilities
             }
 
             DayOfMonthMap.TryGetValue(day, out var dayQuote);
-            
+
             return $"{orderQuote} {dayQuote}";
         }
     }

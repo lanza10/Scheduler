@@ -681,8 +681,9 @@ namespace SchedulerTests
             outputList[0].NextExecTime.Should().Be(new DateTime(2020, 1, 1, 12, 0, 0));
             outputList[1].NextExecTime.Should().Be(new DateTime(2021, 1, 6, 12, 0, 0));
             outputList[2].NextExecTime.Should().Be(new DateTime(2022, 1, 12, 12, 0, 0));
-
         }
+
+
     }
 
 }

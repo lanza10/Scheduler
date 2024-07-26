@@ -1,10 +1,8 @@
-﻿
-using Scheduler.Enums;
+﻿using Scheduler.Enums;
 using Scheduler.Models;
 using Scheduler.Services.HoursCalculators;
 using Scheduler.Utilities;
 using Scheduler.Validator;
-using System;
 
 namespace Scheduler.Services
 {
@@ -28,26 +26,22 @@ namespace Scheduler.Services
             return hc.GetHoursOfDates(datesList, sc, maxLength, initTime);
         }
 
+
         public DateTime CalculateFirstDate()
         {
-            DateTime firstDateOnly;
-            if (sc.MonthlyType == MonthlyType.Day)
-            {
-                firstDateOnly = GetFirstDateDayMode();
-            }else 
-            {
-                firstDateOnly = GetFirstDateDateMode();
-            }
+            var firstDateOnly = sc.MonthlyType == MonthlyType.Day ? GetFirstDateDayMode() : GetFirstDateDateMode();
 
             var resultDate = hc.CalculateNextHour(firstDateOnly, sc);
             SchedulerServiceValidator.ValidateResultDoNotExceedLimits(resultDate,sc.StartDate,sc.EndDate);
             return resultDate;
         }
 
+
         public string GenerateDescription(DateTime date)
         {
             return DescriptionCalculator.GetMonthlyDescription(sc);
         }
+
 
         private DateTime GetFirstDateDayMode()
         {
@@ -60,6 +54,7 @@ namespace Scheduler.Services
             {
                 return currentDate >= startLimit ? currentDate : monthlyDayDate;
             }
+
             return monthlyDayDate.AddMonths(sc.MonthlyDayFrequency - 1);
         }
         private DateTime GetFirstDateDateMode()
@@ -73,30 +68,33 @@ namespace Scheduler.Services
             {
                 return currentDate >= startLimit ? currentDate : monthlyDayDate;
             }
-            return CalculateDayOfMonth(currentDate.AddMonths(sc.MonthlyDateFrequency - 1));
+
+            return CalculateDayOfMonth(currentDate.AddMonths(sc.MonthlyDateFrequency));
         }
 
         private DateTime CalculateDayOfMonth(DateTime startingDate)
         {
-            var test = new DateTime(startingDate.Year, startingDate.Month, 1);
+            var currentDate = new DateTime(startingDate.Year, startingDate.Month, 1);
             var days = GetDayOfWeekList(sc.MonthlyDateDay);
+
             if (days.Count == 7)
             {
-                return CalculateWhenSearchingDateDay(test);
+                return CalculateWhenSearchingDateDay(currentDate);
             }
-            while (days.First() != test.DayOfWeek)
+
+            while (days.First() != currentDate.DayOfWeek)
             {
-                    test = test.AddDays(1);
+                    currentDate = currentDate.AddDays(1);
             }
 
-            var aux =  test.AddDays((int)sc.MonthlyDateOrder * 7);
+            var auxDate =  currentDate.AddDays((int)sc.MonthlyDateOrder * 7);
 
-            if (aux.Month > test.Month)
+            if (auxDate.Month > currentDate.Month)
             {
-                aux = aux.AddDays(-7);
+                auxDate = auxDate.AddDays(-7);
             }
 
-            return aux;
+            return auxDate;
         }
 
         private DateTime CalculateWhenSearchingDateDay(DateTime date)
@@ -115,14 +113,7 @@ namespace Scheduler.Services
             return date.AddDays((int)sc.MonthlyDateOrder);
         }
 
-        private List<DayOfWeek> GetDayOfWeekList(MonthlyDateDay key)
-        {
-            if (!MonthlyDictionaries.WeekDaysMap.TryGetValue(key, out var res))
-            {
-                throw new KeyNotFoundException();
-            }
-            return res;
-        }
+        
 
         private List<DateTime> GetAllDatesWhenDateMode(List<DateTime> datesList, int maxLength, List<DayOfWeek> daysOfWeek, DateTime currentDate)
         {
@@ -144,8 +135,7 @@ namespace Scheduler.Services
                     }
                 }
 
-                currentDate = CalculateDayOfMonth(new DateTime(currentDate.Year, currentDate.Month, 1).AddMonths(sc.MonthlyDateFrequency - 1));
-
+                currentDate = CalculateDayOfMonth(new DateTime(currentDate.Year, currentDate.Month, 1).AddMonths(sc.MonthlyDateFrequency));
 
             }
 
@@ -156,11 +146,19 @@ namespace Scheduler.Services
             while (datesList.Count < maxLength && currentDate <= sc.EndDate)
             {
                 datesList.Add(currentDate.Date);
-                currentDate = currentDate.AddMonths(sc.MonthlyDayFrequency - 1);
+                currentDate = currentDate.AddMonths(sc.MonthlyDayFrequency);
             }
 
             return datesList;
         }
 
+        private static List<DayOfWeek> GetDayOfWeekList(MonthlyDateDay key)
+        {
+            if (!MonthlyDictionaries.WeekDaysMap.TryGetValue(key, out var res))
+            {
+                throw new KeyNotFoundException();
+            }
+            return res;
+        }
     }
 }
