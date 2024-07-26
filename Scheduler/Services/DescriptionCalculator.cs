@@ -2,11 +2,18 @@
 using Scheduler.Models;
 using Scheduler.Utilities;
 using System.Globalization;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Scheduler.Services
 {
     public class DescriptionCalculator
     {
+        public static string GeOnceDescription(DateTime date,SchedulerConfiguration sc)
+        {
+            var culture = CultureInfo.CurrentCulture;
+            var formattedNextExecTime = date.ToString("dd/MM/yyyy 'at' HH:mm", culture);
+            return $"Occurs once.Schedule will be used on {formattedNextExecTime} {GetStartingOnQuote(sc)}";
+        }
         public static string GetDailyDescription(SchedulerConfiguration sc)
         {
             return $"Occurs every day {GetDailyQuote(sc)} {GetStartingOnQuote(sc)}";

@@ -21,10 +21,7 @@ namespace Scheduler.Services.SchedulerServices
 
         public string GenerateDescription(DateTime date)
         {
-            var culture = CultureInfo.CurrentCulture;
-            var formattedNextExecTime = date.ToString("dd/MM/yyyy 'at' HH:mm", culture);
-            var formattedStartDate = sc.StartDate.ToString("d", culture);
-            return $"Occurs once.Schedule will be used on {formattedNextExecTime} starting on {formattedStartDate}";
+            return DescriptionCalculator.GeOnceDescription(date, sc);
         }
     }
 }
