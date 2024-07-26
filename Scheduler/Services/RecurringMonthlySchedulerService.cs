@@ -14,14 +14,10 @@ namespace Scheduler.Services
             var currentDate = CalculateFirstDate();
             var initTime = currentDate.TimeOfDay;
             var datesList = new List<DateTime>();
-            if (sc.MonthlyType == MonthlyType.Date)
-            {
-                datesList = GetAllDatesWhenDateMode(datesList, maxLength, currentDate);
-            }
-            else
-            {
-                datesList = GetAllDatesWhenDayMode(datesList, maxLength, currentDate);
-            }
+
+            datesList = sc.MonthlyType == MonthlyType.Date
+                ? GetAllDatesWhenDateMode(datesList, maxLength, currentDate)
+                : GetAllDatesWhenDayMode(datesList, maxLength, currentDate);
 
             return hc.GetHoursOfDates(datesList, sc, maxLength, initTime);
         }
@@ -30,8 +26,8 @@ namespace Scheduler.Services
         public DateTime CalculateFirstDate()
         {
             var firstDateOnly = sc.MonthlyType == MonthlyType.Day ? GetFirstDateDayMode() : GetFirstDateDateMode();
-
             var resultDate = hc.CalculateNextHour(firstDateOnly, sc);
+
             SchedulerServiceValidator.ValidateResultDoNotExceedLimits(resultDate,sc.StartDate,sc.EndDate);
             return resultDate;
         }
