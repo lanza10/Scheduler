@@ -909,7 +909,6 @@ namespace SchedulerTests
         public void ReturnSameDescriptionForEveryOutput()
         {
             //Arrange
-            //Arrange
             var sc = new SchedulerConfiguration
             {
                 CurrentDate = new DateTime(2024, 1, 1),
@@ -941,6 +940,42 @@ namespace SchedulerTests
             outputList[3].Description.Should().Be(expectedDesc);
             outputList[4].Description.Should().Be(expectedDesc);
             outputList[5].Description.Should().Be(expectedDesc);
+        }
+        [Fact]
+        public void ReturnTheCorrectDatesWhenSearchingDays()
+        {
+            //Arrange
+            //Arrange
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2024, 1, 1),
+                IsEnabled = true,
+                Occurs = Occurrence.Monthly,
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
+
+                MonthlyType = MonthlyType.Date,
+                MonthlyDateDay = MonthlyDateDay.Day,
+                MonthlyDateOrder = MonthlyDateOrder.First,
+                MonthlyDateFrequency = 3,
+
+                DailyType = DailyOccursType.Once,
+                DailyOccursOnceAt = new TimeSpan(12, 30, 0),
+
+                StartDate = DateTime.MinValue,
+                EndDate = DateTime.MaxValue,
+            };
+            var service = new Service(sc);
+            //Act
+            var outputList = service.GetOutputList(6);
+
+            //Assert
+            outputList[0].NextExecTime.Should().Be(new DateTime(2024,1,1,12,30,0));
+            outputList[1].NextExecTime.Should().Be(new DateTime(2024, 4, 1, 12, 30, 0));
+            outputList[2].NextExecTime.Should().Be(new DateTime(2024, 7, 1, 12, 30, 0));
+            outputList[3].NextExecTime.Should().Be(new DateTime(2024, 10, 1, 12, 30, 0));
+            outputList[4].NextExecTime.Should().Be(new DateTime(2025, 1, 1, 12, 30, 0));
+            outputList[5].NextExecTime.Should().Be(new DateTime(2025, 4, 1, 12, 30, 0));
         }
     }
 }

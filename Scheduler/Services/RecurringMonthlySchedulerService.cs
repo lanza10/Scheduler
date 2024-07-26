@@ -3,6 +3,7 @@ using Scheduler.Models;
 using Scheduler.Services.HoursCalculators;
 using Scheduler.Utilities;
 using Scheduler.Validator;
+using System;
 
 namespace Scheduler.Services
 {
@@ -12,11 +13,10 @@ namespace Scheduler.Services
         {
             var currentDate = CalculateFirstDate();
             var initTime = currentDate.TimeOfDay;
-            var daysOfWeek = GetDayOfWeekList(sc.MonthlyDateDay);
             var datesList = new List<DateTime>();
             if (sc.MonthlyType == MonthlyType.Date)
             {
-                datesList = GetAllDatesWhenDateMode(datesList, maxLength, daysOfWeek, currentDate);
+                datesList = GetAllDatesWhenDateMode(datesList, maxLength, currentDate);
             }
             else
             {
@@ -115,8 +115,31 @@ namespace Scheduler.Services
 
         
 
-        private List<DateTime> GetAllDatesWhenDateMode(List<DateTime> datesList, int maxLength, List<DayOfWeek> daysOfWeek, DateTime currentDate)
+        private List<DateTime> GetAllDatesWhenDateMode(List<DateTime> datesList, int maxLength, DateTime currentDate)
         {
+            if (sc.MonthlyDateDay == MonthlyDateDay.Day)
+            {
+                return GetAllDatesWhenSearchingDayOnDate(datesList, maxLength, currentDate);
+            }
+
+            return GetAllDatesWhenSearchingOtherDate(datesList, maxLength, currentDate);
+        }
+
+        private List<DateTime> GetAllDatesWhenSearchingDayOnDate(List<DateTime> datesList, int maxLength,
+            DateTime currentDate)
+        {
+            while (datesList.Count < maxLength && currentDate <= sc.EndDate)
+            {
+                datesList.Add(currentDate.Date);
+                currentDate = new DateTime(currentDate.Year, currentDate.Month, 1).AddMonths(sc.MonthlyDateFrequency);
+                currentDate = CalculateWhenSearchingDateDay(currentDate);
+            }
+            return datesList;
+        }
+        private List<DateTime> GetAllDatesWhenSearchingOtherDate(List<DateTime> datesList, int maxLength,
+            DateTime currentDate)
+        {
+            var daysOfWeek = GetDayOfWeekList(sc.MonthlyDateDay);
             while (datesList.Count < maxLength && currentDate <= sc.EndDate)
             {
                 var i = daysOfWeek.FindIndex(day => day == currentDate.DayOfWeek);
