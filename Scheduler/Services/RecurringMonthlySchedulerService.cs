@@ -82,7 +82,7 @@ namespace Scheduler.Services
                 return CalculateWhenSearchingDateDay(currentDate);
             }
 
-            while (days.First() != currentDate.DayOfWeek)
+            while (!days.Contains(currentDate.DayOfWeek))
             {
                     currentDate = currentDate.AddDays(1);
             }

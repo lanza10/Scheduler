@@ -660,7 +660,7 @@ namespace SchedulerTests
             var output = service.GetOutput();
 
             //Assert
-            output.NextExecTime.Should().Be(new DateTime(2024, 3, 4, 12, 30, 0));
+            output.NextExecTime.Should().Be(new DateTime(2024, 3, 1, 12, 30, 0));
 
         }
 
@@ -765,12 +765,12 @@ namespace SchedulerTests
 
             //Assert
             outputList.Should().HaveCount(6);
-            outputList[0].NextExecTime.Should().Be(new DateTime(2024, 3, 4, 12, 30, 0));
-            outputList[1].NextExecTime.Should().Be(new DateTime(2024, 3, 5, 12, 30, 0));
-            outputList[2].NextExecTime.Should().Be(new DateTime(2024, 3, 6, 12, 30, 0));
-            outputList[3].NextExecTime.Should().Be(new DateTime(2024, 3, 7, 12, 30, 0));
-            outputList[4].NextExecTime.Should().Be(new DateTime(2024, 3, 8, 12, 30, 0));
-            outputList[5].NextExecTime.Should().Be(new DateTime(2024, 5, 6, 12, 30, 0));
+            outputList[0].NextExecTime.Should().Be(new DateTime(2024, 3, 1, 12, 30, 0));
+            outputList[1].NextExecTime.Should().Be(new DateTime(2024, 5, 1, 12, 30, 0));
+            outputList[2].NextExecTime.Should().Be(new DateTime(2024, 5, 2, 12, 30, 0));
+            outputList[3].NextExecTime.Should().Be(new DateTime(2024, 5, 3, 12, 30, 0));
+            outputList[4].NextExecTime.Should().Be(new DateTime(2024, 7, 1, 12, 30, 0));
+            outputList[5].NextExecTime.Should().Be(new DateTime(2024, 7, 2, 12, 30, 0));
         }
         [Fact]
         public void ReturnExpectedDatesWhenSearchingDay()
@@ -945,7 +945,6 @@ namespace SchedulerTests
         public void ReturnTheCorrectDatesWhenSearchingDays()
         {
             //Arrange
-            //Arrange
             var sc = new SchedulerConfiguration
             {
                 CurrentDate = new DateTime(2024, 1, 1),
@@ -976,6 +975,40 @@ namespace SchedulerTests
             outputList[3].NextExecTime.Should().Be(new DateTime(2024, 10, 1, 12, 30, 0));
             outputList[4].NextExecTime.Should().Be(new DateTime(2025, 1, 1, 12, 30, 0));
             outputList[5].NextExecTime.Should().Be(new DateTime(2025, 4, 1, 12, 30, 0));
+        }
+
+        [Fact]
+        public void ReturnOnlySundayInFirstIfIsAloneInWeekend()
+        {
+            //Arrange
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2024, 1, 20, 16, 0, 0),
+                IsEnabled = true,
+                Occurs = Occurrence.Monthly,
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
+
+                MonthlyType = MonthlyType.Date,
+                MonthlyDateDay = MonthlyDateDay.WeekendDay,
+                MonthlyDateOrder = MonthlyDateOrder.First,
+                MonthlyDateFrequency = 8,
+
+                DailyType = DailyOccursType.Once,
+                DailyOccursOnceAt = new TimeSpan(12, 30, 0),
+
+                StartDate = DateTime.MinValue,
+                EndDate = DateTime.MaxValue,
+            };
+            var service = new Service(sc);
+            //Act
+            var outputList = service.GetOutputList(4);
+
+            //Assert
+            outputList[0].NextExecTime.Should().Be(new DateTime(2024, 9, 1, 12, 30, 0));
+            outputList[1].NextExecTime.Should().Be(new DateTime(2025, 5, 3, 12, 30, 0));
+            outputList[2].NextExecTime.Should().Be(new DateTime(2025, 5, 4, 12, 30, 0));
+            outputList[3].NextExecTime.Should().Be(new DateTime(2026, 1, 3, 12, 30, 0));
         }
     }
 }
