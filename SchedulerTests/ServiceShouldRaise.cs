@@ -367,6 +367,95 @@ namespace SchedulerTests
             action.Should().Throw<SchedulerException>()
                 .WithMessage("Starting hour must be earlier than the end hour.");
         }
+        [Fact]
+        public void ErrorWhenDayOfMonthIsLessThanOneAndMonthlyTypeIsDay()
+        {
+            //Arrange
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2020, 1, 1),
+                IsEnabled = true,
+                Occurs = Occurrence.Monthly,
+
+                MonthlyType = MonthlyType.Day,
+                MonthlyDay = 0,
+                MonthlyDayFrequency = 2,
+
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
+
+
+
+                StartDate = DateTime.MinValue,
+                EndDate = DateTime.MaxValue,
+            };
+            //Act
+            var action = () => new Service(sc);
+
+            //Assert
+            action.Should().Throw<SchedulerException>()
+                .WithMessage("The day of the month must be higher than 0.");
+        }
+        [Fact]
+        public void ErrorWhenMonthDayFrequencyIsLessThanOneAndTypeIsDay()
+        {
+            //Arrange
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2020, 1, 1),
+                IsEnabled = true,
+                Occurs = Occurrence.Monthly,
+
+                MonthlyType = MonthlyType.Day,
+                MonthlyDay = 2,
+                MonthlyDayFrequency = 0,
+
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
+
+
+
+                StartDate = DateTime.MinValue,
+                EndDate = DateTime.MaxValue,
+            };
+            //Act
+            var action = () => new Service(sc);
+
+            //Assert
+            action.Should().Throw<SchedulerException>()
+                .WithMessage("The month frequency must be higher than 0.");
+        }
+
+        [Fact]
+        public void ErrorWhenMonthDateFrequencyIsLessThanOneAndTypeIsDate()
+        {
+            //Arrange
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2020, 1, 1),
+                IsEnabled = true,
+                Occurs = Occurrence.Monthly,
+
+                MonthlyType = MonthlyType.Date,
+                MonthlyDateOrder = MonthlyDateOrder.First,
+                MonthlyDateFrequency = 0,
+                MonthlyDateDay = MonthlyDateDay.Weekday,
+
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
+
+
+
+                StartDate = DateTime.MinValue,
+                EndDate = DateTime.MaxValue,
+            };
+            //Act
+            var action = () => new Service(sc);
+
+            //Assert
+            action.Should().Throw<SchedulerException>()
+                .WithMessage("The month frequency must be higher than 0.");
+        }
     }
     
 }

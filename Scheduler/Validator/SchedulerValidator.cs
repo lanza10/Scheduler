@@ -16,6 +16,8 @@ namespace Scheduler.Validator
             ValidFrequency(sc.WeeklyFrequency, sc.DailyOccursEvery, sc.Occurs);
             ValidDailyHoursRange(sc.DailyStartingAt, sc.DailyEndingAt);
             ValidDaysOfWeek(sc.DaysOfWeek);
+            ValidMonthlyDay(sc.MonthlyDay, sc.MonthlyType);
+            ValidMonthFrequency(sc.MonthlyDayFrequency, sc.MonthlyDateFrequency, sc.MonthlyType);
         }
 
         private static void ValidDateAndType(ConfigurationType type, DateTime? date)
@@ -91,6 +93,24 @@ namespace Scheduler.Validator
                 {
                     throw new SchedulerException("Days of week should not be repeated.");
                 }
+            }
+        }
+        private static void ValidMonthlyDay(int day, MonthlyType type)
+        {
+            if (day < 1 && type == MonthlyType.Day)
+            {
+                throw new SchedulerException("The day of the month must be higher than 0.");
+            }
+        }
+        private static void ValidMonthFrequency(int monthDayFrequency, int monthDateFrequency, MonthlyType type)
+        {
+            if (monthDayFrequency < 1 && type == MonthlyType.Day)
+            {
+                throw new SchedulerException("The month frequency must be higher than 0.");
+            }
+            if (monthDateFrequency < 1 && type == MonthlyType.Date)
+            {
+                throw new SchedulerException("The month frequency must be higher than 0.");
             }
         }
     }
