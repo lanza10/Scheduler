@@ -805,7 +805,177 @@ namespace SchedulerTests
             outputList[2].NextExecTime.Should().Be(new DateTime(2024, 5, 1, 12, 30, 0));
             outputList[3].NextExecTime.Should().Be(new DateTime(2024, 7, 1, 12, 30, 0));
             outputList[4].NextExecTime.Should().Be(new DateTime(2024, 9, 1, 12, 30, 0));
-            outputList[5].NextExecTime.Should().Be(new DateTime(2025, 11, 1, 12, 30, 0));
+            outputList[5].NextExecTime.Should().Be(new DateTime(2024, 11, 1, 12, 30, 0));
+        }
+        [Fact]
+        public void ReturnExpectedDatesWhenSearchingDayAndCurrentHigherThanFirst()
+        {
+            //Arrange
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2024, 1, 1, 14, 0, 0),
+                IsEnabled = true,
+                Occurs = Occurrence.Monthly,
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
+
+                MonthlyType = MonthlyType.Day,
+                MonthlyDay = 1,
+                MonthlyDayFrequency = 3,
+
+                DailyType = DailyOccursType.Once,
+                DailyOccursOnceAt = new TimeSpan(12, 30, 0),
+
+                StartDate = DateTime.MinValue,
+                EndDate = DateTime.MaxValue,
+            };
+            var service = new Service(sc);
+            //Act
+            var outputList = service.GetOutputList(6);
+
+            //Assert
+            outputList.Should().HaveCount(6);
+            outputList[0].NextExecTime.Should().Be(new DateTime(2024, 3, 1, 12, 30, 0));
+            outputList[1].NextExecTime.Should().Be(new DateTime(2024, 5, 1, 12, 30, 0));
+            outputList[2].NextExecTime.Should().Be(new DateTime(2024, 7, 1, 12, 30, 0));
+            outputList[3].NextExecTime.Should().Be(new DateTime(2024, 9, 1, 12, 30, 0));
+            outputList[4].NextExecTime.Should().Be(new DateTime(2024, 11, 1, 12, 30, 0));
+            outputList[5].NextExecTime.Should().Be(new DateTime(2025, 1, 1, 12, 30, 0));
+        }
+        [Fact]
+        public void ReturnExpectedDatesNoPassingMonthIfResultExceed()
+        {
+            //Arrange
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2024, 1, 1, 14, 0, 0),
+                IsEnabled = true,
+                Occurs = Occurrence.Monthly,
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
+
+                MonthlyType = MonthlyType.Date,
+                MonthlyDateDay = MonthlyDateDay.Weekday,
+                MonthlyDateOrder = MonthlyDateOrder.Last,
+                MonthlyDateFrequency = 4,
+
+                DailyType = DailyOccursType.Once,
+                DailyOccursOnceAt = new TimeSpan(12, 30, 0),
+
+                StartDate = DateTime.MinValue,
+                EndDate = DateTime.MaxValue,
+            };
+            var service = new Service(sc);
+            //Act
+            var outputList = service.GetOutputList(6);
+
+            //Assert
+            outputList.Should().HaveCount(6);
+            outputList[0].NextExecTime.Should().Be(new DateTime(2024, 1, 29, 12, 30, 0));
+            outputList[1].NextExecTime.Should().Be(new DateTime(2024, 1, 30, 12, 30, 0));
+            outputList[2].NextExecTime.Should().Be(new DateTime(2024, 1, 31, 12, 30, 0));
+            outputList[3].NextExecTime.Should().Be(new DateTime(2024, 4, 29, 12, 30, 0));
+            outputList[4].NextExecTime.Should().Be(new DateTime(2024, 4, 30, 12, 30, 0));
+            outputList[5].NextExecTime.Should().Be(new DateTime(2024, 7, 29, 12, 30, 0));
+        }
+
+        [Fact]
+        public void ReturnExpectedDescriptiononDayMode()
+        {
+            //Arrange
+            //Arrange
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2024, 1, 1),
+                IsEnabled = true,
+                Occurs = Occurrence.Monthly,
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
+
+                MonthlyType = MonthlyType.Day,
+                MonthlyDay = 8,
+                MonthlyDayFrequency = 3,
+
+                DailyType = DailyOccursType.Once,
+                DailyOccursOnceAt = new TimeSpan(12, 30, 0),
+
+                StartDate = DateTime.MinValue,
+                EndDate = DateTime.MaxValue,
+            };
+            var service = new Service(sc);
+            //Act
+            var output = service.GetOutput();
+
+            //Assert
+            output.Description.Should().Be("Occurs the 8 of every 3 months at 12:30 starting on 01/01/0001");
+        }
+        [Fact]
+        public void ReturnExpectedDescriptionDateMode()
+        {
+            //Arrange
+            //Arrange
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2024, 1, 1),
+                IsEnabled = true,
+                Occurs = Occurrence.Monthly,
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
+
+                MonthlyType = MonthlyType.Date,
+                MonthlyDateDay = MonthlyDateDay.Weekday ,
+                MonthlyDateOrder = MonthlyDateOrder.First,
+                MonthlyDateFrequency = 3,
+
+                DailyType = DailyOccursType.Once,
+                DailyOccursOnceAt = new TimeSpan(12, 30, 0),
+
+                StartDate = DateTime.MinValue,
+                EndDate = DateTime.MaxValue,
+            };
+            var service = new Service(sc);
+            //Act
+            var output = service.GetOutput();
+
+            //Assert
+            output.Description.Should().Be("Occurs the first weekday of every 3 months at 12:30 starting on 01/01/0001");
+         }
+        [Fact]
+        public void ReturnSameDescriptionForEveryOutput()
+        {
+            //Arrange
+            //Arrange
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2024, 1, 1),
+                IsEnabled = true,
+                Occurs = Occurrence.Monthly,
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
+
+                MonthlyType = MonthlyType.Date,
+                MonthlyDateDay = MonthlyDateDay.Weekday,
+                MonthlyDateOrder = MonthlyDateOrder.First,
+                MonthlyDateFrequency = 3,
+
+                DailyType = DailyOccursType.Once,
+                DailyOccursOnceAt = new TimeSpan(12, 30, 0),
+
+                StartDate = DateTime.MinValue,
+                EndDate = DateTime.MaxValue,
+            };
+            var expectedDesc = "Occurs the first weekday of every 3 months at 12:30 starting on 01/01/0001";
+            var service = new Service(sc);
+            //Act
+            var outputList = service.GetOutputList(6);
+
+            //Assert
+            outputList[0].Description.Should().Be(expectedDesc);
+            outputList[1].Description.Should().Be(expectedDesc);
+            outputList[2].Description.Should().Be(expectedDesc);
+            outputList[3].Description.Should().Be(expectedDesc);
+            outputList[4].Description.Should().Be(expectedDesc);
+            outputList[5].Description.Should().Be(expectedDesc);
         }
     }
 }

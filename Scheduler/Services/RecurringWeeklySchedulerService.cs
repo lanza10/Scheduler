@@ -56,35 +56,8 @@ namespace Scheduler.Services
 
         public string GenerateDescription(DateTime date)
         {
-            var daysOfWeek = WeeklyDictionaries.GetDaysQuote(sc.DaysOfWeek);
-            var frequency = OccurrenceDictionaries.GetFrequencyQuote(sc.WeeklyFrequency, sc.Occurs);
-            var dailyQuote = GetDailyQuote();
-
-
-            return
-                $"Occurs every {frequency} {daysOfWeek} " + dailyQuote;
+            return DescriptionCalculator.GetWeeklyDescription(sc);
         }
 
-        private string GetDailyQuote()
-        {
-            string result;
-            //yield
-            var culture = CultureInfo.CurrentCulture;
-            var formattedStartDate = sc.StartDate.ToString("d", culture);
-            var interval = OccurrenceDictionaries.GetIntervalQuote(sc.DailyOccursEvery, sc.OccursEveryType);
-            var startingAt = sc.DailyStartingAt.ToString(@"hh\:mm");
-            var endingAt = sc.DailyEndingAt.ToString(@"hh\:mm");
-            var formmattedOnceAt = sc.DailyOccursOnceAt.ToString(@"hh\:mm");
-
-            if (sc.DailyType == DailyOccursType.Once)
-            {
-                result = $"at {formmattedOnceAt}";
-            }
-            else
-            {
-                result = $"every {interval} between {startingAt} and {endingAt}";
-            }
-            return result + $" starting on {formattedStartDate}";
-        }
     }
 }

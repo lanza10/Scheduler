@@ -33,12 +33,9 @@ namespace Scheduler.Utilities
 
         public static string GetFrequencyQuote(int frequency, Occurrence occurrence)
         {
-            if (!OccurrenceMap.TryGetValue(occurrence, out var occurs))
-            {
-                throw new KeyNotFoundException();
-            }
+            OccurrenceMap.TryGetValue(occurrence, out var occurs);
 
-            return frequency == 1 ? occurs : $"{frequency} {occurs}s";
+            return (frequency == 1 ? occurs : $"{frequency} {occurs}s")!;
         }
 
         public static string GetIntervalQuote(int quantity, DailyOccursEveryType type)

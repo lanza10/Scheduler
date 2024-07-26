@@ -36,29 +36,7 @@ namespace Scheduler.Services
 
         public string GenerateDescription(DateTime date)
         {
-            var culture = CultureInfo.CurrentCulture;
-            var formattedStartDate = sc.StartDate.ToString("d", culture);
-
-            if (sc.DailyType == DailyOccursType.Every)
-            {
-                return GenerateDescriptionWhenEvery(formattedStartDate);
-            }
-
-            return GenerateDescriptionWhenOnce(formattedStartDate);
-        }
-
-        private string GenerateDescriptionWhenEvery(string startingDate)
-        {
-            var startingAt = sc.DailyStartingAt.ToString(@"hh\:mm");
-            var endingAt = sc.DailyEndingAt.ToString(@"hh\:mm");
-            var interval = OccurrenceDictionaries.GetIntervalQuote(sc.DailyOccursEvery, sc.OccursEveryType);
-            return
-                $"Occurs every day, every {interval} between {startingAt} and {endingAt} starting on {startingDate}";
-        }
-        private string GenerateDescriptionWhenOnce(string startingDate)
-        {
-            var formmattedOnceAt = sc.DailyOccursOnceAt.ToString(@"hh\:mm");
-            return $"Occurs every day at {formmattedOnceAt} starting on {startingDate}";
+            return DescriptionCalculator.GetDailyDescription(sc);
         }
     }
 }

@@ -46,8 +46,7 @@ namespace Scheduler.Services
 
         public string GenerateDescription(DateTime date)
         {
-            var frequency = OccurrenceDictionaries.GetFrequencyQuote(1, sc.Occurs);
-            return "";
+            return DescriptionCalculator.GetMonthlyDescription(sc);
         }
 
         private DateTime GetFirstDateDayMode()
@@ -83,7 +82,7 @@ namespace Scheduler.Services
             var days = GetDayOfWeekList(sc.MonthlyDateDay);
             if (days.Count == 7)
             {
-                return CalculateWhenSearchingDay(test);
+                return CalculateWhenSearchingDateDay(test);
             }
             while (days.First() != test.DayOfWeek)
             {
@@ -100,7 +99,7 @@ namespace Scheduler.Services
             return aux;
         }
 
-        private DateTime CalculateWhenSearchingDay(DateTime date)
+        private DateTime CalculateWhenSearchingDateDay(DateTime date)
         {
             if (sc.MonthlyDateOrder == MonthlyDateOrder.Last)
             {
@@ -133,10 +132,6 @@ namespace Scheduler.Services
                 while (i < daysOfWeek.Count && datesList.Count < maxLength && currentDate <= sc.EndDate)
                 {
                     var month = currentDate.Month;
-                    if (currentDate.DayOfWeek != daysOfWeek[i])
-                    {
-                        break;
-                    }
 
                     datesList.Add(currentDate.Date);
                     currentDate = currentDate.AddDays(1);
@@ -144,6 +139,7 @@ namespace Scheduler.Services
 
                     if (month != currentDate.Month)
                     {
+                        currentDate = currentDate.AddDays(-1);
                         break;
                     }
                 }
@@ -159,11 +155,12 @@ namespace Scheduler.Services
         {
             while (datesList.Count < maxLength && currentDate <= sc.EndDate)
             {
-                datesList.Add(currentDate);
+                datesList.Add(currentDate.Date);
                 currentDate = currentDate.AddMonths(sc.MonthlyDayFrequency - 1);
             }
 
             return datesList;
         }
+
     }
 }
