@@ -5,9 +5,9 @@ using Scheduler.Utilities;
 using Scheduler.Validator;
 using System;
 
-namespace Scheduler.Services
+namespace Scheduler.Services.SchedulerServices
 {
-    public class RecurringMonthlySchedulerService(SchedulerConfiguration sc, IHoursCalculator hc): ISchedulerService
+    public class RecurringMonthlySchedulerService(SchedulerConfiguration sc, IHoursCalculator hc) : ISchedulerService
     {
         public List<DateTime> CalculateAllNextDates(int maxLength)
         {
@@ -28,7 +28,7 @@ namespace Scheduler.Services
             var firstDateOnly = sc.MonthlyType == MonthlyType.Day ? GetFirstDateDayMode() : GetFirstDateDateMode();
             var resultDate = hc.CalculateNextHour(firstDateOnly, sc);
 
-            SchedulerServiceValidator.ValidateResultDoNotExceedLimits(resultDate,sc.StartDate,sc.EndDate);
+            SchedulerServiceValidator.ValidateResultDoNotExceedLimits(resultDate, sc.StartDate, sc.EndDate);
             return resultDate;
         }
 
@@ -80,10 +80,10 @@ namespace Scheduler.Services
 
             while (!days.Contains(currentDate.DayOfWeek))
             {
-                    currentDate = currentDate.AddDays(1);
+                currentDate = currentDate.AddDays(1);
             }
 
-            var auxDate =  currentDate.AddDays((int)sc.MonthlyDateOrder * 7);
+            var auxDate = currentDate.AddDays((int)sc.MonthlyDateOrder * 7);
 
             if (auxDate.Month > currentDate.Month)
             {
@@ -109,7 +109,7 @@ namespace Scheduler.Services
             return date.AddDays((int)sc.MonthlyDateOrder);
         }
 
-        
+
 
         private List<DateTime> GetAllDatesWhenDateMode(List<DateTime> datesList, int maxLength, DateTime currentDate)
         {

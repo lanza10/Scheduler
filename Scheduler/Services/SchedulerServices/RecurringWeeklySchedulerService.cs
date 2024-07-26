@@ -2,7 +2,7 @@
 using Scheduler.Services.HoursCalculators;
 using Scheduler.Validator;
 
-namespace Scheduler.Services
+namespace Scheduler.Services.SchedulerServices
 {
     public class RecurringWeeklySchedulerService(SchedulerConfiguration sc, IHoursCalculator hc) : ISchedulerService
     {

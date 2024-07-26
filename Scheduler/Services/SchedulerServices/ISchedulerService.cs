@@ -1,4 +1,4 @@
-﻿namespace Scheduler.Services
+﻿namespace Scheduler.Services.SchedulerServices
 {
     public interface ISchedulerService
     {

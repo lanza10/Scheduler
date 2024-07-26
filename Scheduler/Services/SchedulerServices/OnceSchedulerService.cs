@@ -2,7 +2,7 @@
 using Scheduler.Models;
 using System.Globalization;
 
-namespace Scheduler.Services
+namespace Scheduler.Services.SchedulerServices
 {
     public class OnceSchedulerService(SchedulerConfiguration sc) : ISchedulerService
     {

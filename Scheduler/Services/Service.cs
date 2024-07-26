@@ -1,6 +1,7 @@
 ﻿using Scheduler.Enums;
 using Scheduler.Models;
 using Scheduler.Services.HoursCalculators;
+using Scheduler.Services.SchedulerServices;
 using Scheduler.Validator;
 
 namespace Scheduler.Services
