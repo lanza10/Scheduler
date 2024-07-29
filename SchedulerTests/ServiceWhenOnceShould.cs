@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System.Globalization;
+using FluentAssertions;
 using Scheduler.Enums;
 using Scheduler.Models;
 using Scheduler.Services;
@@ -116,6 +117,45 @@ namespace SchedulerTests
 
             //Assert
             output.NextExecTime.Should().Be(expectedDate);
+        }
+
+        [Theory]
+        [InlineData("en-US", "Occurs once.Schedule will be used on 2/3/2024 at 00:00 starting on 1/1/0001")]
+        [InlineData("fr-FR", "Occurs once.Schedule will be used on 03/02/2024 at 00:00 starting on 01/01/0001")]
+        [InlineData("es-ES", "Occurs once.Schedule will be used on 03/02/2024 at 00:00 starting on 01/01/0001")]
+        public void WorkWithDifferentCultures(string cultureName, string expectedDesc)
+        {
+            var originalCulture = CultureInfo.CurrentCulture;
+
+            try
+            {
+                //Arrange
+                CultureInfo.CurrentCulture = new CultureInfo(cultureName);
+
+                var sc = new SchedulerConfiguration
+                {
+                    CurrentDate = new DateTime(2024, 2, 3),
+                    IsEnabled = true,
+                    Occurs = Occurrence.Daily,
+
+                    ConfigurationDate = new DateTime(2024, 2, 3),
+                    Type = ConfigurationType.Once,
+
+                    StartDate = DateTime.MinValue,
+                    EndDate = DateTime.MaxValue,
+                };
+                var service = new Service(sc);
+
+                //Act
+                var output = service.GetOutput();
+
+                //Assert
+                output.Description.Should().Be(expectedDesc);
+            }
+            finally
+            {
+                CultureInfo.CurrentCulture = originalCulture;
+            }
         }
     }
 }

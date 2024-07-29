@@ -11,8 +11,9 @@ namespace Scheduler.Services
         public static string GeOnceDescription(DateTime date,SchedulerConfiguration sc)
         {
             var culture = CultureInfo.CurrentCulture;
-            var formattedNextExecTime = date.ToString("dd/MM/yyyy 'at' HH:mm", culture);
-            return $"Occurs once.Schedule will be used on {formattedNextExecTime} {GetStartingOnQuote(sc)}";
+            var formattedNextExecTime = date.Date.ToString("d",culture);
+            var hour = date.TimeOfDay.ToString(@"hh\:mm");
+            return $"Occurs once.Schedule will be used on {formattedNextExecTime} at {hour} {GetStartingOnQuote(sc)}";
         }
         public static string GetDailyDescription(SchedulerConfiguration sc)
         {
