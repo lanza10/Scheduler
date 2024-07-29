@@ -21,12 +21,8 @@ namespace Scheduler.Services
 
         public static string GetWeeklyDescription(SchedulerConfiguration sc)
         {
-            var daysOfWeek = WeeklyDictionaries.GetDaysQuote(sc.DaysOfWeek);
-            var frequency = OccurrenceDictionaries.GetFrequencyQuote(sc.WeeklyFrequency, sc.Occurs);
-
-
             return
-                $"Occurs every {frequency} {daysOfWeek} {GetDailyQuote(sc)} {GetStartingOnQuote(sc)}";
+                $"Occurs every {GetWeeklyQuote(sc)} {GetDailyQuote(sc)} {GetStartingOnQuote(sc)}";
         }
 
         public static string GetMonthlyDescription(SchedulerConfiguration sc)
@@ -53,6 +49,13 @@ namespace Scheduler.Services
             return $"starting on {formattedStartDate}";
         }
 
+        private static string GetWeeklyQuote(SchedulerConfiguration sc)
+        {
+            var daysOfWeek = WeeklyDictionaries.GetDaysQuote(sc.DaysOfWeek);
+            var frequency = OccurrenceDictionaries.GetFrequencyQuote(sc.WeeklyFrequency, sc.Occurs);
+            return $"{frequency} {daysOfWeek}";
+        }
+
         private static string GetMonthlyQuote(SchedulerConfiguration sc)
         {
             if (sc.MonthlyType == MonthlyType.Day)
@@ -63,5 +66,6 @@ namespace Scheduler.Services
             return MonthlyDictionaries.GetOrderDayQuote(sc.MonthlyDateOrder, sc.MonthlyDateDay) +
                    $" of every {sc.MonthlyDateFrequency} months";
         }
+
     }
 }
