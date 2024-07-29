@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Scheduler.Enums;
 using Scheduler.Models;
 using Scheduler.Services;
@@ -172,7 +171,7 @@ namespace SchedulerTests
             outputList[3].Description.Should().Be("Occurs every day at 22:30 starting on 01/01/0001");
         }
         [Fact]
-        public void ReturnExpectedDescriptionsWhenEvery() 
+        public void ReturnExpectedDescriptionsWhenEvery()
         {
             //Arrange
             var sc = new SchedulerConfiguration
@@ -203,7 +202,7 @@ namespace SchedulerTests
             outputList[2].Description.Should().Be("Occurs every day every 40 minutes between 11:00 and 13:00 starting on 01/01/0001");
             outputList[3].Description.Should().Be("Occurs every day every 40 minutes between 11:00 and 13:00 starting on 01/01/0001");
         }
-        
+
         [Theory]
         [InlineData("Occurs every day every 30 minutes between 11:00 and 13:00 starting on 01/01/0001", DailyOccursType.Every)]
         [InlineData("Occurs every day at 12:00 starting on 01/01/0001", DailyOccursType.Once)]

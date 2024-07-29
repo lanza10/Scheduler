@@ -2,7 +2,6 @@
 using Scheduler.Models;
 using Scheduler.Utilities;
 using System.Globalization;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Scheduler.Services
 {

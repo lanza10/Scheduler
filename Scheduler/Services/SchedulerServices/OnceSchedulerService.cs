@@ -1,6 +1,5 @@
-﻿using Scheduler.Validator;
-using Scheduler.Models;
-using System.Globalization;
+﻿using Scheduler.Models;
+using Scheduler.Validator;
 
 namespace Scheduler.Services.SchedulerServices
 {

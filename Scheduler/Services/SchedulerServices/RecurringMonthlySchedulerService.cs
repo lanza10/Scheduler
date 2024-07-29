@@ -3,7 +3,6 @@ using Scheduler.Models;
 using Scheduler.Services.HoursCalculators;
 using Scheduler.Utilities;
 using Scheduler.Validator;
-using System;
 
 namespace Scheduler.Services.SchedulerServices
 {
