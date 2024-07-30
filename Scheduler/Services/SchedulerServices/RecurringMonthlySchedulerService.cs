@@ -34,7 +34,7 @@ namespace Scheduler.Services.SchedulerServices
 
         public string GenerateDescription(DateTime date)
         {
-            return DescriptionCalculator.GetMonthlyDescription(sc);
+            return DescriptionGenerator.GetMonthlyDescription(sc);
         }
 
 

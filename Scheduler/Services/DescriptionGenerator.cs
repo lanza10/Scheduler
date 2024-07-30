@@ -5,7 +5,7 @@ using System.Globalization;
 
 namespace Scheduler.Services
 {
-    public class DescriptionCalculator
+    public class DescriptionGenerator
     {
         public static string GeOnceDescription(DateTime date,SchedulerConfiguration sc)
         {

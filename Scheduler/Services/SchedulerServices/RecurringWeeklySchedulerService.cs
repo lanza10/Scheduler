@@ -53,7 +53,7 @@ namespace Scheduler.Services.SchedulerServices
 
         public string GenerateDescription(DateTime date)
         {
-            return DescriptionCalculator.GetWeeklyDescription(sc);
+            return DescriptionGenerator.GetWeeklyDescription(sc);
         }
 
     }

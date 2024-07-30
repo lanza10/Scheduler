@@ -20,7 +20,7 @@ namespace Scheduler.Services.SchedulerServices
 
         public string GenerateDescription(DateTime date)
         {
-            return DescriptionCalculator.GeOnceDescription(date, sc);
+            return DescriptionGenerator.GeOnceDescription(date, sc);
         }
     }
 }

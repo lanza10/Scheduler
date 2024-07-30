@@ -32,7 +32,7 @@ namespace Scheduler.Services.SchedulerServices
 
         public string GenerateDescription(DateTime date)
         {
-            return DescriptionCalculator.GetDailyDescription(sc);
+            return DescriptionGenerator.GetDailyDescription(sc);
         }
     }
 }
