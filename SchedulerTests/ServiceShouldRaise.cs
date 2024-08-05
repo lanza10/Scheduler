@@ -456,6 +456,31 @@ namespace SchedulerTests
             action.Should().Throw<SchedulerException>()
                 .WithMessage("The month frequency must be higher than 0.");
         }
+
+        [Fact]
+        public void ErrorWhenUnimplementedLanguage()
+        {
+            //Arrange
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2020, 1, 1),
+                IsEnabled = true,
+
+                ConfigurationDate = new DateTime(2020, 1, 1),
+                Type = ConfigurationType.Once,
+
+                StartDate = DateTime.MinValue,
+                EndDate = DateTime.MaxValue,
+
+                DescriptionLanguage = (Language)1000
+            };
+            var service = new Service(sc);
+            //Act
+            var action = () => service.GetOutput();
+
+            //Assert
+            action.Should().Throw<KeyNotFoundException>();
+        }
     }
     
 }
