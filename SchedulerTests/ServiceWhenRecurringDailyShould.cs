@@ -462,5 +462,70 @@ namespace SchedulerTests
             outputList[3].NextExecTime.Should().Be(new DateTime(2020, 1, 4, 0, 10, 0));
             outputList[4].NextExecTime.Should().Be(new DateTime(2020, 1, 5, 0, 10, 0));
         }
+
+        [Theory]
+        [InlineData(Language.Us, "Occurs every day at 22:30 starting on 1/5/0001")]
+        [InlineData(Language.Uk, "Occurs every day at 22:30 starting on 05/01/0001")]
+        [InlineData(Language.Es, "Ocurre cada día a la/s 22:30 empezando el 05/01/0001")]
+        public void WorkWithDifferentCulturesWhenOnceADay(Language l, string expectedDesc)
+        {
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2020, 1, 1, 12, 30, 0),
+                IsEnabled = true,
+                Occurs = Occurrence.Daily,
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
+
+                DailyType = DailyOccursType.Once,
+                DailyOccursOnceAt = new TimeSpan(22, 30, 15),
+
+                StartDate = new DateTime(0001, 1, 5),
+                EndDate = new DateTime(2020, 1, 5, 12, 30, 0),
+
+                DescriptionLanguage = l
+            };
+            var service = new Service(sc);
+
+            //Act
+            var output = service.GetOutput();
+
+            //Assert
+            output.Description.Should().Be(expectedDesc);
+        }
+
+        [Theory]
+        [InlineData(Language.Us, "Occurs every day every 40 minutes between 11:00 and 13:00 starting on 1/5/0001")]
+        [InlineData(Language.Uk, "Occurs every day every 40 minutes between 11:00 and 13:00 starting on 05/01/0001")]
+        [InlineData(Language.Es, "Ocurre cada día cada 40 minutos entre la/s 11:00 y la/s 13:00 empezando el 05/01/0001")]
+        public void WorkWithDifferentCulturesWhenEvery(Language l, string expectedDesc)
+        {
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2020, 1, 1, 12, 30, 0),
+                IsEnabled = true,
+                Occurs = Occurrence.Daily,
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
+
+                DailyType = DailyOccursType.Every,
+                DailyOccursEvery = 40,
+                OccursEveryType = DailyOccursEveryType.Minutes,
+                DailyStartingAt = new TimeSpan(11, 0, 0),
+                DailyEndingAt = new TimeSpan(13, 0, 0),
+
+                StartDate = new DateTime(0001, 1, 5),
+                EndDate = new DateTime(2020, 1, 2, 12, 30, 0),
+
+                DescriptionLanguage = l
+            };
+            var service = new Service(sc);
+
+            //Act
+            var output = service.GetOutput();
+
+            //Assert
+            output.Description.Should().Be(expectedDesc);
+        }
     }
 }
