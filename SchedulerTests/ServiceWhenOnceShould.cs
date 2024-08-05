@@ -6,7 +6,7 @@ using Scheduler.Services;
 
 namespace SchedulerTests
 {
-    public class ServiceWhenOnceShould
+    public class ServiceWhenOnceShould : CultureTestBase
     {
         [Fact]
         public void ReturnOnceOutput()

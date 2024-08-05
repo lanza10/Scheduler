@@ -5,7 +5,7 @@ using Scheduler.Models;
 using Scheduler.Services;
 namespace SchedulerTests
 {
-    public class ServiceShouldRaise
+    public class ServiceShouldRaise : CultureTestBase
     {
         [Fact]
         public void ErrorWhenResultIsNotEnabled()

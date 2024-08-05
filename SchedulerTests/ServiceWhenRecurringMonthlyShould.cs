@@ -6,7 +6,7 @@ using Scheduler.Services;
 
 namespace SchedulerTests
 {
-    public class ServiceWhenRecurringMonthlyShould
+    public class ServiceWhenRecurringMonthlyShould : CultureTestBase
     {
         [Fact]
         public void ReturnExpectedDateWhenDayModeAndCurrentIsLessThanFirst()

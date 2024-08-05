@@ -5,7 +5,7 @@ using Scheduler.Services;
 
 namespace SchedulerTests
 {
-    public class ServiceWhenRecurringWeeklyShould
+    public class ServiceWhenRecurringWeeklyShould : CultureTestBase
     {
         [Fact]
         public void ReturnRecurringWeeklyOutput()
