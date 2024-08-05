@@ -6,7 +6,7 @@ using Scheduler.Services;
 
 namespace SchedulerTests
 {
-    public class ServiceWhenRecurringMonthlyShould : CultureTestBase
+    public class ServiceWhenRecurringMonthlyShould
     {
         [Fact]
         public void ReturnExpectedDateWhenDayModeAndCurrentIsLessThanFirst()
@@ -872,7 +872,7 @@ namespace SchedulerTests
             var output = service.GetOutput();
 
             //Assert
-            output.Description.Should().Be("Occurs the 8 of every 3 months at 12:30 starting on 01/01/0001");
+            output.Description.Should().Be("Occurs the 8 of every 3 months at 12:30 starting on 1/1/0001");
         }
         [Fact]
         public void ReturnExpectedDescriptionDateMode()
@@ -903,7 +903,7 @@ namespace SchedulerTests
             var output = service.GetOutput();
 
             //Assert
-            output.Description.Should().Be("Occurs the first weekday of every 3 months at 12:30 starting on 01/01/0001");
+            output.Description.Should().Be("Occurs the first weekday of every 3 months at 12:30 starting on 1/1/0001");
          }
         [Fact]
         public void ReturnSameDescriptionForEveryOutput()
@@ -928,7 +928,7 @@ namespace SchedulerTests
                 StartDate = DateTime.MinValue,
                 EndDate = DateTime.MaxValue,
             };
-            const string expectedDesc = "Occurs the first weekday of every 3 months at 12:30 starting on 01/01/0001";
+            const string expectedDesc = "Occurs the first weekday of every 3 months at 12:30 starting on 1/1/0001";
             var service = new Service(sc);
             //Act
             var outputList = service.GetOutputList(6);

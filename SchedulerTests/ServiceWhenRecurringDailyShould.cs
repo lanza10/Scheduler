@@ -5,7 +5,7 @@ using Scheduler.Services;
 
 namespace SchedulerTests
 {
-    public class ServiceWhenRecurringDailyShould : CultureTestBase
+    public class ServiceWhenRecurringDailyShould
     {
         [Fact]
         public void ReturnRecurringDailyOutput()
@@ -33,7 +33,7 @@ namespace SchedulerTests
             //Assert
             output.NextExecTime.Should().Be(new DateTime(2020, 1, 1, 12, 30, 0));
             output.Description.Should()
-                .Be("Occurs every day at 12:30 starting on 01/01/0001");
+                .Be("Occurs every day at 12:30 starting on 1/1/0001");
         }
 
         [Fact]
@@ -165,10 +165,10 @@ namespace SchedulerTests
 
             //Assert
             outputList.Should().HaveCount(4);
-            outputList[0].Description.Should().Be("Occurs every day at 22:30 starting on 01/01/0001");
-            outputList[1].Description.Should().Be("Occurs every day at 22:30 starting on 01/01/0001");
-            outputList[2].Description.Should().Be("Occurs every day at 22:30 starting on 01/01/0001");
-            outputList[3].Description.Should().Be("Occurs every day at 22:30 starting on 01/01/0001");
+            outputList[0].Description.Should().Be("Occurs every day at 22:30 starting on 1/1/0001");
+            outputList[1].Description.Should().Be("Occurs every day at 22:30 starting on 1/1/0001");
+            outputList[2].Description.Should().Be("Occurs every day at 22:30 starting on 1/1/0001");
+            outputList[3].Description.Should().Be("Occurs every day at 22:30 starting on 1/1/0001");
         }
         [Fact]
         public void ReturnExpectedDescriptionsWhenEvery()
@@ -197,15 +197,15 @@ namespace SchedulerTests
 
             //Assert
             outputList.Should().HaveCount(4);
-            outputList[0].Description.Should().Be("Occurs every day every 40 minutes between 11:00 and 13:00 starting on 01/01/0001");
-            outputList[1].Description.Should().Be("Occurs every day every 40 minutes between 11:00 and 13:00 starting on 01/01/0001");
-            outputList[2].Description.Should().Be("Occurs every day every 40 minutes between 11:00 and 13:00 starting on 01/01/0001");
-            outputList[3].Description.Should().Be("Occurs every day every 40 minutes between 11:00 and 13:00 starting on 01/01/0001");
+            outputList[0].Description.Should().Be("Occurs every day every 40 minutes between 11:00 and 13:00 starting on 1/1/0001");
+            outputList[1].Description.Should().Be("Occurs every day every 40 minutes between 11:00 and 13:00 starting on 1/1/0001");
+            outputList[2].Description.Should().Be("Occurs every day every 40 minutes between 11:00 and 13:00 starting on 1/1/0001");
+            outputList[3].Description.Should().Be("Occurs every day every 40 minutes between 11:00 and 13:00 starting on 1/1/0001");
         }
 
         [Theory]
-        [InlineData("Occurs every day every 30 minutes between 11:00 and 13:00 starting on 01/01/0001", DailyOccursType.Every)]
-        [InlineData("Occurs every day at 12:00 starting on 01/01/0001", DailyOccursType.Once)]
+        [InlineData("Occurs every day every 30 minutes between 11:00 and 13:00 starting on 1/1/0001", DailyOccursType.Every)]
+        [InlineData("Occurs every day at 12:00 starting on 1/1/0001", DailyOccursType.Once)]
         public void ReturnDifferentDescriptionsDependingOnType(string expectedDescription, DailyOccursType occursEveryType)
         {
             //Arrange

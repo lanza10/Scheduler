@@ -5,4 +5,11 @@
         Once,
         Recurring
     }
+
+    public enum Language
+    {
+        Us,
+        Uk,
+        Es
+    }
 }

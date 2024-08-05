@@ -1,9 +1,13 @@
-﻿using Scheduler.Enums;
+﻿using System.Globalization;
+using Scheduler.Enums;
+using Scheduler.Services;
+using System.Resources;
 
 namespace Scheduler.Utilities
 {
     public class MonthlyDictionaries
     {
+        private static readonly ResourceManager Rm = new("Scheduler.StringCultures.MonthlyStrings.monthlyStrings", typeof(MonthlyDictionaries).Assembly);
         public static readonly Dictionary<MonthlyDateDay, List<DayOfWeek>> WeekDaysMap = new()
         {
             {
@@ -45,53 +49,53 @@ namespace Scheduler.Utilities
         public static readonly Dictionary<MonthlyDateOrder, string> OrderMap = new()
         {
             {
-                MonthlyDateOrder.First, "first"
+                MonthlyDateOrder.First, "First"
             },
             {
-                MonthlyDateOrder.Second, "second"
+                MonthlyDateOrder.Second, "Second"
             },
             {
-               MonthlyDateOrder.Third, "third"
+               MonthlyDateOrder.Third, "Third"
             },
             {
-                MonthlyDateOrder.Fourth, "fourth"
+                MonthlyDateOrder.Fourth, "Fourth"
             },
             {
-                MonthlyDateOrder.Last, "last"
+                MonthlyDateOrder.Last, "Last"
             },
         };
         public static readonly Dictionary<MonthlyDateDay, string> DayOfMonthMap = new()
         {
             {
-                MonthlyDateDay.Sunday, "sunday"
+                MonthlyDateDay.Sunday, "Sunday"
             },
             {
-                MonthlyDateDay.Monday, "monday"
+                MonthlyDateDay.Monday, "Monday"
             },
             {
-                MonthlyDateDay.Tuesday, "tuesday"
+                MonthlyDateDay.Tuesday, "Tuesday"
             },
             {
-                MonthlyDateDay.Wednesday, "wednesday"
+                MonthlyDateDay.Wednesday, "Wednesday"
             },
             {
-                MonthlyDateDay.Thursday, "thursday"
+                MonthlyDateDay.Thursday, "Thursday"
             },
             {
-                MonthlyDateDay.Friday, "friday"
+                MonthlyDateDay.Friday, "Friday"
             },
             {
-                MonthlyDateDay.Saturday, "saturday"
+                MonthlyDateDay.Saturday, "Saturday"
             },
             {
-                MonthlyDateDay.Day,  "day"
+                MonthlyDateDay.Day,  "Day"
             },
             {
-                MonthlyDateDay.Weekday, "weekday"
+                MonthlyDateDay.Weekday, "Weekday"
 
             },
             {
-                MonthlyDateDay.WeekendDay, "weekend day"
+                MonthlyDateDay.WeekendDay, "Weekend day"
             }
         };
 
@@ -104,7 +108,7 @@ namespace Scheduler.Utilities
 
             DayOfMonthMap.TryGetValue(day, out var dayQuote);
 
-            return $"{orderQuote} {dayQuote}";
+            return $"{Rm.GetString(orderQuote, CultureInfo.CurrentCulture)} {Rm.GetString(dayQuote!, CultureInfo.CurrentCulture)}";
         }
     }
 }

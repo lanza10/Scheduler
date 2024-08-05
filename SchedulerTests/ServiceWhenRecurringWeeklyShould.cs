@@ -5,7 +5,7 @@ using Scheduler.Services;
 
 namespace SchedulerTests
 {
-    public class ServiceWhenRecurringWeeklyShould : CultureTestBase
+    public class ServiceWhenRecurringWeeklyShould
     {
         [Fact]
         public void ReturnRecurringWeeklyOutput()
@@ -36,7 +36,7 @@ namespace SchedulerTests
             //Assert
             output.NextExecTime.Should().Be(new DateTime(2024, 1, 8, 12, 30, 0));
             output.Description.Should()
-                .Be("Occurs every 4 weeks on monday at 12:30 starting on 01/01/0001");
+                .Be("Occurs every 4 weeks on monday at 12:30 starting on 1/1/0001");
         }
 
         [Fact]
@@ -220,7 +220,7 @@ namespace SchedulerTests
             var output = service.GetOutput();
 
             //Assert
-            output.Description.Should().Be("Occurs every 2 weeks on monday at 23:30 starting on 01/01/0001");
+            output.Description.Should().Be("Occurs every 2 weeks on monday at 23:30 starting on 1/1/0001");
 
         }
 
@@ -255,7 +255,7 @@ namespace SchedulerTests
             var output = service.GetOutput();
 
             //Assert
-            output.Description.Should().Be("Occurs every 2 weeks on monday every 90 minutes between 08:00 and 10:00 starting on 01/01/0001");
+            output.Description.Should().Be("Occurs every 2 weeks on monday every 90 minutes between 08:00 and 10:00 starting on 1/1/0001");
         }
 
         [Fact]
@@ -292,7 +292,7 @@ namespace SchedulerTests
             //Assert
             output.Description.Should()
                 .Be(
-                    "Occurs every 2 weeks on monday, tuesday, wednesday, thursday and friday every 90 minutes between 08:00 and 10:00 starting on 01/01/0001");
+                    "Occurs every 2 weeks on monday, tuesday, wednesday, thursday and friday every 90 minutes between 08:00 and 10:00 starting on 1/1/0001");
         }
 
         [Fact]
@@ -332,16 +332,16 @@ namespace SchedulerTests
             outputList[3].NextExecTime.Should().Be(new DateTime(2024, 1, 15, 9, 30, 0));
             outputList[0].Description.Should()
                 .Be(
-                    "Occurs every week on monday every 90 minutes between 08:00 and 10:00 starting on 01/01/0001");
+                    "Occurs every week on monday every 90 minutes between 08:00 and 10:00 starting on 1/1/0001");
             outputList[1].Description.Should()
                 .Be(
-                    "Occurs every week on monday every 90 minutes between 08:00 and 10:00 starting on 01/01/0001");
+                    "Occurs every week on monday every 90 minutes between 08:00 and 10:00 starting on 1/1/0001");
             outputList[2].Description.Should()
                 .Be(
-                    "Occurs every week on monday every 90 minutes between 08:00 and 10:00 starting on 01/01/0001");
+                    "Occurs every week on monday every 90 minutes between 08:00 and 10:00 starting on 1/1/0001");
             outputList[3].Description.Should()
                 .Be(
-                    "Occurs every week on monday every 90 minutes between 08:00 and 10:00 starting on 01/01/0001");
+                    "Occurs every week on monday every 90 minutes between 08:00 and 10:00 starting on 1/1/0001");
         }
         [Fact]
         public void ReturnExactlyTheSameDatesAsDailyIfEverydayEachWeekSelected()
@@ -515,7 +515,7 @@ namespace SchedulerTests
             //Assert
             output.NextExecTime.Should().Be(new DateTime(2024, 12, 16, 8, 0, 0));
             output.Description.Should()
-                .Be("Occurs every 50 weeks on monday every 90 minutes between 08:00 and 10:00 starting on 01/01/0001");
+                .Be("Occurs every 50 weeks on monday every 90 minutes between 08:00 and 10:00 starting on 1/1/0001");
         }
 
         [Fact]

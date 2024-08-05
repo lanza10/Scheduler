@@ -3,6 +3,7 @@ using Scheduler.Models;
 using Scheduler.Services.HoursCalculators;
 using Scheduler.Utilities;
 using Scheduler.Validator;
+using System.Globalization;
 
 namespace Scheduler.Services.SchedulerServices
 {
@@ -34,6 +35,7 @@ namespace Scheduler.Services.SchedulerServices
 
         public string GenerateDescription(DateTime date)
         {
+            CultureInfo.CurrentCulture = LanguageDictionary.GetCulture(sc.DescriptionLanguage);
             return DescriptionGenerator.GetMonthlyDescription(sc);
         }
 

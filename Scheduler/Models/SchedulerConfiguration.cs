@@ -42,5 +42,7 @@ namespace Scheduler.Models
             get => _endDate;
             set => _endDate = value ?? DateTime.MaxValue;
         }
+
+        public Language DescriptionLanguage = Language.Us;
     }
 }

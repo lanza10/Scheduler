@@ -1,4 +1,6 @@
-﻿using Scheduler.Models;
+﻿using System.Globalization;
+using Scheduler.Models;
+using Scheduler.Utilities;
 using Scheduler.Validator;
 
 namespace Scheduler.Services.SchedulerServices
@@ -20,7 +22,8 @@ namespace Scheduler.Services.SchedulerServices
 
         public string GenerateDescription(DateTime date)
         {
-            return DescriptionGenerator.GeOnceDescription(date, sc);
+            CultureInfo.CurrentCulture = LanguageDictionary.GetCulture(sc.DescriptionLanguage);
+            return DescriptionGenerator.GetOnceDescription(date, sc);
         }
     }
 }

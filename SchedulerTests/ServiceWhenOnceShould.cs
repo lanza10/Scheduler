@@ -6,7 +6,7 @@ using Scheduler.Services;
 
 namespace SchedulerTests
 {
-    public class ServiceWhenOnceShould : CultureTestBase
+    public class ServiceWhenOnceShould
     {
         [Fact]
         public void ReturnOnceOutput()
@@ -32,7 +32,7 @@ namespace SchedulerTests
             //Assert
             output.NextExecTime.Should().Be(new DateTime(2020, 1, 4, 14, 0, 0));
             output.Description.Should()
-                .Be("Occurs once.Schedule will be used on 04/01/2020 at 14:00 starting on 01/01/0001");
+                .Be("Occurs once.Schedule will be used on 1/4/2020 at 14:00 starting on 1/1/0001");
         }
 
         [Fact]
@@ -63,9 +63,9 @@ namespace SchedulerTests
             outputList.First().Description.Should().Be(output.Description);
         }
         [Theory]
-        [InlineData("Occurs once.Schedule will be used on 03/02/2024 at 00:00 starting on 01/01/0001", 2024, 2, 3)]
-        [InlineData("Occurs once.Schedule will be used on 01/01/0001 at 00:00 starting on 01/01/0001", 1, 1, 1)]
-        [InlineData("Occurs once.Schedule will be used on 31/12/9999 at 00:00 starting on 01/01/0001", 9999, 12, 31)]
+        [InlineData("Occurs once.Schedule will be used on 2/3/2024 at 00:00 starting on 1/1/0001", 2024, 2, 3)]
+        [InlineData("Occurs once.Schedule will be used on 1/1/0001 at 00:00 starting on 1/1/0001", 1, 1, 1)]
+        [InlineData("Occurs once.Schedule will be used on 12/31/9999 at 00:00 starting on 1/1/0001", 9999, 12, 31)]
         public void ReturnExpectedDescription(string expectedDescription, int year, int month, int day)
         {
             //Arrange
@@ -120,42 +120,32 @@ namespace SchedulerTests
         }
 
         [Theory]
-        [InlineData("en-US", "Occurs once.Schedule will be used on 2/3/2024 at 00:00 starting on 1/1/0001")]
-        [InlineData("fr-FR", "Occurs once.Schedule will be used on 03/02/2024 at 00:00 starting on 01/01/0001")]
-        [InlineData("es-ES", "Occurs once.Schedule will be used on 03/02/2024 at 00:00 starting on 01/01/0001")]
-        public void WorkWithDifferentCultures(string cultureName, string expectedDesc)
+        [InlineData(Language.Us, "Occurs once.Schedule will be used on 2/3/2024 at 00:00 starting on 1/1/0001")]
+        [InlineData(Language.Uk, "Occurs once.Schedule will be used on 03/02/2024 at 00:00 starting on 01/01/0001")]
+        [InlineData( Language.Es,"Ocurre una vez.Será usado el 03/02/2024 a la/s 00:00 empezando el 01/01/0001")]
+        public void WorkWithDifferentCultures(Language l, string expectedDesc)
         {
-            var originalCulture = CultureInfo.CurrentCulture;
-
-            try
+            var sc = new SchedulerConfiguration
             {
-                //Arrange
-                CultureInfo.CurrentCulture = new CultureInfo(cultureName);
+                CurrentDate = new DateTime(2024, 2, 3),
+                IsEnabled = true,
+                Occurs = Occurrence.Daily,
 
-                var sc = new SchedulerConfiguration
-                {
-                    CurrentDate = new DateTime(2024, 2, 3),
-                    IsEnabled = true,
-                    Occurs = Occurrence.Daily,
+                ConfigurationDate = new DateTime(2024, 2, 3),
+                Type = ConfigurationType.Once,
 
-                    ConfigurationDate = new DateTime(2024, 2, 3),
-                    Type = ConfigurationType.Once,
+                StartDate = DateTime.MinValue,
+                EndDate = DateTime.MaxValue,
 
-                    StartDate = DateTime.MinValue,
-                    EndDate = DateTime.MaxValue,
-                };
-                var service = new Service(sc);
+                DescriptionLanguage = l
+            };
+            var service = new Service(sc);
 
-                //Act
-                var output = service.GetOutput();
+            //Act
+            var output = service.GetOutput();
 
-                //Assert
-                output.Description.Should().Be(expectedDesc);
-            }
-            finally
-            {
-                CultureInfo.CurrentCulture = originalCulture;
-            }
+            //Assert
+            output.Description.Should().Be(expectedDesc);
         }
     }
 }
