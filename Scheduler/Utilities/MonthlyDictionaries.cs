@@ -1,6 +1,5 @@
-﻿using System.Globalization;
-using Scheduler.Enums;
-using Scheduler.Services;
+﻿using Scheduler.Enums;
+using System.Globalization;
 using System.Resources;
 
 namespace Scheduler.Utilities

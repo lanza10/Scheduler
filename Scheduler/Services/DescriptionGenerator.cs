@@ -2,7 +2,6 @@
 using Scheduler.Models;
 using Scheduler.Utilities;
 using System.Globalization;
-using Scheduler.StringCultures.Descriptions;
 using System.Resources;
 
 namespace Scheduler.Services
@@ -10,9 +9,9 @@ namespace Scheduler.Services
     public class DescriptionGenerator
     {
         private static readonly ResourceManager Rm = new("Scheduler.StringCultures.Descriptions.descriptions", typeof(DescriptionGenerator).Assembly);
-        public static string GetOnceDescription(DateTime date,SchedulerConfiguration sc)
+        public static string GetOnceDescription(DateTime date, SchedulerConfiguration sc)
         {
-            var formattedNextExecTime = date.Date.ToString("d",CultureInfo.CurrentCulture);
+            var formattedNextExecTime = date.Date.ToString("d", CultureInfo.CurrentCulture);
             var hour = date.TimeOfDay.ToString(@"hh\:mm");
             var desc = Rm.GetString("OnceDesc", CultureInfo.CurrentCulture);
             return string.Format(desc!, formattedNextExecTime, hour, GetStartingOnQuote(sc.StartDate));
@@ -48,7 +47,7 @@ namespace Scheduler.Services
             }
             var formmattedOnceAt = sc.DailyOccursOnceAt.ToString(@"hh\:mm");
             quote = Rm.GetString("OnceDayQuote", CultureInfo.CurrentCulture)!;
-            return string.Format(quote,formmattedOnceAt);
+            return string.Format(quote, formmattedOnceAt);
         }
 
         private static string GetStartingOnQuote(DateTime stDate)
@@ -70,12 +69,12 @@ namespace Scheduler.Services
             string quote;
             if (sc.MonthlyType == MonthlyType.Day)
             {
-                quote = Rm.GetString("MonthlyDayQuote", CultureInfo.CurrentCulture)!;
-                return string.Format(quote!, sc.MonthlyDay, sc.MonthlyDayFrequency);
+                quote = Rm.GetString("MonthlyDayQuote", CultureInfo.CurrentCulture)!; 
+                return string.Format(quote, sc.MonthlyDay, sc.MonthlyDayFrequency);
             }
 
             quote = Rm.GetString("MonthlyDateQuote", CultureInfo.CurrentCulture)!;
-            return 
+            return
                 $"{MonthlyDictionaries.GetOrderDayQuote(sc.MonthlyDateOrder, sc.MonthlyDateDay)} {string.Format(quote, sc.MonthlyDateFrequency)}";
         }
 

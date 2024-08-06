@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Scheduler.Enums;
 using Scheduler.Models;
 using Scheduler.Services;
@@ -122,7 +121,7 @@ namespace SchedulerTests
         [Theory]
         [InlineData(Language.Us, "Occurs once.Schedule will be used on 2/3/2024 at 00:00 starting on 1/1/0001")]
         [InlineData(Language.Uk, "Occurs once.Schedule will be used on 03/02/2024 at 00:00 starting on 01/01/0001")]
-        [InlineData( Language.Es,"Ocurre una vez.Será usado el 03/02/2024 a la/s 00:00 empezando el 01/01/0001")]
+        [InlineData(Language.Es, "Ocurre una vez.Será usado el 03/02/2024 a la/s 00:00 empezando el 01/01/0001")]
         public void WorkWithDifferentCultures(Language l, string expectedDesc)
         {
             var sc = new SchedulerConfiguration
