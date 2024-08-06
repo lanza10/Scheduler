@@ -37,10 +37,11 @@ namespace Scheduler.Utilities
         public static string GetFrequencyQuote(int frequency, Occurrence occurrence)
         {
             OccurrenceMap.TryGetValue(occurrence, out var occurs);
+            var occursString = Rm.GetString(occurs!, CultureInfo.CurrentCulture);
 
             return (frequency == 1 
-                ? Rm.GetString(occurs!, CultureInfo.CurrentCulture) 
-                : $"{frequency} {Rm.GetString(occurs!,CultureInfo.CurrentCulture)}s")!;
+                ? occursString 
+                : $"{frequency} {occursString}s")!;
         }
 
         public static string GetIntervalQuote(int quantity, DailyOccursEveryType type)
@@ -50,9 +51,11 @@ namespace Scheduler.Utilities
                 throw new KeyNotFoundException();
             }
 
+            var unitsString = Rm.GetString(unitsMeasure, CultureInfo.CurrentCulture);
+
             return (quantity == 1 
-                ? Rm.GetString(unitsMeasure, CultureInfo.CurrentCulture) 
-                : $"{quantity} {Rm.GetString(unitsMeasure, CultureInfo.CurrentCulture)}s")!;
+                ? unitsString 
+                : $"{quantity} {unitsString}s")!;
         }
     }
 }

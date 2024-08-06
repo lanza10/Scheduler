@@ -9,37 +9,25 @@ namespace Scheduler.Utilities
         private static readonly ResourceManager Rm = new("Scheduler.StringCultures.WeeklyStrings.weeklyStrings", typeof(WeeklyDictionaries).Assembly);
         private static readonly Dictionary<DayOfWeek, string> DaysOfWeekMap = new()
         {
-            {
-               DayOfWeek.Monday, "Monday"
-            },
-            {
-                DayOfWeek.Tuesday, "Tuesday"
-            },
-            {
-                DayOfWeek.Wednesday, "Wednesday"
-            },
-            {
-                DayOfWeek.Thursday, "Thursday"
-            },
-            {
-                DayOfWeek.Friday, "Friday"
-            },
-            {
-                DayOfWeek.Saturday, "Saturday"
-            },
-            {
-                DayOfWeek.Sunday, "Sunday"
-            }
+            { DayOfWeek.Monday, "Monday" },
+            { DayOfWeek.Tuesday, "Tuesday" },
+            { DayOfWeek.Wednesday, "Wednesday" },
+            { DayOfWeek.Thursday, "Thursday" },
+            { DayOfWeek.Friday, "Friday" },
+            { DayOfWeek.Saturday, "Saturday" },
+            { DayOfWeek.Sunday, "Sunday" }
         };
 
         public static string GetDaysQuote(List<DayOfWeek> days)
         {
-            var result = new StringBuilder();
             if (days.Count == 7)
             {
                 return Rm.GetString("Everyday", CultureInfo.CurrentCulture)!;
             }
+
+            var result = new StringBuilder();
             result.Append($"{Rm.GetString("On", CultureInfo.CurrentCulture)} ");
+
             for (var i = 0; i < days.Count; i++)
             {
                 DaysOfWeekMap.TryGetValue(days[i], out var stringDay);

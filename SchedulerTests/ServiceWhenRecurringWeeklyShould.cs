@@ -683,7 +683,116 @@ namespace SchedulerTests
             outputList[2].NextExecTime.Should().Be(new DateTime(2022, 1, 12, 12, 0, 0));
         }
 
+        [Theory]
+        [InlineData(Language.Us, "Occurs every 2 weeks on monday at 23:30 starting on 1/5/0001")]
+        [InlineData(Language.Uk, "Occurs every 2 weeks on monday at 23:30 starting on 05/01/0001")]
+        [InlineData(Language.Es, "Ocurre cada 2 semanas en lunes a la/s 23:30 empezando el 05/01/0001")]
+        public void WorkWithDifferentCulturesDailyModeOnce(Language l, string expectedDesc)
+        {
+            //Arrange
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2024, 1, 1, 12, 0, 0),
+                IsEnabled = true,
+                Occurs = Occurrence.Weekly,
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
 
+                WeeklyFrequency = 2,
+                DaysOfWeek = [DayOfWeek.Monday],
+
+                DailyType = DailyOccursType.Once,
+                DailyOccursOnceAt = new TimeSpan(23, 30, 0),
+
+                StartDate = new DateTime(1, 1, 5),
+                EndDate = DateTime.MaxValue,
+
+                DescriptionLanguage = l
+            };
+            var service = new Service(sc);
+            //Act
+            var output = service.GetOutput();
+
+            //Assert
+            output.Description.Should().Be(expectedDesc);
+        }
+
+        [Theory]
+        [InlineData(Language.Us, "Occurs every 2 weeks on monday every 90 minutes between 08:00 and 10:00 starting on 1/5/0001")]
+        [InlineData(Language.Uk, "Occurs every 2 weeks on monday every 90 minutes between 08:00 and 10:00 starting on 05/01/0001")]
+        [InlineData(Language.Es, "Ocurre cada 2 semanas en lunes cada 90 minutos entre la/s 08:00 y la/s 10:00 empezando el 05/01/0001")]
+        public void WorkWithDifferentCulturesDailyModeEvery(Language l, string expectedDesc)
+        {
+            //Arrange
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2024, 1, 1, 12, 0, 0),
+                IsEnabled = true,
+                Occurs = Occurrence.Weekly,
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
+
+                WeeklyFrequency = 2,
+                DaysOfWeek = [DayOfWeek.Monday],
+
+                DailyType = DailyOccursType.Every,
+                DailyOccursEvery = 90,
+                OccursEveryType = DailyOccursEveryType.Minutes,
+
+                DailyStartingAt = new TimeSpan(8, 0, 0),
+                DailyEndingAt = new TimeSpan(10, 0, 0),
+
+                StartDate = new DateTime(1, 1, 5),
+                EndDate = DateTime.MaxValue,
+
+                DescriptionLanguage = l
+            };
+            var service = new Service(sc);
+            //Act
+            var output = service.GetOutput();
+
+            //Assert
+            output.Description.Should().Be(expectedDesc);
+        }
+
+        [Fact]
+        public void ReturnLargerDescriptionBecauseOfWeekDaysInSpanish()
+        {
+            //Arrange
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2024, 1, 1, 12, 0, 0),
+                IsEnabled = true,
+                Occurs = Occurrence.Weekly,
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
+
+                WeeklyFrequency = 2,
+                DaysOfWeek = [DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday, DayOfWeek.Thursday,
+                    DayOfWeek.Friday],
+
+                DailyType = DailyOccursType.Every,
+                DailyOccursEvery = 90,
+                OccursEveryType = DailyOccursEveryType.Minutes,
+
+                DailyStartingAt = new TimeSpan(8, 0, 0),
+                DailyEndingAt = new TimeSpan(10, 0, 0),
+
+                StartDate = DateTime.MinValue,
+                EndDate = null,
+
+                DescriptionLanguage = Language.Es
+            };
+            var service = new Service(sc);
+
+            //Act
+            var output = service.GetOutput();
+
+            //Assert
+            output.Description.Should()
+                .Be(
+                    "Ocurre cada 2 semanas en lunes, martes, miércoles, jueves y viernes cada 90 minutos entre la/s 08:00 y la/s 10:00 empezando el 01/01/0001");
+        }
     }
 
 }

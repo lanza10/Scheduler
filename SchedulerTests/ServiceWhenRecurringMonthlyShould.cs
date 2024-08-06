@@ -1010,5 +1010,76 @@ namespace SchedulerTests
             outputList[2].NextExecTime.Should().Be(new DateTime(2025, 5, 4, 12, 30, 0));
             outputList[3].NextExecTime.Should().Be(new DateTime(2026, 1, 3, 12, 30, 0));
         }
+
+        [Theory]
+        [InlineData(Language.Us, "Occurs the 8 of every 3 months at 12:30 starting on 1/5/0001")]
+        [InlineData(Language.Uk, "Occurs the 8 of every 3 months at 12:30 starting on 05/01/0001")]
+        [InlineData(Language.Es, "Ocurre el 8 de cada 3 meses a la/s 12:30 empezando el 05/01/0001")]
+        public void WorkWithDifferentCulturesDayMode(Language l, string expectedDesc)
+        {
+            //Arrange
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2024, 1, 1),
+                IsEnabled = true,
+                Occurs = Occurrence.Monthly,
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
+
+                MonthlyType = MonthlyType.Day,
+                MonthlyDay = 8,
+                MonthlyDayFrequency = 3,
+
+                DailyType = DailyOccursType.Once,
+                DailyOccursOnceAt = new TimeSpan(12, 30, 0),
+
+                StartDate = new DateTime(1,1,5),
+                EndDate = DateTime.MaxValue,
+
+                DescriptionLanguage = l
+            };
+            var service = new Service(sc);
+            //Act
+            var output = service.GetOutput();
+
+            //Assert
+            output.Description.Should().Be(expectedDesc);
+        }
+
+        [Theory]
+        [InlineData(Language.Us, "Occurs the first weekday of every 3 months at 12:30 starting on 1/5/0001")]
+        [InlineData(Language.Uk, "Occurs the first weekday of every 3 months at 12:30 starting on 05/01/0001")]
+        [InlineData(Language.Es, "Ocurre el primer día de la semana de cada 3 meses a la/s 12:30 empezando el 05/01/0001")]
+        public void WorkWithDifferentCulturesDateMode(Language l, string expectedDesc)
+        {
+            //Arrange
+            var sc = new SchedulerConfiguration
+            {
+                CurrentDate = new DateTime(2024, 1, 1),
+                IsEnabled = true,
+                Occurs = Occurrence.Monthly,
+                ConfigurationDate = null,
+                Type = ConfigurationType.Recurring,
+
+                MonthlyType = MonthlyType.Date,
+                MonthlyDateDay = MonthlyDateDay.Weekday,
+                MonthlyDateOrder = MonthlyDateOrder.First,
+                MonthlyDateFrequency = 3,
+
+                DailyType = DailyOccursType.Once,
+                DailyOccursOnceAt = new TimeSpan(12, 30, 0),
+
+                StartDate = new DateTime(1, 1, 5),
+                EndDate = DateTime.MaxValue,
+
+                DescriptionLanguage = l
+            };
+            var service = new Service(sc);
+            //Act
+            var output = service.GetOutput();
+
+            //Assert
+            output.Description.Should().Be(expectedDesc);
+        }
     }
 }
