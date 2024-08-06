@@ -16,6 +16,9 @@ namespace Scheduler.Services
             SchedulerValidator.ValidateSchedulerConfiguration(sc);
 
             _schedulerService = sc.Type == ConfigurationType.Once ? new OnceSchedulerService(sc) : GetRecurringService(sc);
+
+            CultureManager.ChangeCurrentCulture(sc.DescriptionLanguage);
+
         }
         public Output GetOutput()
         {

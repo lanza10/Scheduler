@@ -474,9 +474,8 @@ namespace SchedulerTests
 
                 DescriptionLanguage = (Language)1000
             };
-            var service = new Service(sc);
             //Act
-            var action = () => service.GetOutput();
+            var action = () => new Service(sc);
 
             //Assert
             action.Should().Throw<KeyNotFoundException>();

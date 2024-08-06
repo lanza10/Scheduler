@@ -34,7 +34,6 @@ namespace Scheduler.Services.SchedulerServices
 
         public string GenerateDescription(DateTime date)
         {
-            CultureInfo.CurrentCulture = LanguageDictionary.GetCulture(sc.DescriptionLanguage);
             return DescriptionGenerator.GetDailyDescription(sc);
         }
     }

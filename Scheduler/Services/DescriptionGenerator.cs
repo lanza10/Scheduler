@@ -52,7 +52,7 @@ namespace Scheduler.Services
 
         private static string GetStartingOnQuote(DateTime stDate)
         {
-            var formattedStartDate = stDate.ToString("d", CultureInfo.CurrentCulture);
+            var formattedStartDate = stDate.ToShortDateString();
             var quote = Rm.GetString("StartingOn", CultureInfo.CurrentCulture);
             return string.Format(quote!, formattedStartDate);
         }
