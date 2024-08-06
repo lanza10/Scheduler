@@ -2,7 +2,9 @@
 using Scheduler.Models;
 using Scheduler.Services.HoursCalculators;
 using Scheduler.Services.SchedulerServices;
+using Scheduler.Utilities;
 using Scheduler.Validator;
+using System.Globalization;
 
 namespace Scheduler.Services
 {
@@ -17,8 +19,7 @@ namespace Scheduler.Services
 
             _schedulerService = sc.Type == ConfigurationType.Once ? new OnceSchedulerService(sc) : GetRecurringService(sc);
 
-            CultureManager.ChangeCurrentCulture(sc.DescriptionLanguage);
-
+            CultureInfo.CurrentCulture = LanguageDictionary.GetCulture(sc.DescriptionLanguage);
         }
         public Output GetOutput()
         {
