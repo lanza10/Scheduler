@@ -46,7 +46,7 @@ namespace SchedulerTests
             //Arrange
             var sc = new SchedulerConfiguration
             {
-                CurrentDate = new DateTime(2024, 1, 8,12,30,0),
+                CurrentDate = new DateTime(2024, 1, 8, 12, 30, 0),
                 IsEnabled = true,
                 Occurs = Occurrence.Monthly,
                 ConfigurationDate = null,
@@ -108,7 +108,7 @@ namespace SchedulerTests
             //Arrange
             var sc = new SchedulerConfiguration
             {
-                CurrentDate = new DateTime(2024, 1, 8, 14,0,0),
+                CurrentDate = new DateTime(2024, 1, 8, 14, 0, 0),
                 IsEnabled = true,
                 Occurs = Occurrence.Monthly,
                 ConfigurationDate = null,
@@ -150,7 +150,7 @@ namespace SchedulerTests
                 MonthlyDateOrder = MonthlyDateOrder.First,
                 MonthlyDateDay = MonthlyDateDay.Thursday,
                 MonthlyDateFrequency = 3,
-                
+
 
                 DailyType = DailyOccursType.Once,
                 DailyOccursOnceAt = new TimeSpan(12, 30, 0),
@@ -286,8 +286,8 @@ namespace SchedulerTests
                 DailyType = DailyOccursType.Every,
                 DailyOccursEvery = 2,
                 OccursEveryType = DailyOccursEveryType.Hours,
-                DailyStartingAt = new TimeSpan(12,20,40),
-                DailyEndingAt = new TimeSpan(14,0,0),
+                DailyStartingAt = new TimeSpan(12, 20, 40),
+                DailyEndingAt = new TimeSpan(14, 0, 0),
 
                 StartDate = DateTime.MinValue,
                 EndDate = DateTime.MaxValue,
@@ -888,7 +888,7 @@ namespace SchedulerTests
                 Type = ConfigurationType.Recurring,
 
                 MonthlyType = MonthlyType.Date,
-                MonthlyDateDay = MonthlyDateDay.Weekday ,
+                MonthlyDateDay = MonthlyDateDay.Weekday,
                 MonthlyDateOrder = MonthlyDateOrder.First,
                 MonthlyDateFrequency = 3,
 
@@ -904,7 +904,7 @@ namespace SchedulerTests
 
             //Assert
             output.Description.Should().Be("Occurs the first weekday of every 3 months at 12:30 starting on 1/1/0001");
-         }
+        }
         [Fact]
         public void ReturnSameDescriptionForEveryOutput()
         {
@@ -969,7 +969,7 @@ namespace SchedulerTests
             var outputList = service.GetOutputList(6);
 
             //Assert
-            outputList[0].NextExecTime.Should().Be(new DateTime(2024,1,1,12,30,0));
+            outputList[0].NextExecTime.Should().Be(new DateTime(2024, 1, 1, 12, 30, 0));
             outputList[1].NextExecTime.Should().Be(new DateTime(2024, 4, 1, 12, 30, 0));
             outputList[2].NextExecTime.Should().Be(new DateTime(2024, 7, 1, 12, 30, 0));
             outputList[3].NextExecTime.Should().Be(new DateTime(2024, 10, 1, 12, 30, 0));
@@ -1033,7 +1033,7 @@ namespace SchedulerTests
                 DailyType = DailyOccursType.Once,
                 DailyOccursOnceAt = new TimeSpan(12, 30, 0),
 
-                StartDate = new DateTime(1,1,5),
+                StartDate = new DateTime(1, 1, 5),
                 EndDate = DateTime.MaxValue,
 
                 DescriptionLanguage = l

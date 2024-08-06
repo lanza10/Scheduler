@@ -63,54 +63,54 @@ namespace Scheduler.StringCultures.OccurrenceStrings {
         /// <summary>
         ///   Looks up a localized string similar to day.
         /// </summary>
-        internal static string Day {
+        internal static string Daily {
             get {
-                return ResourceManager.GetString("Day", resourceCulture);
+                return ResourceManager.GetString("Daily", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to hour.
         /// </summary>
-        internal static string Hour {
+        internal static string Hours {
             get {
-                return ResourceManager.GetString("Hour", resourceCulture);
+                return ResourceManager.GetString("Hours", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to minute.
         /// </summary>
-        internal static string Minute {
+        internal static string Minutes {
             get {
-                return ResourceManager.GetString("Minute", resourceCulture);
+                return ResourceManager.GetString("Minutes", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to month.
         /// </summary>
-        internal static string Month {
+        internal static string Monthly {
             get {
-                return ResourceManager.GetString("Month", resourceCulture);
+                return ResourceManager.GetString("Monthly", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to second.
         /// </summary>
-        internal static string Second {
+        internal static string Seconds {
             get {
-                return ResourceManager.GetString("Second", resourceCulture);
+                return ResourceManager.GetString("Seconds", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to week.
         /// </summary>
-        internal static string Week {
+        internal static string Weekly {
             get {
-                return ResourceManager.GetString("Week", resourceCulture);
+                return ResourceManager.GetString("Weekly", resourceCulture);
             }
         }
     }

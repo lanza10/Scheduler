@@ -45,69 +45,12 @@ namespace Scheduler.Utilities
             }
         };
 
-        public static readonly Dictionary<MonthlyDateOrder, string> OrderMap = new()
-        {
-            {
-                MonthlyDateOrder.First, "First"
-            },
-            {
-                MonthlyDateOrder.Second, "Second"
-            },
-            {
-               MonthlyDateOrder.Third, "Third"
-            },
-            {
-                MonthlyDateOrder.Fourth, "Fourth"
-            },
-            {
-                MonthlyDateOrder.Last, "Last"
-            },
-        };
-        public static readonly Dictionary<MonthlyDateDay, string> DayOfMonthMap = new()
-        {
-            {
-                MonthlyDateDay.Sunday, "Sunday"
-            },
-            {
-                MonthlyDateDay.Monday, "Monday"
-            },
-            {
-                MonthlyDateDay.Tuesday, "Tuesday"
-            },
-            {
-                MonthlyDateDay.Wednesday, "Wednesday"
-            },
-            {
-                MonthlyDateDay.Thursday, "Thursday"
-            },
-            {
-                MonthlyDateDay.Friday, "Friday"
-            },
-            {
-                MonthlyDateDay.Saturday, "Saturday"
-            },
-            {
-                MonthlyDateDay.Day,  "Day"
-            },
-            {
-                MonthlyDateDay.Weekday, "Weekday"
-
-            },
-            {
-                MonthlyDateDay.WeekendDay, "Weekend day"
-            }
-        };
-
         public static string GetOrderDayQuote(MonthlyDateOrder order, MonthlyDateDay day)
         {
-            if (!OrderMap.TryGetValue(order, out var orderQuote))
-            {
-                throw new KeyNotFoundException();
-            }
-
-            DayOfMonthMap.TryGetValue(day, out var dayQuote);
-
-            return $"{Rm.GetString(orderQuote, CultureInfo.CurrentCulture)} {Rm.GetString(dayQuote!, CultureInfo.CurrentCulture)}";
+            var orderSt = order.ToString("G");
+            var daySt = day.ToString("G");
+            return $"{Rm.GetString(orderSt, CultureInfo.CurrentCulture)} " +
+                   $"{Rm.GetString(daySt, CultureInfo.CurrentCulture)}";
         }
     }
 }

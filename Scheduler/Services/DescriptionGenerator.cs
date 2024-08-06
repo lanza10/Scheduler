@@ -69,7 +69,7 @@ namespace Scheduler.Services
             string quote;
             if (sc.MonthlyType == MonthlyType.Day)
             {
-                quote = Rm.GetString("MonthlyDayQuote", CultureInfo.CurrentCulture)!; 
+                quote = Rm.GetString("MonthlyDayQuote", CultureInfo.CurrentCulture)!;
                 return string.Format(quote, sc.MonthlyDay, sc.MonthlyDayFrequency);
             }
 

@@ -9,7 +9,7 @@ using System.Globalization;
 namespace Scheduler.Services
 {
     public class Service
-    {   
+    {
 
         private readonly ISchedulerService _schedulerService;
 

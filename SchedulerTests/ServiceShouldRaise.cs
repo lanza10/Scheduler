@@ -155,33 +155,6 @@ namespace SchedulerTests
                 .WithMessage("The result date must not be later than the specified end date.");
         }
         [Fact]
-        public void ErrorWhenNoExistingOrder()
-        {
-            //Arrange
-            var sc = new SchedulerConfiguration
-            {
-                CurrentDate = new DateTime(2020, 1, 1),
-                IsEnabled = true,
-                Occurs = Occurrence.Monthly,
-
-                ConfigurationDate = null,
-                Type = ConfigurationType.Recurring,
-
-                MonthlyDateOrder = (MonthlyDateOrder)100,
-                MonthlyType = MonthlyType.Date,
-
-
-                StartDate = DateTime.MinValue,
-                EndDate = DateTime.MaxValue,
-            };
-            var service = new Service(sc);
-            //Act
-            var action = () => service.GetOutput();
-
-            //Assert
-            action.Should().Throw<KeyNotFoundException>();
-        }
-        [Fact]
         public void ErrorWhenNoExistingDayMonth()
         {
             //Arrange
@@ -197,32 +170,6 @@ namespace SchedulerTests
                 MonthlyDateOrder = MonthlyDateOrder.First,
                 MonthlyType = MonthlyType.Date,
                 MonthlyDateDay = (MonthlyDateDay)200,
-
-
-                StartDate = DateTime.MinValue,
-                EndDate = DateTime.MaxValue,
-            };
-            var service = new Service(sc);
-            //Act
-            var action = () => service.GetOutput();
-
-            //Assert
-            action.Should().Throw<KeyNotFoundException>();
-        }
-        [Fact]
-        public void ErrorWhenNoExistingDailyFrequency()
-        {
-            //Arrange
-            var sc = new SchedulerConfiguration
-            {
-                CurrentDate = new DateTime(2020, 1, 1),
-                IsEnabled = true,
-                Occurs = Occurrence.Daily,
-
-                ConfigurationDate = null,
-                Type = ConfigurationType.Recurring,
-                WeeklyFrequency = 2,
-                OccursEveryType = (DailyOccursEveryType)10,
 
 
                 StartDate = DateTime.MinValue,
@@ -481,5 +428,5 @@ namespace SchedulerTests
             action.Should().Throw<KeyNotFoundException>();
         }
     }
-    
+
 }

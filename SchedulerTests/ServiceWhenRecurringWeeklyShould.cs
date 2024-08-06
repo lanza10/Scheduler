@@ -577,7 +577,7 @@ namespace SchedulerTests
 
         }
 
-        [Fact] 
+        [Fact]
         public void ReturnExpectedDatesWithDailyModeOnceAndInterval()
         {
             //Arrange
@@ -593,7 +593,7 @@ namespace SchedulerTests
                 DaysOfWeek = [DayOfWeek.Monday, DayOfWeek.Wednesday, DayOfWeek.Saturday],
 
                 DailyType = DailyOccursType.Once,
-                DailyOccursOnceAt = new TimeSpan(12,0,0),
+                DailyOccursOnceAt = new TimeSpan(12, 0, 0),
 
                 StartDate = DateTime.MinValue,
                 EndDate = null,
@@ -633,7 +633,7 @@ namespace SchedulerTests
                 DailyOccursOnceAt = new TimeSpan(12, 0, 0),
 
                 StartDate = DateTime.MinValue,
-                EndDate = new DateTime(2024,8,10,11,59,59),
+                EndDate = new DateTime(2024, 8, 10, 11, 59, 59),
             };
             var service = new Service(sc);
 

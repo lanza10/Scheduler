@@ -18,13 +18,13 @@ namespace Scheduler.Models
         public MonthlyDateOrder MonthlyDateOrder { get; set; } = MonthlyDateOrder.First;
         public MonthlyDateDay MonthlyDateDay { get; set; } = MonthlyDateDay.Day;
         public int MonthlyDateFrequency { get; set; } = 1;
-        
+
 
         public int WeeklyFrequency { get; set; } = 1;
 
         public List<DayOfWeek> DaysOfWeek { get; set; } =
         [   DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday,
-            DayOfWeek.Thursday, DayOfWeek.Friday ,DayOfWeek.Saturday, 
+            DayOfWeek.Thursday, DayOfWeek.Friday ,DayOfWeek.Saturday,
             DayOfWeek.Sunday,
         ];
 
@@ -32,8 +32,8 @@ namespace Scheduler.Models
         public TimeSpan DailyOccursOnceAt { get; set; } = TimeSpan.Zero;
         public int DailyOccursEvery { get; set; } = 1;
         public DailyOccursEveryType OccursEveryType { get; set; } = DailyOccursEveryType.Hours;
-        public TimeSpan DailyStartingAt { get; set; } = new (0, 0, 0);
-        public TimeSpan DailyEndingAt { get; set; } = new (23, 59, 59);
+        public TimeSpan DailyStartingAt { get; set; } = new(0, 0, 0);
+        public TimeSpan DailyEndingAt { get; set; } = new(23, 59, 59);
 
         public DateTime StartDate { get; set; }
         private DateTime _endDate;
