@@ -1,4 +1,5 @@
-﻿using Scheduler.Enums;
+﻿using Microsoft.Extensions.Localization;
+using Scheduler.Enums;
 using Scheduler.Models;
 using Scheduler.Utilities;
 using System.Globalization;
@@ -9,6 +10,7 @@ namespace Scheduler.Services
     public class DescriptionGenerator
     {
         private static readonly ResourceManager Rm = new("Scheduler.StringCultures.Descriptions.descriptions", typeof(DescriptionGenerator).Assembly);
+        private static readonly IStringLocalizer _localizer = new LocalizationManager();
         public static string GetOnceDescription(DateTime date, SchedulerConfiguration sc)
         {
             var formattedNextExecTime = date.Date.ToString("d", CultureInfo.CurrentCulture);
@@ -18,8 +20,9 @@ namespace Scheduler.Services
         }
         public static string GetDailyDescription(SchedulerConfiguration sc)
         {
-            var desc = Rm.GetString("DailyDesc", CultureInfo.CurrentCulture);
-            return string.Format(desc!, GetDailyQuote(sc), GetStartingOnQuote(sc.StartDate));
+            var desc = _localizer["DailyDesc",[GetDailyQuote(sc), GetStartingOnQuote(sc.StartDate)]];
+            //var desc = Rm.GetString("DailyDesc", CultureInfo.CurrentCulture);
+            return desc;
         }
 
         public static string GetWeeklyDescription(SchedulerConfiguration sc)
