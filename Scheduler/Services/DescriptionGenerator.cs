@@ -12,7 +12,7 @@ namespace Scheduler.Services
         private static readonly LocalizationManager Localizer = new();
         public static string GetOnceDescription(DateTime date, SchedulerConfiguration sc)
         {
-            var formattedNextExecTime = date.Date.ToString("d", CultureInfo.CurrentCulture);
+            var formattedNextExecTime = date.Date.ToShortDateString();
             var hour = date.TimeOfDay.ToString(@"hh\:mm");
             var desc = Localizer["OnceDesc", [formattedNextExecTime, hour, GetStartingOnQuote(sc.StartDate)]];
             return desc;
@@ -20,7 +20,6 @@ namespace Scheduler.Services
         public static string GetDailyDescription(SchedulerConfiguration sc)
         {
             var desc = Localizer["DailyDesc",[GetDailyQuote(sc), GetStartingOnQuote(sc.StartDate)]];
-            //var desc = Rm.GetString("DailyDesc", CultureInfo.CurrentCulture);
             return desc;
         }
 
