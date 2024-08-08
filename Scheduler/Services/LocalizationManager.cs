@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Localization;
 using System.Globalization;
+using Scheduler.Exceptions;
+
 namespace Scheduler.Services
 {
     internal class LocalizationManager
@@ -213,7 +215,7 @@ namespace Scheduler.Services
                 var culture = CultureInfo.CurrentCulture.Name;
                 var value = _localizations.ContainsKey(name) && _localizations[name].ContainsKey(culture)
                     ? _localizations[name][culture]
-                    : name;
+                    : throw new SchedulerException("This string is not implemented on this culture");
 
                 return new LocalizedString(name, value, resourceNotFound: value == name);
             }
