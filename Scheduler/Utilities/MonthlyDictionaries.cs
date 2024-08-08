@@ -1,4 +1,6 @@
-﻿using Scheduler.Enums;
+﻿using Microsoft.Extensions.Localization;
+using Scheduler.Enums;
+using Scheduler.Services;
 using System.Globalization;
 using System.Resources;
 
@@ -6,7 +8,7 @@ namespace Scheduler.Utilities
 {
     public class MonthlyDictionaries
     {
-        private static readonly ResourceManager Rm = new("Scheduler.StringCultures.MonthlyStrings.monthlyStrings", typeof(MonthlyDictionaries).Assembly);
+        private static readonly LocalizationManager Localizer = new();
         public static readonly Dictionary<MonthlyDateDay, List<DayOfWeek>> WeekDaysMap = new()
         {
             {
@@ -49,8 +51,8 @@ namespace Scheduler.Utilities
         {
             var orderSt = order.ToString("G");
             var daySt = day.ToString("G");
-            return $"{Rm.GetString(orderSt, CultureInfo.CurrentCulture)} " +
-                   $"{Rm.GetString(daySt, CultureInfo.CurrentCulture)}";
+            return $"{Localizer[orderSt]} " +
+                   $"{Localizer[daySt]}";
         }
     }
 }

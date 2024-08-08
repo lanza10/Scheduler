@@ -1,4 +1,6 @@
-﻿using System.Globalization;
+﻿using Microsoft.Extensions.Localization;
+using Scheduler.Services;
+using System.Globalization;
 using System.Resources;
 using System.Text;
 
@@ -6,22 +8,22 @@ namespace Scheduler.Utilities
 {
     public class WeeklyDictionaries
     {
-        private static readonly ResourceManager Rm = new("Scheduler.StringCultures.WeeklyStrings.weeklyStrings", typeof(WeeklyDictionaries).Assembly);
+        private static readonly LocalizationManager Localizer = new();
         public static string GetDaysQuote(List<DayOfWeek> days)
         {
             if (days.Count == 7)
             {
-                return Rm.GetString("Everyday", CultureInfo.CurrentCulture)!;
+                return Localizer["Everyday"];
             }
 
             var result = new StringBuilder();
-            result.Append($"{Rm.GetString("On", CultureInfo.CurrentCulture)} ");
+            result.Append($"{Localizer["On"]} ");
 
             for (var i = 0; i < days.Count; i++)
             {
                 if (i == days.Count - 1 && days.Count > 1)
                 {
-                    result.Append($" {Rm.GetString("And", CultureInfo.CurrentCulture)} ");
+                    result.Append($" {Localizer["And"]} ");
                 }
                 else if (i > 0)
                 {
@@ -29,7 +31,7 @@ namespace Scheduler.Utilities
                 }
 
                 var day = days[i].ToString("G");
-                result.Append(Rm.GetString(day, CultureInfo.CurrentCulture));
+                result.Append(Localizer[day]);
             }
 
             return result.ToString();

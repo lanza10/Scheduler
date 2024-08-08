@@ -1,4 +1,5 @@
-﻿using Scheduler.Models;
+﻿using System.Globalization;
+using Scheduler.Models;
 using Scheduler.Services.HoursCalculators;
 using Scheduler.Validator;
 
@@ -53,7 +54,6 @@ namespace Scheduler.Services.SchedulerServices
 
         public string GenerateDescription(DateTime date)
         {
-            DayOfWeek.Saturday.ToString("G");
             return DescriptionGenerator.GetWeeklyDescription(sc);
         }
 

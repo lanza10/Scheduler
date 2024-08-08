@@ -1,4 +1,6 @@
-﻿using Scheduler.Enums;
+﻿using Microsoft.Extensions.Localization;
+using Scheduler.Enums;
+using Scheduler.Services;
 using System.Globalization;
 using System.Resources;
 
@@ -6,10 +8,10 @@ namespace Scheduler.Utilities
 {
     public static class OccurrenceDictionaries
     {
-        private static readonly ResourceManager Rm = new("Scheduler.StringCultures.OccurrenceStrings.occurrenceStrings", typeof(OccurrenceDictionaries).Assembly);
+        private static readonly LocalizationManager Localizer = new();
         public static string GetFrequencyQuote(int frequency, Occurrence occurrence)
         {
-            var occursString = Rm.GetString(occurrence.ToString("G"), CultureInfo.CurrentCulture);
+            var occursString = Localizer[occurrence.ToString("G")];
 
             return (frequency == 1
                 ? occursString
@@ -19,7 +21,7 @@ namespace Scheduler.Utilities
         public static string GetIntervalQuote(int quantity, DailyOccursEveryType type)
         {
 
-            var unitsString = Rm.GetString(type.ToString("G"), CultureInfo.CurrentCulture);
+            var unitsString = Localizer[type.ToString("G")];
 
             return (quantity == 1
                 ? unitsString

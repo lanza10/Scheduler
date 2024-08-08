@@ -1049,7 +1049,7 @@ namespace SchedulerTests
         [Theory]
         [InlineData(Language.Us, "Occurs the first weekday of every 3 months at 12:30 starting on 1/5/0001")]
         [InlineData(Language.Uk, "Occurs the first weekday of every 3 months at 12:30 starting on 05/01/0001")]
-        [InlineData(Language.Es, "Ocurre el primer día de la semana de cada 3 meses a la/s 12:30 empezando el 05/01/0001")]
+        [InlineData(Language.Es, "Ocurre el primer día de semana de cada 3 meses a la/s 12:30 empezando el 05/01/0001")]
         public void WorkWithDifferentCulturesDateMode(Language l, string expectedDesc)
         {
             //Arrange
