@@ -1,4 +1,5 @@
-﻿using Scheduler.Enums;
+﻿using Microsoft.Extensions.Localization;
+using Scheduler.Enums;
 using Scheduler.Models;
 using Scheduler.Utilities;
 
@@ -6,7 +7,7 @@ namespace Scheduler.Services
 {
     public class DescriptionGenerator
     {
-        private static readonly LocalizationManager Localizer = new();
+        private static readonly IStringLocalizer Localizer = new DescriptionLocalizer();
         public static string GetOnceDescription(DateTime date, SchedulerConfiguration sc)
         {
             var formattedNextExecTime = date.Date.ToShortDateString();

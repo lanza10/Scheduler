@@ -1,11 +1,12 @@
-﻿using Scheduler.Enums;
+﻿using Microsoft.Extensions.Localization;
+using Scheduler.Enums;
 using Scheduler.Services;
 
 namespace Scheduler.Utilities
 {
     public class MonthlyDictionaries
     {
-        private static readonly LocalizationManager Localizer = new();
+        private static readonly IStringLocalizer Localizer = new DescriptionLocalizer();
         public static readonly Dictionary<MonthlyDateDay, List<DayOfWeek>> WeekDaysMap = new()
         {
             {

@@ -1,11 +1,12 @@
-﻿using Scheduler.Enums;
+﻿using Microsoft.Extensions.Localization;
+using Scheduler.Enums;
 using Scheduler.Services;
 
 namespace Scheduler.Utilities
 {
     public static class OccurrenceDictionaries
     {
-        private static readonly LocalizationManager Localizer = new();
+        private static readonly IStringLocalizer Localizer = new DescriptionLocalizer();
         public static string GetFrequencyQuote(int frequency, Occurrence occurrence)
         {
             var occursString = Localizer[occurrence.ToString("G")];

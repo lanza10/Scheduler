@@ -1,11 +1,12 @@
-﻿using Scheduler.Services;
+﻿using Microsoft.Extensions.Localization;
+using Scheduler.Services;
 using System.Text;
 
 namespace Scheduler.Utilities
 {
     public class WeeklyDictionaries
     {
-        private static readonly LocalizationManager Localizer = new();
+        private static readonly IStringLocalizer Localizer = new DescriptionLocalizer();
         public static string GetDaysQuote(List<DayOfWeek> days)
         {
             if (days.Count == 7)

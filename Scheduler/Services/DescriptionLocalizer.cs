@@ -4,7 +4,7 @@ using Scheduler.Exceptions;
 
 namespace Scheduler.Services
 {
-    internal class LocalizationManager
+    internal class DescriptionLocalizer : IStringLocalizer
     {
         private readonly Dictionary<string, Dictionary<string, string>> _localizations = new()
         {
@@ -212,10 +212,10 @@ namespace Scheduler.Services
         {
             get
             {
-                var culture = CultureInfo.CurrentCulture.Name;
-                var value = _localizations.ContainsKey(name) && _localizations[name].ContainsKey(culture)
-                    ? _localizations[name][culture]
-                    : throw new SchedulerException("This string is not implemented on this culture");
+                var allStrings = GetAllStrings(false);
+
+                var value = allStrings.FirstOrDefault(ls => ls.Name == name)
+                            ?? throw new SchedulerException("This string is not implemented in this culture");
 
                 return new LocalizedString(name, value, resourceNotFound: value == name);
             }
@@ -229,6 +229,19 @@ namespace Scheduler.Services
 
                 return new LocalizedString(name, value, format.ResourceNotFound);
             }
+        }
+        public IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures)
+        {
+            var culture = CultureInfo.CurrentCulture.Name;
+            var allStrings = new List<LocalizedString>();
+
+            foreach (var kvp in _localizations)
+            {
+                var value = kvp.Value.TryGetValue(culture, out var value1) ? value1 : kvp.Key;
+                allStrings.Add(new LocalizedString(kvp.Key, value, resourceNotFound: value == kvp.Key));
+            }
+
+            return allStrings;
         }
     }
 }
