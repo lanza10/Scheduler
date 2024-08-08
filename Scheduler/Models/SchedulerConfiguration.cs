@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using Scheduler.Enums;
+﻿using Scheduler.Enums;
 
 namespace Scheduler.Models
 {

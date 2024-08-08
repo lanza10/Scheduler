@@ -1,8 +1,5 @@
-﻿using Microsoft.Extensions.Localization;
-using Scheduler.Enums;
+﻿using Scheduler.Enums;
 using Scheduler.Services;
-using System.Globalization;
-using System.Resources;
 
 namespace Scheduler.Utilities
 {

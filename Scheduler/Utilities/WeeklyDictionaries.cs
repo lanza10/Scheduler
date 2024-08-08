@@ -1,7 +1,4 @@
-﻿using Microsoft.Extensions.Localization;
-using Scheduler.Services;
-using System.Globalization;
-using System.Resources;
+﻿using Scheduler.Services;
 using System.Text;
 
 namespace Scheduler.Utilities

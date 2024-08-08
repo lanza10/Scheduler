@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using Scheduler.Models;
+﻿using Scheduler.Models;
 using Scheduler.Services.HoursCalculators;
 using Scheduler.Validator;
 

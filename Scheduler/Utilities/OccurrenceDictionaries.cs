@@ -1,8 +1,5 @@
-﻿using Microsoft.Extensions.Localization;
-using Scheduler.Enums;
+﻿using Scheduler.Enums;
 using Scheduler.Services;
-using System.Globalization;
-using System.Resources;
 
 namespace Scheduler.Utilities
 {
@@ -15,7 +12,7 @@ namespace Scheduler.Utilities
 
             return (frequency == 1
                 ? occursString
-                : $"{frequency} {occursString}s")!;
+                : $"{frequency} {occursString}s");
         }
 
         public static string GetIntervalQuote(int quantity, DailyOccursEveryType type)
@@ -25,7 +22,7 @@ namespace Scheduler.Utilities
 
             return (quantity == 1
                 ? unitsString
-                : $"{quantity} {unitsString}s")!;
+                : $"{quantity} {unitsString}s");
         }
     }
 }

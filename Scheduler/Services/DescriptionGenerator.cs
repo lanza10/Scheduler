@@ -1,9 +1,6 @@
-﻿using Microsoft.Extensions.Localization;
-using Scheduler.Enums;
+﻿using Scheduler.Enums;
 using Scheduler.Models;
 using Scheduler.Utilities;
-using System.Globalization;
-using System.Resources;
 
 namespace Scheduler.Services
 {
@@ -19,13 +16,13 @@ namespace Scheduler.Services
         }
         public static string GetDailyDescription(SchedulerConfiguration sc)
         {
-            var desc = Localizer["DailyDesc",[GetDailyQuote(sc), GetStartingOnQuote(sc.StartDate)]];
+            var desc = Localizer["DailyDesc", [GetDailyQuote(sc), GetStartingOnQuote(sc.StartDate)]];
             return desc;
         }
 
         public static string GetWeeklyDescription(SchedulerConfiguration sc)
         {
-            var desc = Localizer["WeeklyDesc",[GetWeeklyQuote(sc), GetDailyQuote(sc), GetStartingOnQuote(sc.StartDate)]];
+            var desc = Localizer["WeeklyDesc", [GetWeeklyQuote(sc), GetDailyQuote(sc), GetStartingOnQuote(sc.StartDate)]];
             return desc;
         }
 
@@ -43,8 +40,8 @@ namespace Scheduler.Services
                 var startingAt = sc.DailyStartingAt.ToString(@"hh\:mm");
                 var endingAt = sc.DailyEndingAt.ToString(@"hh\:mm");
                 var interval = OccurrenceDictionaries.GetIntervalQuote(sc.DailyOccursEvery, sc.OccursEveryType);
-                
-                quote = Localizer["EveryDayQuote", [interval,startingAt, endingAt]];
+
+                quote = Localizer["EveryDayQuote", [interval, startingAt, endingAt]];
                 return quote;
             }
             var formmattedOnceAt = sc.DailyOccursOnceAt.ToString(@"hh\:mm");
@@ -71,7 +68,7 @@ namespace Scheduler.Services
             string quote;
             if (sc.MonthlyType == MonthlyType.Day)
             {
-                quote =Localizer["MonthlyDayQuote", [sc.MonthlyDay, sc.MonthlyDayFrequency]];
+                quote = Localizer["MonthlyDayQuote", [sc.MonthlyDay, sc.MonthlyDayFrequency]];
                 return quote;
             }
 
