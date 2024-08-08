@@ -214,8 +214,7 @@ namespace Scheduler.Services
             {
                 var allStrings = GetAllStrings(false);
 
-                var value = allStrings.FirstOrDefault(ls => ls.Name == name)
-                            ?? throw new SchedulerException("This string is not implemented in this culture");
+                var value = allStrings.FirstOrDefault(ls => ls.Name == name) ?? name;
 
                 return new LocalizedString(name, value, resourceNotFound: value == name);
             }
